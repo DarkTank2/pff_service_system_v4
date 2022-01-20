@@ -1,0 +1,60 @@
+{
+  "name": "backend",
+  "description": "",
+  "version": "0.0.1",
+  "homepage": "",
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "Alexander Seiler",
+    "email": "alexander.seiler@wpp.at"
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/",
+    "config": "config/"
+  },
+  "engines": {
+    "node": ">=12.14.0",
+    "npm": ">= 6.13.4"
+  },
+  "scripts": {
+    "test": "npm run eslint && npm run mocha",
+    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "dev": "sequelize db:migrate & nodemon src/",
+    "start": "sequelize db:migrate & node src/",
+    "mocha": "mocha test/ --recursive --exit"
+  },
+  "dependencies": {
+    "@feathersjs/configuration": "^4.5.1",
+    "@feathersjs/errors": "^4.5.1",
+    "@feathersjs/express": "^4.5.1",
+    "@feathersjs/feathers": "^4.5.1",
+    "@feathersjs/socketio": "^4.5.1",
+    "@feathersjs/socketio-client": "^4.5.6",
+    "@feathersjs/transport-commons": "^4.5.1",
+    "axios": "^0.24.0",
+    "cluster": "^0.7.7",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "feathers-sequelize": "^6.1.0",
+    "helmet": "^3.21.2",
+    "lodash": "^4.17.21",
+    "moment": "^2.27.0",
+    "pg": "^8.7.1",
+    "sequelize": "^5.21.4",
+    "sequelize-cli": "^6.2.0",
+    "serve-favicon": "^2.5.0",
+    "socket.io-client": "^2.3.0",
+    "winston": "^3.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.6.0",
+    "mocha": "^9.1.3",
+    "nodemon": "^2.0.2"
+  }
+}

@@ -1,0 +1,36 @@
+'use strict';
+
+const supportfunctions = require('./../supportfunctions');
+
+// syncDB cannot:
+//  create relations (foreign keys)
+//  added columns
+//  altering tables (not null, etc.)
+
+// syncDB can do everything where data is not at risk
+
+module.exports = {
+  up: async (queryInterface, Sequelize) => {
+    await supportfunctions.syncDB()
+    const transaction = await queryInterface.sequelize.transaction();
+    try {
+      // await supportfunctions.someFunction()
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
+    }
+  },
+
+  down: async (queryInterface, Sequelize) => {
+    await supportfunctions.syncDB()
+    const transaction = await queryInterface.sequelize.transaction();
+    try {
+      // await supportfunctions.someFunction()
+      await transaction.commit();
+    } catch (err) {
+      await transaction.rollback();
+      throw err;
+    }
+  }
+};

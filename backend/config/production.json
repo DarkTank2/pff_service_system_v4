@@ -1,0 +1,9 @@
+{
+  "host": "aoa-backend-app.feathersjs.com",
+  "port": "PORT",
+  "paginate": false,
+  "paginate_bkp": {
+    "default": 10,
+    "max": 50
+  }
+}

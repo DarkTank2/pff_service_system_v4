@@ -1,0 +1,11 @@
+{
+  "host": "localhost",
+  "port": 3030,
+  "public": "../public/",
+  "paginate": false,
+  "paginate_bkp": {
+    "default": 10,
+    "max": 50
+  },
+  "postgres": "postgres://scoutadmin:DB4ScoutServiceProgram@ssp_db:5432/main"
+}
