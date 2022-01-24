@@ -24,9 +24,7 @@ export default {
   data: () => ({
     
   }),
-  created: function () {
-    this.fetchTables()
-  },
+  created: function () {},
   methods: {},
   computed: {}
 }
