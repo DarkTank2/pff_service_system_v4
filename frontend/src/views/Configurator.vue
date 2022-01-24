@@ -8,7 +8,13 @@
           Additions
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="additions"
+            :dependencies="{}"
+            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'},{value:'priceModifier',text:'Price-modification'}]"
+            serviceConstructor="Addition"
+            :config="{id:{changeable:false},name:{changeable:true},priceModifier:{changeable:true,type:'number'}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -16,7 +22,13 @@
           Base-items
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="baseItems"
+            :dependencies="{ categories, types }"
+            :headers="[{ value: 'id', text: 'ID' }, { value: 'name', text: 'Name' }, { value: 'typeId', text: 'Type' }, { value: 'categoryId', text: 'Category' }]"
+            serviceConstructor="BaseItem"
+            :config="{ id: { changeable: false }, name: { changeable: true }, typeId: { changeable: { key: 'types', itemValue: 'id', itemText: 'name' } }, categoryId: { changeable: { key: 'categories', itemValue: 'id', itemText: 'name' } } }"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -24,7 +36,13 @@
           Base-items-have-additions
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="baseItemsHaveAdditions"
+            :dependencies="{additions,baseItems}"
+            :headers="[{value:'id',text:'ID'},{value:'baseItemId',text:'Item-Name'},{value:'additionId',text:'Addition'}]"
+            serviceConstructor="BaseItemHasAddition"
+            :config="{id:{changeable:false},baseItemId:{changeable:{key:'baseItems',itemValue:'id',itemText:'name'}},additionId:{changeable:{key:'additions',itemValue:'id',itemText:'name'}}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -32,7 +50,13 @@
           Categories
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="categories"
+            :dependencies="{}"
+            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'}]"
+            serviceConstructor="Category"
+            :config="{id:{changeable:false},name:{changeable:true}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -40,7 +64,13 @@
           Flavours
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="flavours"
+            :dependencies="{}"
+            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'}]"
+            serviceConstructor="Flavour"
+            :config="{id:{changeable:false},name:{changeable:true}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -48,7 +78,13 @@
           Items
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="items"
+            :dependencies="{baseItems,sizes,flavours}"
+            :headers="[{value:'id',text:'ID'},{value:'baseItemId',text:'Item-Name'},{value:'price',text:'Price'},{value:'flavourId',text:'Flavour'},{value:'sizeId',text:'Size'}]"
+            serviceConstructor="Item"
+            :config="{id:{changeable:false},baseItemId:{changeable:{key:'baseItems',itemValue:'id',itemText:'name'}},price:{changeable:true,type:'number'},flavourId:{changeable:{key:'flavours',itemValue:'id',itemText:'name'}},sizeId:{changeable:{key:'sizes',itemValue:'id',itemText:'name'}}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -115,9 +151,13 @@
   </v-container>
 </template>
 <script>
+import ServiceTable from '../components/configurator/serviceTable.vue'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Configurator',
+  components: {
+    ServiceTable
+  },
   data: () => ({
     newTable: null
   }),
@@ -142,10 +182,10 @@ export default {
     ...mapActions('additions', {
       fetchadditions: 'find'
     }),
-    ...mapActions('baseItems', {
+    ...mapActions('base-items', {
       fetchbaseItems: 'find'
     }),
-    ...mapActions('baseItemsHaveAdditions', {
+    ...mapActions('base-items-have-additions', {
       fetchbaseItemsHaveAdditions: 'find'
     }),
     ...mapActions('categories', {
@@ -157,10 +197,10 @@ export default {
     ...mapActions('items', {
       fetchitems: 'find'
     }),
-    ...mapActions('orderedItems', {
+    ...mapActions('ordered-items', {
       fetchorderedItems: 'find'
     }),
-    ...mapActions('orderedItemsHaveAdditions', {
+    ...mapActions('ordered-items-have-additions', {
       fetchorderedItemsHaveAdditions: 'find'
     }),
     ...mapActions('sizes', {
@@ -183,11 +223,11 @@ export default {
       additions: 'list',
       getadditions: 'get'
     }),
-    ...mapGetters('baseItems', {
+    ...mapGetters('base-items', {
       baseItems: 'list',
       getbaseItems: 'get'
     }),
-    ...mapGetters('baseItemsHaveAdditions', {
+    ...mapGetters('base-items-have-additions', {
       baseItemsHaveAdditions: 'list',
       getbaseItemsHaveAdditions: 'get'
     }),
@@ -203,11 +243,11 @@ export default {
       items: 'list',
       getitems: 'get'
     }),
-    ...mapGetters('orderedItems', {
+    ...mapGetters('ordered-items', {
       orderedItems: 'list',
       getorderedItems: 'get'
     }),
-    ...mapGetters('orderedItemsHaveAdditions', {
+    ...mapGetters('ordered-items-have-additions', {
       orderedItemsHaveAdditions: 'list',
       getorderedItemsHaveAdditions: 'get'
     }),
