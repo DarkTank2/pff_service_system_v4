@@ -1,12 +1,12 @@
 import feathersClient, { makeServicePlugin, BaseModel } from '../../feathers-client'
 
-class Flavours extends BaseModel {
+class Flavour extends BaseModel {
   // eslint-disable-next-line no-useless-constructor
   constructor (data, options) {
     super(data, options)
   }
   // Required for $FeathersVuex plugin to work after production transpile.
-  static modelName = 'Flavours'
+  static modelName = 'Flavour'
   // Define default properties here
   static instanceDefaults () {
     return {
@@ -16,7 +16,7 @@ class Flavours extends BaseModel {
 }
 const servicePath = '/sapi/flavours'
 const servicePlugin = makeServicePlugin({
-  Model: Flavours,
+  Model: Flavour,
   service: feathersClient.service(servicePath),
   servicePath
 })

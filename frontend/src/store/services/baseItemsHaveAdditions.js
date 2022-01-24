@@ -1,12 +1,12 @@
 import feathersClient, { makeServicePlugin, BaseModel } from '../../feathers-client'
 
-class BaseItemsHaveAdditions extends BaseModel {
+class BaseItemHasAddition extends BaseModel {
   // eslint-disable-next-line no-useless-constructor
   constructor (data, options) {
     super(data, options)
   }
   // Required for $FeathersVuex plugin to work after production transpile.
-  static modelName = 'BaseItemsHaveAdditions'
+  static modelName = 'BaseItemHasAddition'
   // Define default properties here
   static instanceDefaults () {
     return {
@@ -17,7 +17,7 @@ class BaseItemsHaveAdditions extends BaseModel {
 }
 const servicePath = '/sapi/base-items-have-additions'
 const servicePlugin = makeServicePlugin({
-  Model: BaseItemsHaveAdditions,
+  Model: BaseItemHasAddition,
   service: feathersClient.service(servicePath),
   servicePath
 })
