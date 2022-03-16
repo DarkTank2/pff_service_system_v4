@@ -9,15 +9,19 @@ module.exports = {
     try {
       // await supportfunctions.someFunction()
       await queryInterface.removeConstraint('items', 'items_sizeId_flavourId_key')
+      console.log('Removed constraint items_sizeId_flavourId_key')
       await queryInterface.removeConstraint('items', 'items_baseItemId_key')
+      console.log('Removed constraint items_baseItemId_key')
       await queryInterface.addConstraint('items', {
         fields: ['baseItemId', 'sizeId', 'flavourId'],
         type: 'unique'
       })
+      console.log('Added unique constraint')
       await queryInterface.bulkInsert('types', [
         { id: 1, name: 'Trinken' },
         { id: 2, name: 'Essen' }
       ])
+      console.log('Added types')
       await queryInterface.bulkInsert('categories', [
         { id: 1, name: 'Speisen' },
         { id: 2, name: 'Anti-Alk' },
@@ -28,20 +32,24 @@ module.exports = {
         { id: 7, name: 'Biere' },
         { id: 8, name: 'Sonstiges' }
       ])
+      console.log('Added categories')
       await queryInterface.bulkInsert('baseItems', [
         { id: 1, name: 'apfelsaft', typeId: 1, categoryId: 1 }
       ])
+      console.log('Added baseItems')
       await queryInterface.bulkInsert('sizes', [
         { id: 1, name: '0.25l'},
         { id: 2, name: '0.33l'},
         { id: 3, name: '0.5l'},
         { id: 4, name: '0.7l'}
       ])
+      console.log('Added sizes')
       await queryInterface.bulkInsert('flavours', [
         { id: 1, name: 'gespritzt leitung' },
         { id: 2, name: 'gespritzt mineral' },
         { id: 3, name: 'ohne' }
       ])
+      console.log('Added flavours')
       await queryInterface.bulkInsert('tables', [
         { name: 'Tisch Nr.1' },
         { name: 'Tisch Nr.2' },
@@ -62,6 +70,7 @@ module.exports = {
         { name: 'Tisch Nr.17' },
         { name: 'Tisch Nr.18' }
       ])
+      console.log('Added tables')
       
       await transaction.commit()
     } catch (err) {
