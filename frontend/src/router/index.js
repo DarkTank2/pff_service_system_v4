@@ -19,28 +19,49 @@ const routes = [
   },
   {
     path: '/order',
-    name: 'Order',
+    // name: 'Order',
     component: () => import('../views/Order.vue'),
     children: [
       {
-        path: '/',
-        name: 'OrderBaseView', // supposed to select the type
-        component: () => import('')
+        path: '',
+        name: 'TypeSelection', // supposed to select the type
+        component: () => import('../components/Order/TypeSelection.vue')
       },
       {
         path: '/type/:typeId',
-        name: 'TypeView', // supposed to select the category
-        component: () => import('')
-      },
-      {
-        path: '/category/:categoryId',
-        name: 'CategoryView', // supposed to select the base item
-        component: () => import('')
-      },
-      {
-        path: '/baseItem/:baseItemId',
-        name: 'BaseItemView',
-        component: () => import('')
+        name: 'TypeProxy', // supposed to route forward to category selection of said type
+        component: () => import('../components/Order/TypeProxy.vue'),
+    //     children: [
+    //       {
+    //         path: '/',
+    //         name: 'CategorySelection', // supposed to select category
+    //         component: () => import('')
+    //       },
+    //       {
+    //         path: '/category/:categoryId',
+    //         name: 'CategoryProxy', // supposed to route forward to the selection of the base item
+    //         component: () => import(''),
+    //         children: [
+    //           {
+    //             path: '/',
+    //             name: 'BaseItemSelection',
+    //             component: () => import('')
+    //           },
+    //           {
+    //             path: '/baseItem/:baseItemId',
+    //             name: 'baseItemProxy',
+    //             component: () => import(''),
+    //             children: [
+    //               {
+    //                 path: '/',
+    //                 name: 'FlavourSelection',
+    //                 component: () => import('')
+    //               }
+    //             ]
+    //           }
+    //         ]
+    //       }
+    //     ]
       }
     ]
   },

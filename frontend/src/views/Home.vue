@@ -1,13 +1,12 @@
 <template>
   <v-card>
-    <v-card-title>Service-System</v-card-title>
     <v-card-text>
       <v-container fluid>
         <v-row>
-          <v-col cols="6">
-            <v-btn block :to="{ name: 'Order' }">Bestellung aufnehmen</v-btn>
+          <v-col cols="12" sm="6">
+            <v-btn block :to="{ name: 'TypeSelection' }">Bestellung aufnehmen</v-btn>
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12" sm="6">
             <v-btn block :to="{ name: 'Serve' }">Servieren & Kassieren</v-btn>
           </v-col>
         </v-row>
