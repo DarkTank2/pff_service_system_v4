@@ -166,19 +166,26 @@ export default {
     this.newTable = new Table()
   },
   mounted: function () {
-    this.fetchadditions()
-    this.fetchbaseItems()
-    this.fetchbaseItemsHaveAdditions()
-    this.fetchcategories()
-    this.fetchflavours()
-    this.fetchitems()
-    this.fetchorderedItems()
-    this.fetchorderedItemsHaveAdditions()
-    this.fetchsizes()
-    this.fetchtables()
-    this.fetchtypes()
+    this.setFetchPendingFlag().then(() => {
+      let promises = []
+      promises.push(this.fetchadditions())
+      promises.push(this.fetchbaseItems())
+      promises.push(this.fetchbaseItemsHaveAdditions())
+      promises.push(this.fetchcategories())
+      promises.push(this.fetchflavours())
+      promises.push(this.fetchitems())
+      promises.push(this.fetchorderedItems())
+      promises.push(this.fetchorderedItemsHaveAdditions())
+      promises.push(this.fetchsizes())
+      promises.push(this.fetchtables())
+      promises.push(this.fetchtypes())
+      Promise.all(promises).then(() => {
+        this.resetFetchPendingFlag()
+      })
+    })
   },
   methods: {
+    ...mapActions('utilities', ['setFetchPendingFlag', 'resetFetchPendingFlag']),
     ...mapActions('additions', {
       fetchadditions: 'find'
     }),

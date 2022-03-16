@@ -4,14 +4,11 @@
     <v-card-text>
       <v-container fluid>
         <v-row>
-          <v-col cols="12">
-            <v-btn block :to="{ name: 'waiter' }">Kellnern</v-btn>
+          <v-col cols="6">
+            <v-btn block :to="{ name: 'Order' }">Bestellung aufnehmen</v-btn>
           </v-col>
-          <v-col cols="12">
-            <v-btn block :to="{ name: 'servant' }">Servieren</v-btn>
-          </v-col>
-          <v-col cols="12">
-            <v-btn block :to="{ name: 'Configurator' }">Konfigurator</v-btn>
+          <v-col cols="6">
+            <v-btn block :to="{ name: 'Serve' }">Servieren & Kassieren</v-btn>
           </v-col>
         </v-row>
       </v-container>

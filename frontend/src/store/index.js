@@ -13,6 +13,8 @@ import servantGetters from './servant/getters'
 import servantActions from './servant/actions'
 import servantMutations from './servant/mutations'
 
+import utilityMethods from './untilities'
+
 Vue.use(Vuex)
 Vue.use(FeathersVuex)
 
@@ -61,6 +63,14 @@ const servant = {
   actions: servantActions
 }
 
+const utilities = {
+  namespaced: true,
+  state: {
+    fetchPendingFlag: false
+  },
+  ...utilityMethods
+}
+
 export default new Vuex.Store({
   state: {},
   mutations: {},
@@ -68,7 +78,8 @@ export default new Vuex.Store({
   modules: {
     base,
     waiter,
-    servant
+    servant,
+    utilities
   },
   plugins: [...servicePlugins]
 })

@@ -19,10 +19,10 @@
             class="elevation-1"
             :search="search"
             >
-            <template v-for="{ value: key }, index in headers" v-slot:[`item.${key}`]="{ item }">
+            <template v-for="{ value: key } in headers" v-slot:[`item.${key}`]="{ item }">
                 <v-text-field 
                     v-if="config[key].changeable === false"
-                    :key="`static_field_${serviceConstructor}_${key}_${index}`"
+                    :key="`static_field_${serviceConstructor}_${key}_${item.id || item.__id}`"
                     readonly
                     v-model="item[key]"
                     :label="headers.find(({ value }) => value === key).text"
@@ -30,7 +30,7 @@
                 </v-text-field>
                 <v-text-field
                     v-else-if="config[key].changeable === true"
-                    :key="`dynamic_field_${serviceConstructor}_${key}_${index}`"
+                    :key="`dynamic_field_${serviceConstructor}_${key}_${item.id || item.__id}`"
                     v-model="item[key]"
                     :label="headers.find(({ value }) => value === key).text"
                     :type="config[key].type ? config[key].type : 'text'"
@@ -38,7 +38,7 @@
                 </v-text-field>
                 <v-select
                     v-else
-                    :key="`foreign_key_field_${serviceConstructor}_${key}_${index}`"
+                    :key="`foreign_key_field_${serviceConstructor}_${key}_${item.id || item.__id}`"
                     :items="dependencies[config[key].changeable.key]"
                     :item-text="config[key].changeable.itemText"
                     :item-value="config[key].changeable.itemValue"
