@@ -92,7 +92,13 @@
           Ordered-items
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="orderedItems"
+            :dependencies="{items,tables}"
+            :headers="[{value:'id',text:'ID'},{value:'quantity',text:'Quantity'},{value:'itemId',text:'Item-Name'},{value:'tableId',text:'Table'},{value:'waiter',text:'Waiter'},{value:'comment',text:'Comment'}]"
+            serviceConstructor="OrderedItem"
+            :config="{id:{changeable:false},quantity:{changeable:true,type:'number'},itemId:{changeable:{key:'item',itemValue:'id',itemText:'id'}},tableId:{changeable:{key:'tables',itemValue:'id',itemText:'name'}},waiter:{changeable:true},comment:{changeable:true}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -100,7 +106,13 @@
           Ordered-items-have-additions
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="orderedItemsHaveAdditions"
+            :dependencies="{additions,orderedItems}"
+            :headers="[{value:'id',text:'ID'},{value:'orderedItemId',text:'Ordered-Item-ID'},{value:'amount',text:'Amount'},{value:'additionId',text:'Addition'}]"
+            serviceConstructor="OrderedItemHasAddition"
+            :config="{id:{changeable:false},orderedItemId:{changeable:{key:'orderedItems',itemValue:'id',itemText:'id'}},amount:{changeable:true,type:'number'},additionId:{changeable:{key:'additions',itemValue:'id',itemText:'name'}}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -108,7 +120,13 @@
           Sizes
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="sizes"
+            :dependencies="{}"
+            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'}]"
+            serviceConstructor="Size"
+            :config="{id:{changeable:false},name:{changeable:true}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -116,27 +134,13 @@
           Tables
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <v-container fluid>
-            <v-row v-for="table in tables" :key="`table_${table.id}`" class="mt-0">
-              <v-col cols="3">
-                <v-text-field v-model="table.name" dense></v-text-field>
-              </v-col>
-              <v-btn icon>
-                <v-icon>save</v-icon>
-              </v-btn>
-              <v-btn icon>
-                <v-icon>clear</v-icon>
-              </v-btn>
-            </v-row>
-            <v-row class="mt-0" v-if="newTable">
-              <v-col cols="3">
-                <v-text-field v-model="newTable.name" dense></v-text-field>
-              </v-col>
-              <v-btn icon @click="saveEntity({ entityName: 'newTable', instanceName: 'Table' })">
-                <v-icon>save</v-icon>
-              </v-btn>
-            </v-row>
-          </v-container>
+          <service-table
+            :items="tables"
+            :dependencies="{}"
+            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'}]"
+            serviceConstructor="Table"
+            :config="{id:{changeable:false},name:{changeable:true}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel>
@@ -144,7 +148,13 @@
           Types
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          
+          <service-table
+            :items="types"
+            :dependencies="{}"
+            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'}]"
+            serviceConstructor="Type"
+            :config="{id:{changeable:false},name:{changeable:true}}"
+            />
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -269,7 +279,7 @@ export default {
     ...mapGetters('types', {
       types: 'list',
       gettypes: 'get'
-    }),
+    })
   },
 }
 </script>
