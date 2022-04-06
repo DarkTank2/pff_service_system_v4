@@ -1,10 +1,11 @@
 <template>
-  <!-- <div>TypeProxy</div> -->
-  <router-view></router-view>
+  <div>
+    <v-btn :to="{ name: 'BaseItemSelection', params: { categoryId: 1 } }">ReRouting</v-btn>
+  </div>
 </template>
 <script>
 export default {
-  name: 'TypeProxy',
+  name: 'CategorySelection',
   props: [],
   components: {},
   data () {

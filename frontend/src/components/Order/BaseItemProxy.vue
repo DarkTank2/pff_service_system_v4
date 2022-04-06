@@ -1,10 +1,10 @@
 <template>
-  <!-- <div>TypeProxy</div> -->
+  <!-- <div>BaseItemProxy</div> -->
   <router-view></router-view>
 </template>
 <script>
 export default {
-  name: 'TypeProxy',
+  name: 'BaseItemProxy',
   props: [],
   components: {},
   data () {

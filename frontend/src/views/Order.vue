@@ -22,8 +22,26 @@ export default {
   created: function () {},
   methods: {},
   computed: {
+    matchedMetaFields: function () {
+      return this.$route.matched.reduce((acc, curr) => {
+          if (acc.find(({ meta: { to: { name } } }) => name === curr.meta.to.name)) {
+            acc.pop()
+            acc.push(curr)
+          } else {
+            acc.push(curr)
+          }
+          return acc
+        }, [])
+        .map(matchedObject => matchedObject.meta)
+    },
     items: function () {
-      return [{ to: 'Serve', text: 'Servieren', disabled: false }]
+      return [{ to: { name: 'Serve' }, text: 'Servieren', disabled: false }]
+    },
+    router: function () {
+      return this.$router
+    },
+    route: function () {
+      return this.$route
     }
   }
 }
