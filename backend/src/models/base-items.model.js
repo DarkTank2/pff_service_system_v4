@@ -3,7 +3,7 @@ const DataTypes = Sequelize.DataTypes
 
 module.exports = app => {
     const sequelizeClient = app.get('sequelizeClient')
-    const baseItems = sequelizeClient.define('baseItems', {
+    const baseItems = sequelizeClient.define('base_items', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -24,7 +24,7 @@ module.exports = app => {
         }
     })
 
-    baseItems.associate = ({ additions, sizes, flavours, types, categories, items }) => { // eslint-disable-line no-unused-vars
+    baseItems.associate = ({ additions, sizes, flavours, categories, items }) => { // eslint-disable-line no-unused-vars
         baseItems.belongsToMany(sizes, {
             through: items
         })
@@ -32,9 +32,8 @@ module.exports = app => {
             through: items
         })
         baseItems.belongsToMany(additions, {
-            through: 'baseItemsHaveAdditions'
+            through: 'base_items_have_additions'
         })
-        baseItems.belongsTo(types, { foreignKey: { allowNull: false } })
         baseItems.belongsTo(categories, { foreignKey: { allowNull: false } })
     }
     return baseItems

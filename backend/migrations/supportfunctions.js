@@ -60,9 +60,19 @@ async function syncDB() {
   return app.get('sequelizeSync');
 }
 
+function getSequenceIdentifier (tableName, columnName) {
+  return `public.${tableName}_${columnName}_seq`
+}
+
+async function setSequenceToValue (queryInterface, sequence, value) {
+  return await queryInterface.sequelize.query(`SELECT setval('${sequence}', ${value});`)
+}
+
 module.exports = {
   addColumn,
   createForeignKey,
   removeForeignKey,
-  syncDB
+  syncDB,
+  getSequenceIdentifier,
+  setSequenceToValue
 };

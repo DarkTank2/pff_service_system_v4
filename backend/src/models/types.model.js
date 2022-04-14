@@ -23,8 +23,8 @@ module.exports = app => {
         }
     })
 
-    types.associate = ({ baseItems }) => {
-        types.hasMany(baseItems, { foreignKey: { allowNull: false } })
+    types.associate = ({ categories }) => {
+        types.hasMany(categories, { foreignKey: { allowNull: false } })
     }
     return types
 }

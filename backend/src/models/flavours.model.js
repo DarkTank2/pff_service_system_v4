@@ -24,8 +24,8 @@ module.exports = app => {
         }
     })
 
-    flavours.associate = ({ baseItems, sizes, items }) => { // eslint-disable-line no-unused-vars
-        flavours.belongsToMany(baseItems, {
+    flavours.associate = ({ base_items, sizes, items }) => { // eslint-disable-line no-unused-vars
+        flavours.belongsToMany(base_items, {
             through: items
         })
         flavours.belongsToMany(sizes, {

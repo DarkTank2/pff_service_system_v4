@@ -23,8 +23,8 @@ module.exports = app => {
         }
     })
 
-    items.associate = ({ baseItems, sizes, flavours }) => {
-        items.belongsTo(baseItems, { foreignKey: { allowNull: false }})
+    items.associate = ({ base_items, sizes, flavours }) => {
+        items.belongsTo(base_items, { foreignKey: { allowNull: false }})
         items.belongsTo(sizes, { foreignKey: { allowNull: false }})
         items.belongsTo(flavours, { foreignKey: { allowNull: false }})
     }

@@ -1,6 +1,7 @@
 'use strict'
 
 const supportfunctions = require('../supportfunctions')
+const { getSequenceIdentifier, setSequenceToValue } = require('../supportfunctions')
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
@@ -21,34 +22,39 @@ module.exports = {
         { id: 1, name: 'Trinken' },
         { id: 2, name: 'Essen' }
       ])
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('types', 'id'), 3)
       console.log('Added types')
       await queryInterface.bulkInsert('categories', [
-        { id: 1, name: 'Speisen' },
-        { id: 2, name: 'Anti-Alk' },
-        { id: 3, name: 'Weis-Offen' },
-        { id: 4, name: 'Rot-Offen' },
-        { id: 5, name: 'W-Fl.' },
-        { id: 6, name: 'R-Fl.' },
-        { id: 7, name: 'Biere' },
-        { id: 8, name: 'Sonstiges' }
+        { id: 1, name: 'Speisen', typeId: 2 },
+        { id: 2, name: 'Anti-Alk', typeId: 1 },
+        { id: 3, name: 'Weis-Offen', typeId: 1 },
+        { id: 4, name: 'Rot-Offen', typeId: 1 },
+        { id: 5, name: 'W-Fl.', typeId: 1 },
+        { id: 6, name: 'R-Fl.', typeId: 1 },
+        { id: 7, name: 'Biere', typeId: 1 },
+        { id: 8, name: 'Sonstiges', typeId: 1 }
       ])
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('categories', 'id'), 9)
       console.log('Added categories')
-      await queryInterface.bulkInsert('baseItems', [
-        { id: 1, name: 'apfelsaft', typeId: 1, categoryId: 1 }
+      await queryInterface.bulkInsert('base_items', [
+        { id: 1, name: 'apfelsaft', categoryId: 2 }
       ])
-      console.log('Added baseItems')
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('base_items', 'id'), 2)
+      console.log('Added base_items')
       await queryInterface.bulkInsert('sizes', [
         { id: 1, name: '0.25l'},
         { id: 2, name: '0.33l'},
         { id: 3, name: '0.5l'},
         { id: 4, name: '0.7l'}
       ])
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('sizes', 'id'), 5)
       console.log('Added sizes')
       await queryInterface.bulkInsert('flavours', [
         { id: 1, name: 'gespritzt leitung' },
         { id: 2, name: 'gespritzt mineral' },
         { id: 3, name: 'ohne' }
       ])
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('flavours', 'id'), 4)
       console.log('Added flavours')
       await queryInterface.bulkInsert('tables', [
         { name: 'Tisch Nr.1' },
@@ -70,6 +76,7 @@ module.exports = {
         { name: 'Tisch Nr.17' },
         { name: 'Tisch Nr.18' }
       ])
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('tables', 'id'), '(SELECT MAX(id) FROM public.tables)')
       console.log('Added tables')
       
       await transaction.commit()

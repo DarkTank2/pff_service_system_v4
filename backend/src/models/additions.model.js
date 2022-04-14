@@ -28,12 +28,12 @@ module.exports = app => {
         }
     })
 
-    additions.associate = ({ baseItems, orderedItems }) => { // eslint-disable-line no-unused-vars
-        additions.belongsToMany(baseItems, {
-            through: 'baseItemsHaveAdditions'
+    additions.associate = ({ base_items, ordered_items }) => { // eslint-disable-line no-unused-vars
+        additions.belongsToMany(base_items, {
+            through: 'base_items_have_additions'
         })
-        additions.belongsToMany(orderedItems, {
-            through: 'orderedItemsHaveAdditions'
+        additions.belongsToMany(ordered_items, {
+            through: 'ordered_items_have_additions'
         })
     }
     return additions

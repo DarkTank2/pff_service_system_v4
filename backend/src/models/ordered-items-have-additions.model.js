@@ -3,7 +3,7 @@ const DataTypes = Sequelize.DataTypes
 
 module.exports = app => {
     const sequelizeClient = app.get('sequelizeClient')
-    const orderedItemsHaveAdditions = sequelizeClient.define('orderedItemsHaveAdditions', {
+    const orderedItemsHaveAdditions = sequelizeClient.define('ordered_items_have_additions', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -23,8 +23,8 @@ module.exports = app => {
         }
     })
 
-    orderedItemsHaveAdditions.associate = ({ orderedItems, additions }) => {
-        orderedItemsHaveAdditions.belongsTo(orderedItems, { foreignKey: { allowNull: false }})
+    orderedItemsHaveAdditions.associate = ({ ordered_items, additions }) => {
+        orderedItemsHaveAdditions.belongsTo(ordered_items, { foreignKey: { allowNull: false }})
         orderedItemsHaveAdditions.belongsTo(additions, { foreignKey: { allowNull: false }})
     }
     return orderedItemsHaveAdditions
