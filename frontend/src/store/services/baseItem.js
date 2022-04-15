@@ -11,8 +11,7 @@ class BaseItem extends BaseModel {
   static instanceDefaults () {
     return {
       name: 'New Base Item',
-      categoryId: 0,
-      typeId: 0
+      categoryId: 0
     }
   }
 }

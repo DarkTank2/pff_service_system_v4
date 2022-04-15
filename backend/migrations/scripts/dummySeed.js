@@ -25,14 +25,14 @@ module.exports = {
       await setSequenceToValue(queryInterface, getSequenceIdentifier('types', 'id'), 3)
       console.log('Added types')
       await queryInterface.bulkInsert('categories', [
-        { id: 1, name: 'Speisen', typeId: 2 },
-        { id: 2, name: 'Anti-Alk', typeId: 1 },
-        { id: 3, name: 'Weis-Offen', typeId: 1 },
-        { id: 4, name: 'Rot-Offen', typeId: 1 },
-        { id: 5, name: 'W-Fl.', typeId: 1 },
-        { id: 6, name: 'R-Fl.', typeId: 1 },
-        { id: 7, name: 'Biere', typeId: 1 },
-        { id: 8, name: 'Sonstiges', typeId: 1 }
+        { id: 1, name: 'Speisen', typeId: 2, color: 'blue darken-3' },
+        { id: 2, name: 'Anti-Alk', typeId: 1, color: 'blue darken-3' },
+        { id: 3, name: 'Weis-Offen', typeId: 1, color: 'blue darken-3' },
+        { id: 4, name: 'Rot-Offen', typeId: 1, color: 'blue darken-3' },
+        { id: 5, name: 'W-Fl.', typeId: 1, color: 'blue darken-3' },
+        { id: 6, name: 'R-Fl.', typeId: 1, color: 'blue darken-3' },
+        { id: 7, name: 'Biere', typeId: 1, color: 'blue darken-3' },
+        { id: 8, name: 'Sonstiges', typeId: 1, color: 'blue darken-3' }
       ])
       await setSequenceToValue(queryInterface, getSequenceIdentifier('categories', 'id'), 9)
       console.log('Added categories')

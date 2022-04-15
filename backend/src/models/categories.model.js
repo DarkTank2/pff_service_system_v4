@@ -12,6 +12,9 @@ module.exports = app => {
         name: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        color: {
+            type: DataTypes.STRING
         }
     }, {
         timestamps: false

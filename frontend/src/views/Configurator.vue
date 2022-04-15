@@ -24,10 +24,10 @@
         <v-expansion-panel-content>
           <service-table
             :items="baseItems"
-            :dependencies="{ categories, types }"
-            :headers="[{ value: 'id', text: 'ID' }, { value: 'name', text: 'Name' }, { value: 'typeId', text: 'Type' }, { value: 'categoryId', text: 'Category' }]"
+            :dependencies="{ categories }"
+            :headers="[{ value: 'id', text: 'ID' }, { value: 'name', text: 'Name' }, { value: 'categoryId', text: 'Category' }]"
             serviceConstructor="BaseItem"
-            :config="{ id: { changeable: false }, name: { changeable: true }, typeId: { changeable: { key: 'types', itemValue: 'id', itemText: 'name' } }, categoryId: { changeable: { key: 'categories', itemValue: 'id', itemText: 'name' } } }"
+            :config="{ id: { changeable: false }, name: { changeable: true }, categoryId: { changeable: { key: 'categories', itemValue: 'id', itemText: 'name' } } }"
             />
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -52,10 +52,10 @@
         <v-expansion-panel-content>
           <service-table
             :items="categories"
-            :dependencies="{}"
-            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'}]"
+            :dependencies="{types}"
+            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'},{value:'typeId',text:'Type'},{value:'color',text:'Color'}]"
             serviceConstructor="Category"
-            :config="{id:{changeable:false},name:{changeable:true}}"
+            :config="{id:{changeable:false},name:{changeable:true},typeId:{changeable:{key:'types',itemValue:'id',itemText:'name'}},color:{changeable:true}}"
             />
         </v-expansion-panel-content>
       </v-expansion-panel>

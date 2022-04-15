@@ -10,7 +10,9 @@ class Category extends BaseModel {
   // Define default properties here
   static instanceDefaults () {
     return {
-      name: 'New category'
+      name: 'New category',
+      typeId: 2,
+      color: 'blue darken-3'
     }
   }
 }
