@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container fluid style="padding-top: 20px;">
     <v-expansion-panels
       multiple
       >
@@ -25,9 +25,9 @@
           <service-table
             :items="baseItems"
             :dependencies="{ categories }"
-            :headers="[{ value: 'id', text: 'ID' }, { value: 'name', text: 'Name' }, { value: 'categoryId', text: 'Category' }]"
+            :headers="[{ value: 'id', text: 'ID' }, { value: 'name', text: 'Name' }, { value: 'categoryId', text: 'Category' },{value:'available',text:'Available'}]"
             serviceConstructor="BaseItem"
-            :config="{ id: { changeable: false }, name: { changeable: true }, categoryId: { changeable: { key: 'categories', itemValue: 'id', itemText: 'name' } } }"
+            :config="{ id: { changeable: false }, name: { changeable: true }, categoryId: { changeable: { key: 'categories', itemValue: 'id', itemText: 'name' } },available:{changeable:true,type:'boolean'} }"
             />
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -81,9 +81,9 @@
           <service-table
             :items="items"
             :dependencies="{baseItems,sizes,flavours}"
-            :headers="[{value:'id',text:'ID'},{value:'baseItemId',text:'Item-Name'},{value:'price',text:'Price'},{value:'flavourId',text:'Flavour'},{value:'sizeId',text:'Size'}]"
+            :headers="[{value:'id',text:'ID'},{value:'baseItemId',text:'Item-Name'},{value:'price',text:'Price'},{value:'flavourId',text:'Flavour'},{value:'sizeId',text:'Size'},{value:'default',text:'Default'}]"
             serviceConstructor="Item"
-            :config="{id:{changeable:false},baseItemId:{changeable:{key:'baseItems',itemValue:'id',itemText:'name'}},price:{changeable:true,type:'number'},flavourId:{changeable:{key:'flavours',itemValue:'id',itemText:'name'}},sizeId:{changeable:{key:'sizes',itemValue:'id',itemText:'name'}}}"
+            :config="{id:{changeable:false},baseItemId:{changeable:{key:'baseItems',itemValue:'id',itemText:'name'}},price:{changeable:true,type:'number'},flavourId:{changeable:{key:'flavours',itemValue:'id',itemText:'name'}},sizeId:{changeable:{key:'sizes',itemValue:'id',itemText:'name'}},default:{changeable:true,type:'boolean'}}"
             />
         </v-expansion-panel-content>
       </v-expansion-panel>

@@ -1,5 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import goTo from 'vuetify/lib/services/goto'
+import OrderExtension from '../components/appBarExtensions/OrderExtension.vue'
+import OrderComponent from '../components/navBarComponents/OrderComponent.vue'
+import CashButton from '../components/sideNavbarComponents/CashButton.vue'
+import OrderButton from '../components/sideNavbarComponents/OrderButton.vue'
 
 Vue.use(VueRouter)
 
@@ -21,103 +26,116 @@ const routes = [
     path: '/order',
     name: 'Order',
     component: () => import(/* webpackChunkName: "ordering" */ '../views/Order.vue'),
+    meta: {},
     children: [
       {
         path: '',
         name: 'TypeSelection', // supposed to select the type
         component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/TypeSelection.vue'),
         meta: {
-          breadCrumbItem: () => ({
+          breadCrumbItem: {
             to: { name: 'TypeSelection' }, // acts as an id for identifying the already pushed items
             text: `Wähle deinen Typ...`,
             disabled: true 
-          })
+          },
+          bottomNavbarComponent: OrderComponent,
+          sideNavbarComponents: [CashButton]
         },
       },
       {
         path: 'type/:typeId',
-        name: 'TypeProxy', // supposed to route forward to category selection of said type
-        component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/TypeProxy.vue'),
+        name: 'CategoryView', // supposed to route forward to category selection of said type
+        component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategoryView.vue'),
+        props: route => ({ typeId: parseInt(route.params.typeId) }),
         meta: {
-          breadCrumbItem: () => ({
+          breadCrumbItem: {
             to: { name: 'TypeSelection' },
-            text: `Typ: ${this.selectedType?.name}`,
+            text: `Typ: `,
             disabled: false
-          })
-        },
-        children: [
-          {
-            path: '',
-            name: 'CategorySelection', // supposed to select category
-            component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategorySelection.vue'),
-            meta: {
-              breadCrumbItem: () => ({
-                to: { name: 'CategorySelection' },
-                text: `Wähle deine Kategorie...`,
-                disabled: true
-              })
-            }
           },
-          {
-            path: 'category/:categoryId',
-            name: 'CategoryProxy', // supposed to route forward to the selection of the base item
-            component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategoryProxy.vue'),
-            meta: {
-              breadCrumbItem: () => ({
-                to: { name: 'CategorySelection' },
-                text: `Kategorie: ${this.selectedType?.name}`,
-                disabled: true
-              })
-            },
-            children: [
-              {
-                path: '',
-                name: 'BaseItemSelection',
-                component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/BaseItemSelection.vue'),
-                meta: {
-                  breadCrumbItem: () => ({
-                    to: { name: 'BaseItemSelection' },
-                    text: `Wähle dein Basis-Item...`,
-                    disabled: true
-                  })
-                }
-              },
-              {
-                path: 'baseItem/:baseItemId',
-                name: 'BaseItemProxy',
-                component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/BaseItemProxy.vue'),
-                meta: {
-                  breadCrumbItem: () => ({
-                    to: { name: 'BaseItemSelection' },
-                    text: `Basis-Item: ${this.selectedType?.name}`,
-                    disabled: true
-                  })
-                },
-                children: [
-                  {
-                    path: '',
-                    name: 'FlavourSelection',
-                    component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/FlavourSelection.vue'),
-                    meta: {
-                      breadCrumbItem: () => ({
-                        to: { name: 'FlavourSelection' },
-                        text: `Wähle deinen Flavour...`,
-                        disabled: true
-                      })
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+          extension: OrderExtension,
+          bottomNavbarComponent: OrderComponent,
+          sideNavbarComponents: [CashButton]
+        }
+        // children: [
+        //   {
+        //     path: '',
+        //     name: 'CategorySelection', // supposed to select category
+        //     component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategorySelection.vue'),
+        //     props: route => ({ typeId: parseInt(route.params.typeId) }),
+        //     meta: {
+        //       breadCrumbItem: {
+        //         to: { name: 'CategorySelection' },
+        //         text: `Wähle deine Kategorie...`,
+        //         disabled: true
+        //       }
+        //     }
+        //   },
+        //   {
+        //     path: 'category/:categoryId',
+        //     name: 'CategoryProxy', // supposed to route forward to the selection of the base item
+        //     component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategoryProxy.vue'),
+        //     meta: {
+        //       breadCrumbItem: {
+        //         to: { name: 'CategorySelection' },
+        //         text: `Kategorie: `,
+        //         disabled: false
+        //       }
+        //     },
+        //     children: [
+        //       {
+        //         path: '',
+        //         name: 'BaseItemSelection',
+        //         component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/BaseItemSelection.vue'),
+        //         props: route => ({ categoryId: parseInt(route.params.categoryId) }),
+        //         meta: {
+        //           breadCrumbItem: {
+        //             to: { name: 'BaseItemSelection' },
+        //             text: `Wähle dein Basis-Item...`,
+        //             disabled: true
+        //           }
+        //         }
+        //       },
+        //       {
+        //         path: 'baseItem/:baseItemId',
+        //         name: 'BaseItemProxy',
+        //         component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/BaseItemProxy.vue'),
+        //         meta: {
+        //           breadCrumbItem: {
+        //             to: { name: 'BaseItemSelection' },
+        //             text: `Basis-Item: `,
+        //             disabled: false
+        //           }
+        //         },
+        //         children: [
+        //           {
+        //             path: '',
+        //             name: 'FlavourSelection',
+        //             component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/FlavourSelection.vue'),
+        //             props: route => ({ baseItemId: parseInt(route.params.baseItemId) }),
+        //             meta: {
+        //               breadCrumbItem: {
+        //                 to: { name: 'FlavourSelection' },
+        //                 text: `Wähle deinen Flavour...`,
+        //                 disabled: true
+        //               }
+        //             }
+        //           }
+        //         ]
+        //       }
+        //     ]
+        //   }
+        // ]
       }
     ]
   },
   {
-    path: '/serve',
-    name: 'Serve',
-    component: () => import('../views/Serve.vue')
+    path: '/cash',
+    name: 'Cash',
+    component: () => import('../views/Cash.vue'),
+    meta: {
+      sideNavbarComponents: [OrderButton]
+    }
   },
   {
     path: '/config',
@@ -143,7 +161,18 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
+  scrollBehavior: (to, from, savedPosition) => {
+    let scrollTo = 0
+
+    if (to.hash) {
+      scrollTo = to.hash
+    } else if (savedPosition) {
+      scrollTo = savedPosition.y
+    }
+
+    return goTo(scrollTo, { duration: 600, offset: 15, easing: 'easeInOutCubic', })
+  }
 })
 
 export default router

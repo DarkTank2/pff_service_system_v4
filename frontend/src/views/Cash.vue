@@ -1,5 +1,5 @@
 <template>
-  <div>Serve</div>
+  <div>Cash</div>
 </template>
 
 <script>

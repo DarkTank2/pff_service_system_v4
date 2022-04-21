@@ -28,6 +28,12 @@
                     :label="headers.find(({ value }) => value === key).text"
                     >
                 </v-text-field>
+                <v-switch
+                    v-else-if="config[key].changeable === true && config[key].type === 'boolean'"
+                    :key="`boolean_field_${serviceConstructor}_${key}_${item.id || item.__id}`"
+                    v-model="item[key]"
+                    :label="headers.find(({ value }) => value === key).text"
+                    />
                 <v-text-field
                     v-else-if="config[key].changeable === true"
                     :key="`dynamic_field_${serviceConstructor}_${key}_${item.id || item.__id}`"

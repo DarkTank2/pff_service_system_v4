@@ -1,18 +1,64 @@
 <template>
   <v-app>
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="sideNav = !sideNav"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ env ? env.occasion : 'Loading...' }}</v-toolbar-title>
+      <template #extension v-if="meta.extension">
+        <component :is="meta.extension" />
+      </template>
     </v-app-bar>
     <v-navigation-drawer
-      v-model="drawer"
+      v-model="bottomNav"
+      app
+      temporary
+      bottom
+      v-if="meta.bottomNavbarComponent"
+      >
+      <component :is="meta.bottomNavbarComponent" @closeNavbar="bottomNav = false" />
+    </v-navigation-drawer>
+    <v-navigation-drawer
+      v-model="sideNav"
       app
       temporary
       >
-      <!--  -->
+      <v-list>
+        <v-list-item>
+          <v-list-item-title>
+            <span>Service</span>
+            <span class="font-weight-light text-uppercase">Tool</span>
+          </v-list-item-title>
+        </v-list-item>
+        <v-divider></v-divider>
+        <v-list-item>
+          <v-list-item-content>
+            <v-btn :to="{ name: 'Home' }" block>
+              <span>Home</span>
+              <v-icon>home</v-icon>
+            </v-btn>
+          </v-list-item-content>
+        </v-list-item>
+        <template v-if="meta.sideNavbarComponents">
+          <v-list-item v-for="(component, index) in meta.sideNavbarComponents" :key="`side_navbar_component_index_${index}`">
+            <v-list-item-content>
+              <component :is="component" />
+            </v-list-item-content>
+          </v-list-item>
+        </template>
+      </v-list>
     </v-navigation-drawer>
-    <v-main>
+    <v-main :style="mainStyle">
       <router-view/>
+      <v-btn
+          v-if="meta.bottomNavbarComponent"
+          elevation="2"
+          fab
+          fixed
+          bottom
+          right
+          @click="bottomNav = true"
+          >
+          <v-icon>shopping_cart</v-icon>
+      </v-btn>
       <loading />
     </v-main>
   </v-app>
@@ -28,7 +74,8 @@ export default {
   },
   data: () => ({
     darkMode: true,
-    drawer: null
+    bottomNav: null,
+    sideNav: null
   }),
   created: function () {
     this.$vuetify.theme.dark = this.darkMode
@@ -45,6 +92,12 @@ export default {
     }),
     env: function () {
       return this.getENV('_env')
+    },
+    meta: function () {
+      return this.$route.meta
+    },
+    mainStyle: function () {
+      return `padding: ${this.meta.extension ? '104' : '56'}px 0px 0px;`
     }
   }
 };
