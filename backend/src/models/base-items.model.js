@@ -13,6 +13,10 @@ module.exports = app => {
             type: DataTypes.STRING,
             allowNull: false,
             unique: true
+        },
+        available: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: true
         }
     }, {
         timestamps: false

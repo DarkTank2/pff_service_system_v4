@@ -13,7 +13,8 @@ class Item extends BaseModel {
       price: 0,
       baseItemId: 0,
       sizeId: 0,
-      flavourId: 0
+      flavourId: 0,
+      default: false
     }
   }
 }

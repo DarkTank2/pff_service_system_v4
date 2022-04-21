@@ -30,8 +30,7 @@ module.exports = app => {
           allowNull: false
         },
         comment: {
-          type: DataTypes.STRING,
-          allowNull: false
+          type: DataTypes.STRING
         }
     }, {
         timestamps: true
@@ -46,7 +45,7 @@ module.exports = app => {
     orderedItems.associate = ({ items, additions, tables }) => {
         orderedItems.belongsTo(tables, { foreignKey: { allowNull: false } })
         orderedItems.belongsToMany(additions, {
-            through: 'ordere_items_have_additions'
+            through: 'ordered_items_have_additions'
         })
         orderedItems.belongsTo(items, { foreignKey: { allowNull: false }})
         // orderedItems.belongsToMany(extensions, {

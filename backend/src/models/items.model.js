@@ -12,6 +12,10 @@ module.exports = app => {
         price: {
             type: DataTypes.FLOAT,
             allowNull: false
+        },
+        default: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     }, {
         timestamps: false
