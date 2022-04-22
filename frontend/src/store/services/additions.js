@@ -11,7 +11,8 @@ class Addition extends BaseModel {
   static instanceDefaults () {
     return {
       name: 'New Addition',
-      priceModifier: 0
+      priceModifier: 0,
+      default: false
     }
   }
 }

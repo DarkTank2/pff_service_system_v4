@@ -35,6 +35,8 @@ export default {
         this.fetchSizes()
         this.fetchFlavours()
         this.fetchItems()
+        this.fetchMaps()
+        this.fetchAdditions()
     },
     methods: {
         ...mapActions('env', {
@@ -54,6 +56,12 @@ export default {
         }),
         ...mapActions('items', {
             fetchItems: 'find'
+        }),
+        ...mapActions('base-items-have-additions', {
+            fetchMaps: 'find'
+        }),
+        ...mapActions('additions', {
+            fetchAdditions: 'find'
         }),
         scrollToCategory: function (id) {
             return id

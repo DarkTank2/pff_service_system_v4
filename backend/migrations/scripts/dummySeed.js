@@ -32,31 +32,39 @@ module.exports = {
         { id: 5, name: 'W-Fl.', typeId: 1, color: 'blue darken-3' },
         { id: 6, name: 'R-Fl.', typeId: 1, color: 'blue darken-3' },
         { id: 7, name: 'Biere', typeId: 1, color: 'blue darken-3' },
-        { id: 8, name: 'Sonstiges', typeId: 1, color: 'blue darken-3' }
+        { id: 8, name: 'Sonstiges', typeId: 1, color: 'blue darken-3' },
+        { id: 9, name: 'Extras', typeId: 2, color: 'orange darken-3' }
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('categories', 'id'), 9)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('categories', 'id'), 10)
       console.log('Added categories')
       await queryInterface.bulkInsert('base_items', [
         { id: 1, name: 'Apfelsaft', categoryId: 2 },
-        { id: 2, name: 'Spritzer', categoryId: 3 }
+        { id: 2, name: 'Spritzer', categoryId: 3 },
+        { id: 3, name: 'Faschierter Braten', categoryId: 1 },
+        { id: 4, name: 'Kartoffelsalat', categoryId: 9 },
+        { id: 5, name: 'Krautsalat', categoryId: 9 }
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('base_items', 'id'), 3)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('base_items', 'id'), 6)
       console.log('Added base_items')
       await queryInterface.bulkInsert('sizes', [
         { id: 1, name: '0.25l'},
         { id: 2, name: '0.33l'},
         { id: 3, name: '0.5l'},
         { id: 4, name: '0.7l'},
-        { id: 5, name: '1l' }
+        { id: 5, name: '1l' },
+        { id: 6, name: 'normal'},
+        { id: 7, name: 'Portion' }
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('sizes', 'id'), 6)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('sizes', 'id'), 8)
       console.log('Added sizes')
       await queryInterface.bulkInsert('flavours', [
         { id: 1, name: 'gespritzt leitung' },
         { id: 2, name: 'gespritzt mineral' },
-        { id: 3, name: 'ohne' }
+        { id: 3, name: 'ohne' },
+        { id: 4, name: 'Kartoffelsalat' },
+        { id: 5, name: 'Krautsalat' }
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('flavours', 'id'), 4)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('flavours', 'id'), 6)
       console.log('Added flavours')
       await queryInterface.bulkInsert('items', [
         { id: 1, price: 1.6, baseItemId: 1, sizeId: 1, flavourId: 3, default: true },
@@ -66,10 +74,33 @@ module.exports = {
         { id: 5, price: 1, baseItemId: 1, sizeId: 1, flavourId: 2 },
         { id: 6, price: 2, baseItemId: 1, sizeId: 3, flavourId: 2 },
         { id: 7, price: 2, baseItemId: 1, sizeId: 5, flavourId: 3 },
-        { id: 8, price: 1.8, baseItemId: 2, sizeId: 1, flavourId: 3, default: true }
+        { id: 8, price: 1.8, baseItemId: 2, sizeId: 1, flavourId: 3, default: true },
+        { id: 9, price: 5.6, baseItemId: 3, sizeId: 6, flavourId: 4, default: true },
+        { id: 10, price: 5, baseItemId: 3, sizeId: 6, flavourId: 3 },
+        { id: 11, price: 5.6, baseItemId: 3, sizeId: 6, flavourId: 5 },
+        { id: 12, price: 1.2, baseItemId: 4, sizeId: 7, flavourId: 3, default: true },
+        { id: 13, price: 1.2, baseItemId: 5, sizeId: 7, flavourId: 3, default: true }
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('items', 'id'), 9)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('items', 'id'), 14)
       console.log('Added items')
+      await queryInterface.bulkInsert('additions', [
+        { id: 1, name: 'Senf', priceModifier: 0 },
+        { id: 2, name: 'Ketchup', priceModifier: 0 },
+        { id: 3, name: 'Kren', priceModifier: 0 },
+        { id: 4, name: 'Semmel', priceModifier: 0 },
+        { id: 5, name: 'Brot', priceModifier: 0 }
+      ])
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('additions', 'id'), 6)
+      console.log('Added additions')
+      await queryInterface.bulkInsert('base_items_have_additions', [
+        { id: 1, baseItemId: 3, additionId: 1, default: true },
+        { id: 2, baseItemId: 3, additionId: 2, default: true },
+        { id: 3, baseItemId: 3, additionId: 3 },
+        { id: 4, baseItemId: 3, additionId: 4, default: true },
+        { id: 5, baseItemId: 3, additionId: 5 }
+      ])
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('base_items_have_additions', 'id'), 8)
+      console.log('Linked base-items to additions')
       await queryInterface.bulkInsert('tables', [
         { name: 'Tisch Nr.1' },
         { name: 'Tisch Nr.2' },

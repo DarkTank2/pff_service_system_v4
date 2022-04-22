@@ -39,9 +39,9 @@
           <service-table
             :items="baseItemsHaveAdditions"
             :dependencies="{additions,baseItems}"
-            :headers="[{value:'id',text:'ID'},{value:'baseItemId',text:'Item-Name'},{value:'additionId',text:'Addition'}]"
+            :headers="[{value:'id',text:'ID'},{value:'baseItemId',text:'Item-Name'},{value:'additionId',text:'Addition'},{value:'default',text:'Default'}]"
             serviceConstructor="BaseItemHasAddition"
-            :config="{id:{changeable:false},baseItemId:{changeable:{key:'baseItems',itemValue:'id',itemText:'name'}},additionId:{changeable:{key:'additions',itemValue:'id',itemText:'name'}}}"
+            :config="{id:{changeable:false},baseItemId:{changeable:{key:'baseItems',itemValue:'id',itemText:'name'}},additionId:{changeable:{key:'additions',itemValue:'id',itemText:'name'}},default:{changeable:true,type:'boolean'}}"
             />
         </v-expansion-panel-content>
       </v-expansion-panel>

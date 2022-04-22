@@ -46,9 +46,13 @@
                     </v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
-            <template v-for="orderedItem in orderedItems">
-                <v-divider v-if="orderedItem.index !== 0" :key="`divider_index_${orderedItem.index}`"></v-divider>
-                <v-list-item dense  :key="`ordered_item_index_${orderedItem.index}`" :two-line="!orderedItem.comment" :three-line="!!orderedItem.comment">
+            <template v-for="(orderedItem, i) in orderedItems">
+                <v-divider
+                    v-if="orderedItem.index !== 0"
+                    :key="`divider_index_${orderedItem.index}`"
+                    :class="orderedItems.at(i - 1).additions.length > 0 ? 'mt-4' : ''"
+                    />
+                <v-list-item dense :key="`ordered_item_index_${orderedItem.index}`" :two-line="!orderedItem.comment" :three-line="!!orderedItem.comment">
                     <v-list-item-content>
                         <v-list-item-title>
                             {{ `${orderedItem.baseItemName}` }}
@@ -78,6 +82,16 @@
                         </v-btn>
                     </v-list-item-action>
                 </v-list-item>
+                <template v-if="orderedItem.additions.length > 0">
+                    <span
+                        v-for="(additionId, index) in orderedItem.additions"
+                        :key="`addition_index_${index}_ordered_item_index_${i}`"
+                        class="mx-10 order-component-addition"
+                        >
+                        {{ getAddition(additionId).name }}
+                        <br />
+                    </span>
+                </template>
             </template>
             <v-list-item v-if="orderedItems.length === 0">
                 <v-list-item-content>
@@ -135,6 +149,9 @@ export default {
         ...mapActions('ordered-items', {
             createOrderedItems: 'create'
         }),
+        ...mapActions('ordered-items-have-additions', {
+            createMaps: 'create'
+        }),
         ...mapActions('utilities', {
             setFetchPendingFlag: 'setFetchPendingFlag',
             resetFetchPendingFlag: 'resetFetchPendingFlag'
@@ -166,9 +183,36 @@ export default {
             })
             this.$emit('closeNavbar')
             this.setFetchPendingFlag().then(() => {
-                this.createOrderedItems([data]).then(() => {
-                    this.resetFetchPendingFlag()
-                    this.clearOrder()
+                this.createOrderedItems([data]).then((res) => {
+                    console.table(data)
+                    console.table(res)
+                    let additions = []
+                    data.forEach((item, index) => {
+                        let i = res.findIndex(orderedItem => {
+                            return orderedItem.itemId === item.itemId
+                                && orderedItem.quantity === item.quantity
+                                && orderedItem.comment === item.comment
+                        })
+                        console.log(`Item found at index ${i}, should be index ${index}`)
+                        if (item.additions.length > 0) {
+                            // perform addition adding for searched ordered item
+                            let { id: orderedItemId } = res.at(i)
+                            item.additions.forEach(addition => {
+                                additions.push({ orderedItemId, additionId: addition.id || addition, amount: addition.amount || 1 })
+                            })
+                        }
+                        res[i] = {} // remove ordered item, so that the same item can not be found anymore
+                    })
+                    if (additions.length > 0) {
+                        console.log(additions)
+                        this.createMaps([additions]).then(() => {
+                            this.resetFetchPendingFlag()
+                            this.clearOrder()
+                        })
+                    } else {
+                        this.resetFetchPendingFlag()
+                        this.clearOrder()
+                    }
                 })
             })
             return data
@@ -194,6 +238,9 @@ export default {
         ...mapGetters('flavours', {
             getFlavour: 'get'
         }),
+        ...mapGetters('additions', {
+            getAddition: 'get'
+        }),
         orderedItems: function () {
             return this.rawOrder.map((orderedItem, index) => {
                 let item = this.getItem(orderedItem.itemId)
@@ -211,5 +258,10 @@ export default {
 </script>
 
 <style>
-
+.order-component-addition {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+}
 </style>

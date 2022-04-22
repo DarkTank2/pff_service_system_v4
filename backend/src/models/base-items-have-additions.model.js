@@ -8,6 +8,10 @@ module.exports = app => {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true
+        },
+        default: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     }, {
         timestamps: false

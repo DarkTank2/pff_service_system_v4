@@ -34,26 +34,69 @@
                 </v-toolbar>
                 <v-card-text>
                     <v-container fluid>
-                        <v-radio-group v-model="selectedFlavour">
+                        <span class="text-body-1">Ausrichtung:</span>
+                        <v-radio-group v-model="selectedFlavour" dense>
                             <v-radio
                                 v-for="flavour in flavours"
                                 :key="`flavour_${flavour.id}`"
                                 :label="`${flavour.name}`"
                                 :value="flavour.id"
                                 :disabled="disabledFlavours.includes(flavour.id)"
+                                dense
                             ></v-radio>
                         </v-radio-group>
-                        <v-divider></v-divider>
-                        <v-radio-group v-model="selectedSize">
+                        <v-divider class="mb-4"></v-divider>
+                        <span class="text-body-1">Größe:</span>
+                        <v-radio-group v-model="selectedSize" dense>
                             <v-radio
                                 v-for="size in sizes"
                                 :key="`size_${size.id}`"
                                 :label="`${size.name}`"
                                 :value="size.id"
                                 :disabled="disabledSizes.includes(size.id)"
+                                dense
                             ></v-radio>
                         </v-radio-group>
-                        <v-divider></v-divider>
+                        <v-divider class="mb-4"></v-divider>
+                        <span v-if="additions.length > 0" class="text-body-1">Extras:</span>
+                        <v-checkbox
+                            v-for="addition in additions"
+                            :key="`category_${categoryId}_checkbox_addition_${addition.id}`"
+                            :value="addition.id"
+                            v-model="selectedAdditions"
+                            :label="addition.name"
+                            dense
+                            hide-details
+                            />
+                        <!-- <v-list-item
+                            dense
+                            
+                            class="ma-1"
+                            :style="additionsObjects.find(({ id }) => id === addition.id).amount > 0 ? 'border: 2px solid #2196f3; border-radius: 4px;' : 'border: 2px solid #2196f300; border-radius: 4px;'">
+                            <v-list-item-content>
+                                <v-list-item-title>
+                                    {{ `${addition.name}` }}
+                                </v-list-item-title>
+                            </v-list-item-content>
+                            <v-list-item-action>
+                                <v-btn icon @click="decreaseAmount(addition.id)">
+                                    <v-icon>remove</v-icon>
+                                </v-btn>
+                            </v-list-item-action>
+                            <v-list-item-icon>
+                                <v-btn text disabled rounded outlined>
+                                    <span class="white--text">
+                                        {{ additionsObjects.find(({ id }) => id === addition.id).amount }}
+                                    </span>
+                                </v-btn>
+                            </v-list-item-icon>
+                            <v-list-item-action style="margin-left:0px;">
+                                <v-btn icon @click="increaseAmount(addition.id)">
+                                    <v-icon>add</v-icon>
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item> -->
+                        <v-divider v-if="additions.length > 0" class="my-4"></v-divider>
                         <v-textarea
                             label="Kommentar"
                             v-model="comment"
@@ -101,10 +144,11 @@ export default {
         selectedItem: null,
         selectedFlavour: null,
         selectedSize: null,
-        comment: null
+        comment: null,
+        selectedAdditions: []
     }),
     created: function () {},
-    mounted: function () {},
+    mounted: async function () {},
     methods: {
         ...mapMutations('waiter', {
             addItemToOrder: 'addOrderedItem'
@@ -115,6 +159,9 @@ export default {
             let defaultItem = items[0]
             this.selectedFlavour = defaultItem.flavourId
             this.selectedSize = defaultItem.sizeId
+
+            let maps = this.findMaps({ query: { baseItemId: baseItem.id } }).data
+            this.selectedAdditions = maps.filter(map => map.default).map(({ additionId }) => additionId)
             this.dialog = true
             
         },
@@ -123,6 +170,7 @@ export default {
             this.selectedFlavour = null
             this.selectedSize = null
             this.comment = null
+            this.selectedAdditions = []
             this.dialog = false
         },
         chooseColor: function (baseItem, category) {
@@ -148,7 +196,7 @@ export default {
             if (!item) {
                 console.log('No item with given configuration found!')
             } else {
-                this.addItemToOrder({ itemId: item.id, quantity: 1, comment: this.comment })
+                this.addItemToOrder({ itemId: item.id, quantity: 1, comment: this.comment, additions: [...this.selectedAdditions] })
                 this.closeDialog()
             }
         }
@@ -168,6 +216,12 @@ export default {
         ...mapGetters('flavours', {
             getFlavour: 'get',
             findFlavours: 'find'
+        }),
+        ...mapGetters('base-items-have-additions', {
+            findMaps: 'find'
+        }),
+        ...mapGetters('additions', {
+            findAdditions: 'find'
         }),
         categoryId: function () {
             return this.category.id
@@ -205,6 +259,18 @@ export default {
             let possibleItems = this.findItems({ query: { flavourId: this.selectedFlavour } }).data
             let possibleSizeIds = possibleItems.map(({ sizeId }) => sizeId)
             return this.sizeIds.filter(id => !possibleSizeIds.includes(id))
+        },
+        mapQuery: function () {
+            return { query: { baseItemId: this.selectedItem?.id } }
+        },
+        maps: function () {
+            return this.findMaps(this.mapQuery).data
+        },
+        additionsQuery: function () {
+            return { query: { id: { $in: this.maps.map(({ additionId }) => additionId) } } }
+        },
+        additions: function () {
+            return this.findAdditions(this.additionsQuery).data
         }
     },
     watch: {}
