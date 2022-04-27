@@ -26,6 +26,7 @@
     "test": "npm run eslint && npm run mocha",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
     "dev": "sequelize db:migrate & nodemon src/",
+    "noSeed": "node src/",
     "start": "sequelize db:migrate & node src/",
     "mocha": "mocha test/ --recursive --exit"
   },

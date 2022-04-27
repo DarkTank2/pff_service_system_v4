@@ -1,8 +1,11 @@
 <template>
   <v-app>
-    <v-app-bar app>
+    <v-app-bar app id="_appbar">
       <v-app-bar-nav-icon @click="sideNav = !sideNav"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ env ? env.occasion : 'Loading...' }}</v-toolbar-title>
+      <v-spacer v-if="meta.appBarComponent"></v-spacer>
+      <component v-if="meta.appBarComponent" :is="meta.appBarComponent" />
+      <v-spacer v-if="meta.appBarComponent"></v-spacer>
       <template #extension v-if="meta.extension">
         <component :is="meta.extension" />
       </template>

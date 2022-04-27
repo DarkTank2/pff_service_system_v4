@@ -14,7 +14,7 @@ services:
     image: traefik:v2.2
     #command: --api.insecure=true --providers.docker
     ports:
-      - 80:80
+      - 9090:80
       - 8090:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -32,22 +32,22 @@ services:
       - ./backend:/home/node/app
     ports:
        - 3030:3030
-    command: "npm run dev"
+    command: "npm run start"
 
-  frontend:
-    image: node:lts
-    container_name: "pff_frontend"
-    user: "node"
-    working_dir: /home/node/app
-    #environment:
-      #- NODE_ENV=production
-    volumes:
-      - ./frontend:/home/node/app
-    ports:
-      - 3031:8080
-    command: "npm run serve"
-    labels:
-      - traefik.http.routers.FrontendRouter.rule=PathPrefix(`/`)
-      - traefik.http.services.FrontendService.loadbalancer.server.port=8080
+  # frontend:
+  #   image: node:lts
+  #   container_name: "pff_frontend"
+  #   user: "node"
+  #   working_dir: /home/node/app
+  #   #environment:
+  #     #- NODE_ENV=production
+  #   volumes:
+  #     - ./frontend:/home/node/app
+  #   ports:
+  #     - 3031:8080
+  #   command: "npm run serve"
+  #   labels:
+  #     - traefik.http.routers.FrontendRouter.rule=PathPrefix(`/`)
+  #     - traefik.http.services.FrontendService.loadbalancer.server.port=8080
 
 

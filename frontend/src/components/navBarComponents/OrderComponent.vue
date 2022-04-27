@@ -113,8 +113,8 @@
                         @click="sendOrder"
                         :disabled="orderedItems.length === 0"
                         >
+                        <v-icon class="mr-2">send</v-icon>
                         Bestellung absenden 
-                        <v-icon>send</v-icon>
                     </v-btn>
                 </v-col>
             </v-row>
@@ -257,7 +257,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .order-component-addition {
     font-size: 0.8125rem;
     font-weight: 500;

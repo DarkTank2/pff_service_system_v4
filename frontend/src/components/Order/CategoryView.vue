@@ -1,6 +1,12 @@
 <template>
   <div>
       <v-card>
+          <v-card-title>
+              <v-btn :to="{ name: 'TypeSelection' }" flat outlined>
+                  <v-icon class="mr-2">chevron_left</v-icon>
+                  zurück
+              </v-btn>
+          </v-card-title>
           <v-container>
               <single-category v-for="category in rawCategories" :key="`single_category_${category.id}`" :category="category" />
               <!-- <v-row style="padding: 20px;">
@@ -102,6 +108,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

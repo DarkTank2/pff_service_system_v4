@@ -5,6 +5,8 @@ import OrderExtension from '../components/appBarExtensions/OrderExtension.vue'
 import OrderComponent from '../components/navBarComponents/OrderComponent.vue'
 import CashButton from '../components/sideNavbarComponents/CashButton.vue'
 import OrderButton from '../components/sideNavbarComponents/OrderButton.vue'
+import BuffetAppBarCOmponent from '../components/appBarComponents/BuffetComponent.vue'
+import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigButton.vue'
 
 Vue.use(VueRouter)
 
@@ -57,84 +59,32 @@ const routes = [
           bottomNavbarComponent: OrderComponent,
           sideNavbarComponents: [CashButton]
         }
-        // children: [
-        //   {
-        //     path: '',
-        //     name: 'CategorySelection', // supposed to select category
-        //     component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategorySelection.vue'),
-        //     props: route => ({ typeId: parseInt(route.params.typeId) }),
-        //     meta: {
-        //       breadCrumbItem: {
-        //         to: { name: 'CategorySelection' },
-        //         text: `Wähle deine Kategorie...`,
-        //         disabled: true
-        //       }
-        //     }
-        //   },
-        //   {
-        //     path: 'category/:categoryId',
-        //     name: 'CategoryProxy', // supposed to route forward to the selection of the base item
-        //     component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategoryProxy.vue'),
-        //     meta: {
-        //       breadCrumbItem: {
-        //         to: { name: 'CategorySelection' },
-        //         text: `Kategorie: `,
-        //         disabled: false
-        //       }
-        //     },
-        //     children: [
-        //       {
-        //         path: '',
-        //         name: 'BaseItemSelection',
-        //         component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/BaseItemSelection.vue'),
-        //         props: route => ({ categoryId: parseInt(route.params.categoryId) }),
-        //         meta: {
-        //           breadCrumbItem: {
-        //             to: { name: 'BaseItemSelection' },
-        //             text: `Wähle dein Basis-Item...`,
-        //             disabled: true
-        //           }
-        //         }
-        //       },
-        //       {
-        //         path: 'baseItem/:baseItemId',
-        //         name: 'BaseItemProxy',
-        //         component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/BaseItemProxy.vue'),
-        //         meta: {
-        //           breadCrumbItem: {
-        //             to: { name: 'BaseItemSelection' },
-        //             text: `Basis-Item: `,
-        //             disabled: false
-        //           }
-        //         },
-        //         children: [
-        //           {
-        //             path: '',
-        //             name: 'FlavourSelection',
-        //             component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/FlavourSelection.vue'),
-        //             props: route => ({ baseItemId: parseInt(route.params.baseItemId) }),
-        //             meta: {
-        //               breadCrumbItem: {
-        //                 to: { name: 'FlavourSelection' },
-        //                 text: `Wähle deinen Flavour...`,
-        //                 disabled: true
-        //               }
-        //             }
-        //           }
-        //         ]
-        //       }
-        //     ]
-        //   }
-        // ]
       }
     ]
   },
   {
     path: '/cash',
     name: 'Cash',
-    component: () => import('../views/Cash.vue'),
+    component: () => import(/* webpackChunkName: "cashing" */ '../views/Cash.vue'),
     meta: {
       sideNavbarComponents: [OrderButton]
+    }
+  },
+  {
+    path: '/buffet',
+    name: 'Buffet',
+    component: () => import(/* webpackChunkName: "buffet" */ '../views/Buffet.vue'),
+    meta: {
+      appBarComponent: BuffetAppBarCOmponent,
+      sideNavbarComponents: [BuffetConfigButton]
+    }
+  },
+  {
+    path: '/buffetConfig',
+    name: 'BuffetConfig',
+    component: () => import(/* webpackChunkName: "buffet" */ '../views/BuffetConfig.vue'),
+    meta: {
+      appBarComponent: BuffetAppBarCOmponent
     }
   },
   {
@@ -148,7 +98,7 @@ const routes = [
   {
     path: '/configurator',
     name: 'Configurator',
-    component: () => import('../views/Configurator.vue')
+    component: () => import(/* webpackChunkName: "master" */ '../views/Configurator.vue')
   },
   {
     path: '/about',

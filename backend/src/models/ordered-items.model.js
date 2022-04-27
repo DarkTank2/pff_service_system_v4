@@ -14,12 +14,8 @@ module.exports = app => {
             allowNull: false
         },
         finished: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
-        },
-        served: {
-            type: DataTypes.INTEGER,
-            defaultValue: 0
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         },
         cashed: {
             type: DataTypes.INTEGER,

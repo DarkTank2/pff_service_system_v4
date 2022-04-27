@@ -14,7 +14,7 @@
         </v-card-title>
         <v-data-table
             :headers="[...headers, { value: 'actions', text: 'Actions' }]"
-            :items="[...items, newEntity]"
+            :items="noNew ? [...items] : [...items, newEntity]"
             hide-default-header
             class="elevation-1"
             :search="search"
@@ -113,6 +113,10 @@ export default {
                     }
                 }
             })
+        },
+        noNew: {
+            type: Boolean,
+            default: false
         }
     },
     components: {
