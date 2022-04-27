@@ -184,16 +184,13 @@ export default {
             this.$emit('closeNavbar')
             this.setFetchPendingFlag().then(() => {
                 this.createOrderedItems([data]).then((res) => {
-                    console.table(data)
-                    console.table(res)
                     let additions = []
-                    data.forEach((item, index) => {
+                    data.forEach((item) => {
                         let i = res.findIndex(orderedItem => {
                             return orderedItem.itemId === item.itemId
                                 && orderedItem.quantity === item.quantity
                                 && orderedItem.comment === item.comment
                         })
-                        console.log(`Item found at index ${i}, should be index ${index}`)
                         if (item.additions.length > 0) {
                             // perform addition adding for searched ordered item
                             let { id: orderedItemId } = res.at(i)

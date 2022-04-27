@@ -5,7 +5,7 @@ import OrderExtension from '../components/appBarExtensions/OrderExtension.vue'
 import OrderComponent from '../components/navBarComponents/OrderComponent.vue'
 import CashButton from '../components/sideNavbarComponents/CashButton.vue'
 import OrderButton from '../components/sideNavbarComponents/OrderButton.vue'
-import BuffetAppBarCOmponent from '../components/appBarComponents/BuffetComponent.vue'
+import BuffetAppBarComponent from '../components/appBarComponents/BuffetComponent.vue'
 import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigButton.vue'
 
 Vue.use(VueRouter)
@@ -35,11 +35,6 @@ const routes = [
         name: 'TypeSelection', // supposed to select the type
         component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/TypeSelection.vue'),
         meta: {
-          breadCrumbItem: {
-            to: { name: 'TypeSelection' }, // acts as an id for identifying the already pushed items
-            text: `Wähle deinen Typ...`,
-            disabled: true 
-          },
           bottomNavbarComponent: OrderComponent,
           sideNavbarComponents: [CashButton]
         },
@@ -50,11 +45,6 @@ const routes = [
         component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategoryView.vue'),
         props: route => ({ typeId: parseInt(route.params.typeId) }),
         meta: {
-          breadCrumbItem: {
-            to: { name: 'TypeSelection' },
-            text: `Typ: `,
-            disabled: false
-          },
           extension: OrderExtension,
           bottomNavbarComponent: OrderComponent,
           sideNavbarComponents: [CashButton]
@@ -68,14 +58,33 @@ const routes = [
     component: () => import(/* webpackChunkName: "cashing" */ '../views/Cash.vue'),
     meta: {
       sideNavbarComponents: [OrderButton]
-    }
+    },
+    children: [
+      {
+        path: '',
+        name: 'TableSelection',
+        component: () => import(/* webpackChunkName: "cashing" */ '../components/Cash/SelectTable.vue'),
+        meta: {
+          sideNavbarComponents: [OrderButton]
+        }
+      },
+      {
+        path: 'table/:tableId',
+        name: 'CashTable',
+        component: () => import(/* webpackChunkName: "cashing" */ '../components/Cash/CashTable.vue'),
+        props: route => ({ tableId: parseInt(route.params.tableId) }),
+        meta: {
+          sideNavbarComponents: [OrderButton]
+        }
+      }
+    ]
   },
   {
     path: '/buffet',
     name: 'Buffet',
     component: () => import(/* webpackChunkName: "buffet" */ '../views/Buffet.vue'),
     meta: {
-      appBarComponent: BuffetAppBarCOmponent,
+      appBarComponent: BuffetAppBarComponent,
       sideNavbarComponents: [BuffetConfigButton]
     }
   },
@@ -84,7 +93,7 @@ const routes = [
     name: 'BuffetConfig',
     component: () => import(/* webpackChunkName: "buffet" */ '../views/BuffetConfig.vue'),
     meta: {
-      appBarComponent: BuffetAppBarCOmponent
+      appBarComponent: BuffetAppBarComponent
     }
   },
   {

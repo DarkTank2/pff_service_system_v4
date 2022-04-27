@@ -34,7 +34,7 @@
         <v-divider></v-divider>
         <v-list-item>
           <v-list-item-content>
-            <v-btn :to="{ name: 'Home' }" block>
+            <v-btn :to="{ name: 'Home' }" block outlined>
               <span>Home</span>
               <v-icon>home</v-icon>
             </v-btn>

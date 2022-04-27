@@ -4,6 +4,11 @@
           <v-col cols="3" v-for="order in clusteredOrders" :key="`order_created_at_${order.createdAt}_by_${order.waiter}`">
               <cluster :order="order" :card-size="cardSize" @card-size="handleSizeChange" />
           </v-col>
+          <v-alert v-if="clusteredOrders.length === 0" prominent outlined shaped type="warning">
+            <span class="text-h5">
+              Es gibt derzeit keine Bestellungen, die bearbeitet werden müssen.
+            </span>
+          </v-alert>
       </v-row>
   </v-container>
 </template>

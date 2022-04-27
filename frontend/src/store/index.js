@@ -13,6 +13,8 @@ import servantGetters from './servant/getters'
 import servantActions from './servant/actions'
 import servantMutations from './servant/mutations'
 
+import cashMethods from './cash'
+
 import utilityMethods from './untilities'
 
 Vue.use(Vuex)
@@ -63,6 +65,14 @@ const servant = {
   actions: servantActions
 }
 
+const cash = {
+  namespaced: true,
+  state: {
+    selectedOrderedItems: []
+  },
+  ...cashMethods
+}
+
 const utilities = {
   namespaced: true,
   state: {
@@ -79,7 +89,8 @@ export default new Vuex.Store({
     base,
     waiter,
     servant,
-    utilities
+    utilities,
+    cash
   },
   plugins: [...servicePlugins]
 })

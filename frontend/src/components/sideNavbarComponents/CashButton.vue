@@ -1,5 +1,5 @@
 <template>
-    <v-btn :to="{ name: 'Cash' }" block>
+    <v-btn :to="{ name: 'TableSelection' }" block outlined>
         <span>Cash</span>
         <v-icon>euro_symbol</v-icon>
     </v-btn>

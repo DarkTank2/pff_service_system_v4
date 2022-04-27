@@ -1,5 +1,5 @@
 <template>
-    <v-btn :to="{ name: 'TypeSelection' }" block>
+    <v-btn :to="{ name: 'TypeSelection' }" block outlined>
         <span>Order</span>
         <v-icon>brunch_dining</v-icon>
     </v-btn>
