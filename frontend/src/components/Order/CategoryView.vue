@@ -2,7 +2,7 @@
   <div>
       <v-card>
           <v-card-title>
-              <v-btn :to="{ name: 'TypeSelection' }" flat outlined>
+              <v-btn :to="{ name: 'TypeSelection' }" outlined>
                   <v-icon class="mr-2">chevron_left</v-icon>
                   zurück
               </v-btn>

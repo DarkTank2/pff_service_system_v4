@@ -7,6 +7,8 @@ import CashButton from '../components/sideNavbarComponents/CashButton.vue'
 import OrderButton from '../components/sideNavbarComponents/OrderButton.vue'
 import BuffetAppBarComponent from '../components/appBarComponents/BuffetComponent.vue'
 import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigButton.vue'
+import CashAppBarComponent from '../components/appBarComponents/CashComponent.vue'
+import CashTableTitleReplacement from '../components/TitleReplacements/CashTableTitleReplacement.vue'
 
 Vue.use(VueRouter)
 
@@ -74,7 +76,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "cashing" */ '../components/Cash/CashTable.vue'),
         props: route => ({ tableId: parseInt(route.params.tableId) }),
         meta: {
-          sideNavbarComponents: [OrderButton]
+          sideNavbarComponents: [OrderButton],
+          appBarComponent: CashAppBarComponent,
+          titleReplacement: CashTableTitleReplacement
         }
       }
     ]

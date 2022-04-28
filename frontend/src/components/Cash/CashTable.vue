@@ -1,5 +1,19 @@
 <template>
-  <div>
+  <v-card>
+      <v-card-title class="d-flex">
+          <v-btn outlined class="mx-2 pl-2 pr-4" :to="{ name: 'TableSelection' }">
+            <v-icon>chevron_left</v-icon>
+            zurück
+          </v-btn>
+          <v-btn outlined class="flex-grow-1 mx-2 v-btn--active" v-if="listCashingItems.length === 0" @click="addAll()">
+            <v-icon>library_add_check</v-icon>
+            alles auswählen
+          </v-btn>
+          <v-btn outlined class="flex-grow-1 mx-2 v-btn--active" v-else @click="clearCash">
+            <v-icon>clear</v-icon>
+            alles abwählen
+          </v-btn>
+      </v-card-title>
     <v-container fluid>
       <v-list>
         <template v-for="(orderedItem, i) in orderedItems">
@@ -33,7 +47,7 @@
             <v-list-item-icon>
                 <v-btn text disabled rounded outlined :class="{ bordered: (orderedItem.cashableItem && orderedItem.cashableItem.toBeCashed > 0) }">
                     <span class="white--text">
-                        {{ `${orderedItem.cashableItem ? orderedItem.cashableItem.toBeCashed : 0}/${orderedItem.cashableItem ? orderedItem.cashableItem.cashable : orderedItem.quantity}` }}
+                        {{ `${orderedItem.cashableItem ? orderedItem.cashableItem.toBeCashed : 0}/${orderedItem.quantity - orderedItem.cashed}` }}
                     </span>
                 </v-btn>
             </v-list-item-icon>
@@ -52,8 +66,12 @@
                 {{ addition.name }}
                 <br />
             </span>
+          </template>
         </template>
+        <template v-if="orderedItems.length === 0">
+          <v-alert type="info" outlined prominent>Gibt nix zum sehen, zurück zu den Tischen mit dir! (Oder drücke <v-btn :to="{ name: 'TableSelection' }" plain outlined>hier</v-btn>)</v-alert>
         </template>
+        <v-list-item></v-list-item>
       </v-list>
     </v-container>
     <v-btn
@@ -66,10 +84,10 @@
           >
           <v-icon>euro_symbol</v-icon>
       </v-btn>
-  </div>
+  </v-card>
 </template>
 <script>
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
   name: 'CashTable',
   props: ['tableId'],
@@ -85,6 +103,13 @@ export default {
       decrementOrderedItem: 'decrement',
       clearCash: 'clear'
     }),
+    ...mapActions('ordered-items', {
+      updateOrderedItem: 'update'
+    }),
+    ...mapActions('utilities', {
+        setFetchPendingFlag: 'setFetchPendingFlag',
+        resetFetchPendingFlag: 'resetFetchPendingFlag'
+    }),
     decrementId: function (oi) {
       this.decrementOrderedItem(oi)
     },
@@ -92,17 +117,41 @@ export default {
       this.incrementOrderedItem(oi)
     },
     cash: function () {
-      console.log('Now cashing')
-      this.clearCash()
+      this.setFetchPendingFlag().then(() => {
+        let promises = []
+        this.listCashingItems.forEach(oi => {
+          let orderedItemInStore = this.getOrderedItem(oi.id)
+          let clone = { ...orderedItemInStore }
+          clone.cashed += oi.toBeCashed
+          promises.push(this.updateOrderedItem([oi.id, clone, null]))
+        })
+        Promise.all(promises).then(() => {
+          this.clearCash()
+          this.resetFetchPendingFlag().then(() => {
+            if (this.orderedItems.length === 0) {
+              this.$router.push({ name: 'TableSelection' })
+            }
+          })
+        })
+      })
+    },
+    addAll: function () {
+      this.orderedItems.forEach(oi => {
+        for (var i = 0; i<oi.quantity; i++) {
+          this.incrementOrderedItem(oi)
+        }
+      })
     }
   },
   watch: {},
   computed: {
     ...mapGetters('cash', {
-      getCashableItem: 'get'
+      getCashableItem: 'get',
+      listCashingItems: 'list'
     }),
     ...mapGetters('ordered-items', {
-      findOrderedItems: 'find'
+      findOrderedItems: 'find',
+      getOrderedItem: 'get'
     }),
     ...mapGetters('ordered-items-have-additions', {
       findMaps: 'find'

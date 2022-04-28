@@ -1,4 +1,4 @@
-var logger = require('./logger');
+// var logger = require('./logger');
 module.exports = function(app) {
   if(typeof app.channel !== 'function') {
     // If no real-time functionality has been configured just return
@@ -7,13 +7,13 @@ module.exports = function(app) {
 
   app.on('connection', connection => {
     // for this app only one channel is necessarry since authentication is done via middleware and
-    
     app.channel('anonymous').join(connection)
   });
   
   // eslint-disable-next-line no-unused-vars
   app.publish((data, context) => {
-    logger.info('publishing data to anonymous channel')
+    console.log(data)
+    console.log(context)
     return app.channel('anonymous')
   });
 };
