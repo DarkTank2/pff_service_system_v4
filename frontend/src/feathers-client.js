@@ -6,8 +6,8 @@ import socketio from '@feathersjs/socketio-client'
 import { iff, discard } from 'feathers-hooks-common'
 import feathersVuex from 'feathers-vuex'
 
-// const socket = io(`${window.location.origin}`, { transports: ['websocket'], upgrade: false, path: '/sws' })
-const socket = io(`localhost:9090`, { transports: ['websocket'], upgrade: false, path: '/sws' })
+const socket = io(`${window.location.origin}`, { transports: ['websocket'], upgrade: false, path: '/sws' })
+// const socket = io(`localhost:9090`, { transports: ['websocket'], upgrade: false, path: '/sws' })
 // const apiUrl = process.env.API_URL
 // console.log(window.location.hostname)
 // let restClient = rest(apiUrl)
