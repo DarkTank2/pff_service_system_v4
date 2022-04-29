@@ -9,6 +9,7 @@ import BuffetAppBarComponent from '../components/appBarComponents/BuffetComponen
 import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigButton.vue'
 import CashAppBarComponent from '../components/appBarComponents/CashComponent.vue'
 import CashTableTitleReplacement from '../components/TitleReplacements/CashTableTitleReplacement.vue'
+import ConfiguratorAppBarComponent from '../components/appBarComponents/ConfiguratorComponent.vue'
 
 Vue.use(VueRouter)
 
@@ -111,7 +112,10 @@ const routes = [
   {
     path: '/configurator',
     name: 'Configurator',
-    component: () => import(/* webpackChunkName: "master" */ '../views/Configurator.vue')
+    component: () => import(/* webpackChunkName: "master" */ '../views/Configurator.vue'),
+    meta: {
+      appBarComponent: ConfiguratorAppBarComponent
+    }
   },
   {
     path: '/about',

@@ -87,7 +87,7 @@ export default {
             return {
                 query: {
                     typeId: this.typeId,
-                    id: { $nin: this.env?.disableCategories || [] }
+                    id: { $nin: this.env?.disabledCategories || [] }
                 }
             }
         },

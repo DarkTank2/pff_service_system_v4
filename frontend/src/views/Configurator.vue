@@ -157,6 +157,21 @@
             />
         </v-expansion-panel-content>
       </v-expansion-panel>
+      <v-expansion-panel>
+        <v-expansion-panel-header>
+          ENV
+        </v-expansion-panel-header>
+        <v-expansion-panel-content>
+          <service-table
+            :items="env"
+            :dependencies="{types, categories}"
+            :headers="[{value:'id',text:'ID'},{value:'occasion',text:'Occasion'},{value:'disabledTypes',text:'Disabled types'},{value:'disabledCategories',text:'Disabled categories'}]"
+            serviceConstructor="Env"
+            :config="{id:{changeable:false},occasion:{changeable:true},disabledTypes:{changeable:{key:'types',itemValue:'id',itemText:'name',multiple:true}},disabledCategories:{changeable:{key:'categories',itemValue:'id',itemText:'name',multiple:true}}}"
+            no-new
+            />
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </v-expansion-panels>
   </v-container>
 </template>
@@ -229,6 +244,9 @@ export default {
     ...mapActions('types', {
       fetchtypes: 'find'
     }),
+    ...mapActions('env', {
+      fetchEnv: 'find'
+    }),
     saveEntity: function ({ entityName, instanceName }) {
       this[entityName].save()
       let entityConstructor = this.$FeathersVuex.api[instanceName]
@@ -279,6 +297,9 @@ export default {
     ...mapGetters('types', {
       types: 'list',
       gettypes: 'get'
+    }),
+    ...mapGetters('env', {
+      env: 'list'
     })
   },
 }

@@ -49,8 +49,21 @@
                     :item-text="config[key].changeable.itemText"
                     :item-value="config[key].changeable.itemValue"
                     :label="headers.find(({ value }) => value === key).text"
+                    :multiple="config[key].changeable.multiple"
+                    :chip="config[key].changeable.multiple"
                     v-model="item[key]"
                     >
+                    <template v-if="config[key].changeable.multiple" v-slot:selection="{ item: chipAbleItem, index }">
+                        <v-chip v-if="index < 2">
+                            <span>{{ chipAbleItem.name }}</span>
+                        </v-chip>
+                        <span
+                            v-if="index === 2"
+                            class="grey--text text-caption"
+                            >
+                            (+{{ item[key].length - 2 }} others)
+                        </span>
+                    </template>
                 </v-select>
             </template>
             <template
@@ -128,7 +141,9 @@ export default {
         overlay: false
     }),
     created: function () {
-        this.createNewEntity()
+        if (!this.noNew) {
+            this.createNewEntity()
+        }
     },
     mounted: function () {},
     computed: {},

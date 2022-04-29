@@ -1,5 +1,7 @@
 const { Service } = require('feathers-sequelize')
 const env = require('../../env.json')
+const fs = require('fs')
+const path = require('path')
 
 exports.ENV = class ENV {
   constructor (options) {
@@ -17,8 +19,19 @@ exports.ENV = class ENV {
   async create(data, params) {}
   async update(id, data, params) {
       // only by admin -> hook TBD
+      console.log('Updating env...')
+      console.log(data)
+      this.env = data
+      fs.writeFileSync(path.join(process.cwd(), 'src', 'env.json'), JSON.stringify(data))
+      return Promise.resolve(data)
   }
-  async patch(id, data, params) {}
+  async patch(id, data, params) {
+      console.log('Patching env...')
+      console.log(data)
+      this.env = data
+      fs.writeFileSync(path.join(process.cwd(), 'src', 'env.json'), JSON.stringify(data))
+      return Promise.resolve(data)
+  }
   async remove(id, params) {}
   setup(app, path) {
       this.app = app

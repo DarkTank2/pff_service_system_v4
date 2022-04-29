@@ -12,8 +12,6 @@ module.exports = function(app) {
   
   // eslint-disable-next-line no-unused-vars
   app.publish((data, context) => {
-    console.log(data)
-    console.log(context)
     return app.channel('anonymous')
   });
 };
