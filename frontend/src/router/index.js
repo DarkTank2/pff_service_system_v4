@@ -30,7 +30,7 @@ const routes = [
   {
     path: '/order',
     name: 'Order',
-    component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategoryView.vue'),
+    component: () => import(/* webpackChunkName: "ordering" */ '../views/CategoryView.vue'),
     meta: {
       extension: OrderExtension,
       bottomNavbarComponent: OrderComponent,

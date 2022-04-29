@@ -18,22 +18,16 @@ module.exports = {
         type: 'unique'
       })
       console.log('Added unique constraint')
-      await queryInterface.bulkInsert('types', [
-        { id: 1, name: 'Trinken' },
-        { id: 2, name: 'Essen' }
-      ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('types', 'id'), 3)
-      console.log('Added types')
       await queryInterface.bulkInsert('categories', [
-        { id: 1, name: 'Speisen', typeId: 2, color: 'blue darken-3' },
-        { id: 2, name: 'Anti-Alk', typeId: 1, color: 'blue darken-3' },
-        { id: 3, name: 'Weiss-Offen', typeId: 1, color: 'blue darken-3' },
-        { id: 4, name: 'Rot-Offen', typeId: 1, color: 'blue darken-3' },
-        { id: 5, name: 'W-Fl.', typeId: 1, color: 'blue darken-3' },
-        { id: 6, name: 'R-Fl.', typeId: 1, color: 'blue darken-3' },
-        { id: 7, name: 'Biere', typeId: 1, color: 'blue darken-3' },
-        { id: 8, name: 'Sonstiges', typeId: 1, color: 'blue darken-3' },
-        { id: 9, name: 'Extras', typeId: 2, color: 'orange darken-3' }
+        { id: 1, name: 'Speisen', color: 'blue darken-3' },
+        { id: 2, name: 'Anti-Alk', color: 'blue darken-3' },
+        { id: 3, name: 'Weiss-Offen', color: 'blue darken-3' },
+        { id: 4, name: 'Rot-Offen', color: 'blue darken-3' },
+        { id: 5, name: 'W-Fl.', color: 'blue darken-3' },
+        { id: 6, name: 'R-Fl.', color: 'blue darken-3' },
+        { id: 7, name: 'Biere', color: 'blue darken-3' },
+        { id: 8, name: 'Sonstiges', color: 'blue darken-3' },
+        { id: 9, name: 'Extras', color: 'orange darken-3' }
       ])
       await setSequenceToValue(queryInterface, getSequenceIdentifier('categories', 'id'), 10)
       console.log('Added categories')
@@ -60,7 +54,7 @@ module.exports = {
       await queryInterface.bulkInsert('flavours', [
         { id: 1, name: 'gespritzt leitung' },
         { id: 2, name: 'gespritzt mineral' },
-        { id: 3, name: 'ohne' },
+        { id: 3, name: 'pur' },
         { id: 4, name: 'Kartoffelsalat' },
         { id: 5, name: 'Krautsalat' }
       ])

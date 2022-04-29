@@ -52,10 +52,10 @@
         <v-expansion-panel-content>
           <service-table
             :items="categories"
-            :dependencies="{types}"
-            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'},{value:'typeId',text:'Type'},{value:'color',text:'Color'}]"
+            :dependencies="{}"
+            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'},{value:'color',text:'Color'}]"
             serviceConstructor="Category"
-            :config="{id:{changeable:false},name:{changeable:true},typeId:{changeable:{key:'types',itemValue:'id',itemText:'name'}},color:{changeable:true}}"
+            :config="{id:{changeable:false},name:{changeable:true},color:{changeable:true}}"
             />
         </v-expansion-panel-content>
       </v-expansion-panel>
@@ -145,29 +145,15 @@
       </v-expansion-panel>
       <v-expansion-panel>
         <v-expansion-panel-header>
-          Types
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <service-table
-            :items="types"
-            :dependencies="{}"
-            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'}]"
-            serviceConstructor="Type"
-            :config="{id:{changeable:false},name:{changeable:true}}"
-            />
-        </v-expansion-panel-content>
-      </v-expansion-panel>
-      <v-expansion-panel>
-        <v-expansion-panel-header>
           ENV
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <service-table
             :items="env"
-            :dependencies="{types, categories}"
-            :headers="[{value:'id',text:'ID'},{value:'occasion',text:'Occasion'},{value:'disabledTypes',text:'Disabled types'},{value:'disabledCategories',text:'Disabled categories'}]"
+            :dependencies="{categories}"
+            :headers="[{value:'id',text:'ID'},{value:'occasion',text:'Occasion'},{value:'disabledCategories',text:'Disabled categories'}]"
             serviceConstructor="Env"
-            :config="{id:{changeable:false},occasion:{changeable:true},disabledTypes:{changeable:{key:'types',itemValue:'id',itemText:'name',multiple:true}},disabledCategories:{changeable:{key:'categories',itemValue:'id',itemText:'name',multiple:true}}}"
+            :config="{id:{changeable:false},occasion:{changeable:true},disabledCategories:{changeable:{key:'categories',itemValue:'id',itemText:'name',multiple:true}}}"
             no-new
             />
         </v-expansion-panel-content>
@@ -203,7 +189,6 @@ export default {
       promises.push(this.fetchorderedItemsHaveAdditions())
       promises.push(this.fetchsizes())
       promises.push(this.fetchtables())
-      promises.push(this.fetchtypes())
       Promise.all(promises).then(() => {
         this.resetFetchPendingFlag()
       })
@@ -240,9 +225,6 @@ export default {
     }),
     ...mapActions('tables', {
       fetchtables: 'find'
-    }),
-    ...mapActions('types', {
-      fetchtypes: 'find'
     }),
     ...mapActions('env', {
       fetchEnv: 'find'
@@ -293,10 +275,6 @@ export default {
     ...mapGetters('tables', {
       tables: 'list',
       gettables: 'get'
-    }),
-    ...mapGetters('types', {
-      types: 'list',
-      gettypes: 'get'
     }),
     ...mapGetters('env', {
       env: 'list'

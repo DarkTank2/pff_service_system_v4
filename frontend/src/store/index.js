@@ -9,10 +9,6 @@ import waiterGetters from './waiter/getters'
 import waiterActions from './waiter/actions'
 import waiterMutations from './waiter/mutations'
 
-import servantGetters from './servant/getters'
-import servantActions from './servant/actions'
-import servantMutations from './servant/mutations'
-
 import cashMethods from './cash'
 
 import utilityMethods from './untilities'
@@ -54,17 +50,6 @@ const waiter = {
   actions: waiterActions
 }
 
-const servant = {
-  namespaced: true,
-  state: {
-    selection: [],
-    sum: 0
-  },
-  mutations: servantMutations,
-  getters: servantGetters,
-  actions: servantActions
-}
-
 const cash = {
   namespaced: true,
   state: {
@@ -88,7 +73,6 @@ export default new Vuex.Store({
   modules: {
     base,
     waiter,
-    servant,
     utilities,
     cash
   },

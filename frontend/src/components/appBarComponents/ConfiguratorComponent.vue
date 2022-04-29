@@ -36,7 +36,6 @@ export default {
                 })
             })
             let exp = []
-            exp.push(this.exportService('types', 'types'))
             exp.push(this.exportService('categories', 'categories'))
             exp.push(this.exportService('baseItems', 'base_items'))
             exp.push(this.exportService('sizes', 'sizes'))
@@ -103,9 +102,6 @@ export default {
         }),
         ...mapGetters('tables', {
             tables: 'list'
-        }),
-        ...mapGetters('types', {
-            types: 'list'
         })
     }
 }

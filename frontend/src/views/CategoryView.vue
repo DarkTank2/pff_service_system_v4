@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import SingleCategory from './components/SingleCategory.vue'
+import SingleCategory from '../components/Order/SingleCategory.vue'
 import { mapActions, mapGetters } from 'vuex'
 export default {
     name: 'CategoryView',

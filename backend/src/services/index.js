@@ -9,7 +9,6 @@ const orderedItems                  = require('./ordered-items/ordered-items.ser
 const orderedItemsHaveExtensions    = require('./ordered-items-have-additions/ordered-items-have-additions.service')
 const sizes                         = require('./sizes/sizes.service')
 const tables                        = require('./tables/tables.service')
-const types                         = require('./types/types.service')
 
 module.exports = function (app) {
   app.configure(additions)
@@ -23,5 +22,4 @@ module.exports = function (app) {
   app.configure(orderedItemsHaveExtensions)
   app.configure(sizes)
   app.configure(tables)
-  app.configure(types)
 }

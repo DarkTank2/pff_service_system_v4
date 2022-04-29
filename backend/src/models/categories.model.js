@@ -26,8 +26,7 @@ module.exports = app => {
         }
     })
 
-    categories.associate = ({ base_items, types }) => {
-        categories.belongsTo(types, { foreignKey: { allowNull: false } })
+    categories.associate = ({ base_items }) => {
         categories.hasMany(base_items, { foreignKey: { allowNull: false }})
     }
     return categories
