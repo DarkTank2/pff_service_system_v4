@@ -33,6 +33,7 @@
                         label="Tisch-Nummer:"
                         hint="Wähle bitte einen Tisch aus."
                         :error="!getTableId"
+                        :value="getTableId"
                         />
                 </v-list-item-content>
             </v-list-item>
@@ -96,8 +97,8 @@
             </template>
             <v-list-item v-if="orderedItems.length === 0">
                 <v-list-item-content>
-                    <v-alert type="warning">
-                        Wähle zuerst Items aus!
+                    <v-alert type="warning" icon="add_shopping_cart">
+                        Dein Warenkorb ist leider leer, wähle Items aus, damit diese bestellt werden können.
                     </v-alert>
                 </v-list-item-content>
             </v-list-item>

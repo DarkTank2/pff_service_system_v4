@@ -38,8 +38,8 @@
         <v-list-item>
           <v-list-item-content>
             <v-btn :to="{ name: 'Home' }" block outlined>
-              <span>Home</span>
               <v-icon>home</v-icon>
+              <span class="ml-2">Home</span>
             </v-btn>
           </v-list-item-content>
         </v-list-item>

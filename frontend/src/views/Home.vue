@@ -4,15 +4,15 @@
       <v-container fluid>
         <v-row>
           <v-col cols="12" sm="6">
-            <v-btn block :to="{ name: 'TypeSelection' }" outlined>
-              <span>Bestellung aufnehmen</span>
+            <v-btn block :to="{ name: 'Order' }" outlined>
               <v-icon>brunch_dining</v-icon>
+              <span class="ml-2">Bestellung aufnehmen</span>
             </v-btn>
           </v-col>
           <v-col cols="12" sm="6">
             <v-btn block :to="{ name: 'TableSelection' }" outlined>
-              <span>Kassieren</span>
               <v-icon>euro_symbol</v-icon>
+              <span class="ml-2">Kassieren</span>
             </v-btn>
           </v-col>
         </v-row>

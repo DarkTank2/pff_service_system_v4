@@ -30,31 +30,41 @@ const routes = [
   {
     path: '/order',
     name: 'Order',
-    component: () => import(/* webpackChunkName: "ordering" */ '../views/Order.vue'),
-    meta: {},
-    children: [
-      {
-        path: '',
-        name: 'TypeSelection', // supposed to select the type
-        component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/TypeSelection.vue'),
-        meta: {
-          bottomNavbarComponent: OrderComponent,
-          sideNavbarComponents: [CashButton]
-        },
-      },
-      {
-        path: 'type/:typeId',
-        name: 'CategoryView', // supposed to route forward to category selection of said type
-        component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategoryView.vue'),
-        props: route => ({ typeId: parseInt(route.params.typeId) }),
-        meta: {
-          extension: OrderExtension,
-          bottomNavbarComponent: OrderComponent,
-          sideNavbarComponents: [CashButton]
-        }
-      }
-    ]
+    component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategoryView.vue'),
+    meta: {
+      extension: OrderExtension,
+      bottomNavbarComponent: OrderComponent,
+      sideNavbarComponents: [CashButton]
+    }
   },
+  // {
+  //   path: '/order',
+  //   name: 'Order',
+  //   component: () => import(/* webpackChunkName: "ordering" */ '../views/Order.vue'),
+  //   meta: {},
+  //   children: [
+  //     {
+  //       path: '',
+  //       name: 'TypeSelection', // supposed to select the type
+  //       component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/TypeSelection.vue'),
+  //       meta: {
+  //         bottomNavbarComponent: OrderComponent,
+  //         sideNavbarComponents: [CashButton]
+  //       },
+  //     },
+  //     {
+  //       path: 'type/:typeId',
+  //       name: 'CategoryView', // supposed to route forward to category selection of said type
+  //       component: () => import(/* webpackChunkName: "ordering" */ '../components/Order/CategoryView.vue'),
+  //       props: route => ({ typeId: parseInt(route.params.typeId) }),
+  //       meta: {
+  //         extension: OrderExtension,
+  //         bottomNavbarComponent: OrderComponent,
+  //         sideNavbarComponents: [CashButton]
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: '/cash',
     name: 'Cash',

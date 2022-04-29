@@ -14,6 +14,7 @@
                 active-class="blue darken-3 white--text"
                 rounded
                 outlined
+                :disabled="category.disabled"
                 @click="scrollToCategory(category, toggle)"
                 >
                 {{ category.name }}
@@ -28,9 +29,7 @@ export default {
     name: 'OrderExtension',
     components: {},
     props: [],
-    data: () => ({
-        activeCategory: null
-    }),
+    data: () => ({}),
     created: function () {},
     mounted: async function () {
         if (!this.env) {
@@ -55,27 +54,18 @@ export default {
             listEnvs: 'list'
         }),
         ...mapGetters('categories', {
-            findCategories: 'find'
+            listCategories: 'list'
         }),
         env: function () {
             return this.listEnvs[0]
         },
-        typeId: function () {
-            return parseInt(this.$route.params.typeId) || 0
-        },
-        categoryQuery: function () {
-            return {
-                query: {
-                    typeId: this.typeId,
-                    id: { $nin: this.env?.disabledCategories || [] }
-                }
-            }
-        },
         rawCategories: function () {
-            return this.findCategories(this.categoryQuery).data
-        },
-        activeCategoryId: function () {
-            return 1
+            return this.listCategories.map(category => {
+                return {
+                    ...category,
+                    disabled: this.env.disabledCategories.includes(category.id)
+                }
+            })
         }
     },
     watch: {}

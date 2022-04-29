@@ -2,15 +2,19 @@
     <v-row style="padding: 20px;">
         <v-col cols="12">
             <v-card style="border: thin solid;" class="rounded-pill" :id="`category_${category.id}`">
-                <v-card-text class="text-center">{{category.name}}</v-card-text>
+                <v-card-text class="text-center">
+                    {{category.name}}
+                    <span v-if="disabled">( Deaktiviert )</span>
+                </v-card-text>
             </v-card>
         </v-col>
         <v-col v-for="baseItem in baseItems" :key="`cat_${categoryId}_col_${baseItem.id}`" cols="4" style="padding: 2px;">
-            <v-card :style="itemStyle" :color="chooseColor(baseItem, category)" @click.stop="selectBaseItem(baseItem)" :disabled="!baseItem.available">
+            <v-card :style="itemStyle" :color="chooseColor(baseItem, category)" @click.stop="selectBaseItem(baseItem)" :disabled="!baseItem.available || disabled">
                 <v-card-text class="text-center mx-auto">
                     {{ `${baseItem.name}` }}
                     <br/>
                     <span v-if="!baseItem.available">(ausverkauft)</span>
+                    <span v-if="disabled">( -> Buffet )</span>
                 </v-card-text>
             </v-card>
         </v-col>
@@ -73,34 +77,6 @@
                                 <span v-if="addition.priceModifier !== 0" class="ml-2">{{ `( +${addition.priceModifier}€ )` }}</span>
                             </template>
                         </v-checkbox>
-                        <!-- <v-list-item
-                            dense
-                            
-                            class="ma-1"
-                            :style="additionsObjects.find(({ id }) => id === addition.id).amount > 0 ? 'border: 2px solid #2196f3; border-radius: 4px;' : 'border: 2px solid #2196f300; border-radius: 4px;'">
-                            <v-list-item-content>
-                                <v-list-item-title>
-                                    {{ `${addition.name}` }}
-                                </v-list-item-title>
-                            </v-list-item-content>
-                            <v-list-item-action>
-                                <v-btn icon @click="decreaseAmount(addition.id)">
-                                    <v-icon>remove</v-icon>
-                                </v-btn>
-                            </v-list-item-action>
-                            <v-list-item-icon>
-                                <v-btn text disabled rounded outlined>
-                                    <span class="white--text">
-                                        {{ additionsObjects.find(({ id }) => id === addition.id).amount }}
-                                    </span>
-                                </v-btn>
-                            </v-list-item-icon>
-                            <v-list-item-action style="margin-left:0px;">
-                                <v-btn icon @click="increaseAmount(addition.id)">
-                                    <v-icon>add</v-icon>
-                                </v-btn>
-                            </v-list-item-action>
-                        </v-list-item> -->
                         <v-divider v-if="additions.length > 0" class="my-4"></v-divider>
                         <v-textarea
                             label="Kommentar"
@@ -182,7 +158,7 @@ export default {
             if (!baseItem) {
                 return 'grey lighten-1'
             }
-            if (!baseItem.available) {
+            if (!baseItem.available || this.disabled) {
                 return 'grey darken-2'
             }
             if (category.color) {
@@ -207,6 +183,9 @@ export default {
         }
     },
     computed: {
+        ...mapGetters('env', {
+            listEnv: 'list'
+        }),
         ...mapGetters('base-items', {
             getBaseItem: 'get',
             findBaseItems: 'find'
@@ -228,8 +207,14 @@ export default {
         ...mapGetters('additions', {
             findAdditions: 'find'
         }),
+        env: function () {
+            return this.listEnv[0]
+        },
         categoryId: function () {
             return this.category.id
+        },
+        disabled: function () {
+            return this.env.disabledCategories.includes(this.categoryId)
         },
         itemHeight: function () {
             return `${(window.screen.width - 8) / 3}px`

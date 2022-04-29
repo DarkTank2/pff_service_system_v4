@@ -1,7 +1,7 @@
 <template>
     <v-btn :to="{ name: 'TableSelection' }" block outlined>
-        <span>Cash</span>
         <v-icon>euro_symbol</v-icon>
+        <span class="ml-2">Cash</span>
     </v-btn>
 </template>
 

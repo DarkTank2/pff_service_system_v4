@@ -2,13 +2,13 @@
   <div>
       <v-card>
           <v-card-title>
-              <v-btn :to="{ name: 'TypeSelection' }" outlined>
+              <v-btn :to="{ name: 'Home' }" outlined>
                   <v-icon class="mr-2">chevron_left</v-icon>
                   zurück
               </v-btn>
           </v-card-title>
           <v-container>
-              <single-category v-for="category in rawCategories" :key="`single_category_${category.id}`" :category="category" />
+              <single-category v-for="category in categories" :key="`single_category_${category.id}`" :category="category" />
               <!-- <v-row style="padding: 20px;">
                   <v-col v-for="n in 100" :key="`col_${n}`" cols="4" style="padding: 2px;">
                       <v-card :style="itemStyle" color="blue darken-3">
@@ -36,7 +36,7 @@ export default {
         if (!this.env) {
             this.fetchEnv()
         }
-        this.fetchCategories(this.categoryQuery)
+        this.fetchCategories()
         this.fetchBaseItems()
         this.fetchSizes()
         this.fetchFlavours()
@@ -78,25 +78,8 @@ export default {
             listEnvs: 'list'
         }),
         ...mapGetters('categories', {
-            findCategories: 'find'
+            categories: 'list'
         }),
-        env: function () {
-            return this.listEnvs[0]
-        },
-        categoryQuery: function () {
-            return {
-                query: {
-                    typeId: this.typeId,
-                    id: { $nin: this.env?.disabledCategories || [] }
-                }
-            }
-        },
-        rawCategories: function () {
-            return this.findCategories(this.categoryQuery).data
-        },
-        activeCategoryId: function () {
-            return 1
-        },
         itemHeight: function () {
             return `${(window.screen.width - 8) / 3}px`
         },

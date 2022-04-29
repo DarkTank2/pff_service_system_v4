@@ -1,7 +1,7 @@
 <template>
     <v-btn :to="{ name: 'TypeSelection' }" block outlined>
-        <span>Order</span>
         <v-icon>brunch_dining</v-icon>
+        <span class="ml-2">Order</span>
     </v-btn>
 </template>
 
