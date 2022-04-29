@@ -55,7 +55,7 @@
                 <v-list-item dense :key="`ordered_item_index_${orderedItem.index}`" :two-line="!orderedItem.comment" :three-line="!!orderedItem.comment">
                     <v-list-item-content>
                         <v-list-item-title>
-                            {{ `${orderedItem.baseItemName}` }}
+                            {{ `${orderedItem.baseItemName}` }}<span class="ml-2">{{ `( à ${orderedItem.item.price + orderedItem.additionsPriceSum}€ )` }}</span>
                         </v-list-item-title>
                         <v-list-item-subtitle>
                             {{ `${orderedItem.flavourName} | ${orderedItem.sizeName}` }}
@@ -89,6 +89,7 @@
                         class="mx-10 order-component-addition"
                         >
                         {{ getAddition(additionId).name }}
+                        <span v-if="getAddition(additionId).priceModifier !== 0" class="ml-2">{{ `( ${getAddition(additionId).priceModifier}€ )` }}</span>
                         <br />
                     </span>
                 </template>
@@ -241,9 +242,12 @@ export default {
         orderedItems: function () {
             return this.rawOrder.map((orderedItem, index) => {
                 let item = this.getItem(orderedItem.itemId)
+                let additionsPriceSum = orderedItem.additions.map(additionId => this.getAddition(additionId)).reduce((acc, val) => { if (val) { return acc + val.priceModifier } else { return acc }}, 0)
                 return {
                     ...orderedItem,
                     index,
+                    item,
+                    additionsPriceSum,
                     baseItemName: this.getBaseItem(item.baseItemId).name,
                     flavourName: this.getFlavour(item.flavourId).name,
                     sizeName: this.getSize(item.sizeId).name

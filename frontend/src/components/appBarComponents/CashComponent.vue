@@ -1,5 +1,5 @@
 <template>
-    <span class="text-h6 bordered px-2">{{ `${roundedSum}€` }}</span>
+    <span class="text-h6 bordered px-2">{{ `&sum; ${roundedSum}€` }}</span>
 </template>
 
 <script>

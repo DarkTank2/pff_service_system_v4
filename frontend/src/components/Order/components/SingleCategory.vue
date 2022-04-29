@@ -34,7 +34,7 @@
                 </v-toolbar>
                 <v-card-text>
                     <v-container fluid>
-                        <span class="text-body-1">Ausrichtung:</span>
+                        <span class="text-body-1">Variationen:</span>
                         <v-radio-group v-model="selectedFlavour" dense>
                             <v-radio
                                 v-for="flavour in flavours"
@@ -67,7 +67,12 @@
                             :label="addition.name"
                             dense
                             hide-details
-                            />
+                            >
+                            <template #label>
+                                <span>{{ addition.name }}</span>
+                                <span v-if="addition.priceModifier !== 0" class="ml-2">{{ `( +${addition.priceModifier}€ )` }}</span>
+                            </template>
+                        </v-checkbox>
                         <!-- <v-list-item
                             dense
                             

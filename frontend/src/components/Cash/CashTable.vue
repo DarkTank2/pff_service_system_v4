@@ -7,11 +7,11 @@
           </v-btn>
           <v-btn outlined class="flex-grow-1 mx-2 v-btn--active" v-if="listCashingItems.length === 0" @click="addAll()">
             <v-icon>library_add_check</v-icon>
-            alles auswählen
+            alles
           </v-btn>
           <v-btn outlined class="flex-grow-1 mx-2 v-btn--active" v-else @click="clearCash">
             <v-icon>clear</v-icon>
-            alles abwählen
+            nichts
           </v-btn>
       </v-card-title>
     <v-container fluid>
@@ -30,7 +30,7 @@
             >
             <v-list-item-content>
               <v-list-item-title>
-                {{ `${orderedItem.baseItemName}` }}
+                {{ `${orderedItem.baseItemName}` }}<span class="ml-2">{{ `( à ${orderedItem.item.price + orderedItem.additionsPriceSum}€ )` }}</span>
               </v-list-item-title>
               <v-list-item-subtitle>
                 {{ `${orderedItem.flavourName} | ${orderedItem.sizeName}` }}
@@ -64,6 +64,7 @@
                 class="mx-10 order-component-addition"
                 >
                 {{ addition.name }}
+                <span v-if="addition.priceModifier !== 0" class="ml-2">{{ `( ${addition.priceModifier}€ )` }}</span>
                 <br />
             </span>
           </template>
@@ -179,10 +180,13 @@ export default {
       return this.rawOrderedItems.map(orderedItem => {
         let item = this.getItem(orderedItem.itemId)
         let additions = this.findMaps({ query: { orderedItemId: orderedItem.id } }).data.map(({ additionId }) => this.getAddition(additionId) || {})
+        let additionsPriceSum = additions.reduce((acc, val) => { if (val) { return acc + val.priceModifier } else { return acc }}, 0)
         let cashableItem = this.getCashableItem(orderedItem.id)
         if (item) {
           return {
               ...orderedItem,
+              item,
+              additionsPriceSum,
               baseItemName: this.getBaseItem(item.baseItemId)?.name,
               flavourName: this.getFlavour(item.flavourId)?.name,
               sizeName: this.getSize(item.sizeId)?.name,
