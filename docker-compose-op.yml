@@ -14,7 +14,7 @@ services:
     image: traefik:v2.2
     #command: --api.insecure=true --providers.docker
     ports:
-      - 9090:80
+      - 80:80
       - 8090:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -23,8 +23,8 @@ services:
 
   backend:
     image: node:lts
-    user: "node"
     container_name: "pff_backend"
+    user: "node"
     working_dir: /home/node/app
     environment:
       - DBCREDENTIALS=postgres://scoutadmin:DB4ScoutServiceProgram@ssp_db:5432/main
@@ -33,10 +33,12 @@ services:
     ports:
        - 3030:3030
     command: "npm run start"
+    depends_on:
+      - postgres
 
   frontend:
     image: nginx:latest
-    container_name: aoa_nginx
+    container_name: pss_frontend_nginx
     volumes:
       - ./frontend/dist:/usr/share/nginx/html
     ports:
