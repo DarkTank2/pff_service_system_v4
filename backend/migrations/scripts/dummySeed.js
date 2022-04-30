@@ -71,13 +71,17 @@ module.exports = {
         { id: 2, name: '0.25l'},
         { id: 3, name: '0.33l'},
         { id: 4, name: '0.5l'},
-        { id: 5, name: '0.7l'},
+        { id: 5, name: '0.7l (Flasche)'},
         { id: 6, name: '1l' },
         { id: 7, name: 'normal'},
         { id: 8, name: 'Portion' },
-        { id: 9, name: '1 Stück'}
+        { id: 9, name: '1 Stück'},
+        { id: 10, name: 'Glas' },
+        { id: 11, name: 'Flasche' },
+        { id: 12, name: 'Krug' },
+        { id: 13, name: '-'}
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('sizes', 'id'), 10)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('sizes', 'id'), 14)
       console.log('Added sizes')
       await queryInterface.bulkInsert('flavours', [
         { id: 1, name: 'gespritzt leitung' },
@@ -94,22 +98,80 @@ module.exports = {
         { id: 12, name: '+ Orangensaft' },
         { id: 13, name: 'Prosecco' },
         { id: 14, name: 'Wein' },
-        { id: 15, name: '-'}
+        { id: 15, name: '-'},
+        { id: 16, name: 'Sektglas'},
+        { id: 17, name: 'Weinglas'},
+        { id: 18, name: 'Kleines Glas'},
+        { id: 19, name: 'Grosses Glas'}
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('flavours', 'id'), 16)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('flavours', 'id'), 20)
       console.log('Added flavours')
       await queryInterface.bulkInsert('items', [
         { id: 1, price: 2.8, baseItemId: 1, sizeId: 9, flavourId: 15, default: true },
-        { id: 8, price: 3.8, baseItemId: 2, sizeId: 8, flavourId: 15, default: true },
-        { id: 8, price: 3.8, baseItemId: 3, sizeId: 8, flavourId: 4, default: true },
-        { id: 8, price: 3.8, baseItemId: 3, sizeId: 8, flavourId: 5 },
-        { id: 8, price: 3.8, baseItemId: 3, sizeId: 8, flavourId: 6 },
-        { id: 8, price: 2.8, baseItemId: 4, sizeId: 8, flavourId: 7, default: true },
-        { id: 8, price: 2.8, baseItemId: 4, sizeId: 8, flavourId: 8 },
+        { id: 2, price: 3.8, baseItemId: 2, sizeId: 8, flavourId: 15, default: true },
+        { id: 3, price: 3.8, baseItemId: 3, sizeId: 8, flavourId: 4, default: true },
+        { id: 4, price: 3.8, baseItemId: 3, sizeId: 8, flavourId: 5 },
+        { id: 5, price: 3.8, baseItemId: 3, sizeId: 8, flavourId: 6 },
+        { id: 6, price: 2.8, baseItemId: 4, sizeId: 8, flavourId: 7, default: true },
+        { id: 7, price: 2.8, baseItemId: 4, sizeId: 8, flavourId: 8 },
         { id: 8, price: 3.8, baseItemId: 5, sizeId: 8, flavourId: 15, default: true },
-        { id: 8, price: 2.8, baseItemId: 6, sizeId: 9, flavourId: 15, default: true }
+        { id: 9, price: 2.8, baseItemId: 6, sizeId: 9, flavourId: 15, default: true },
+        { id: 10, price: 2.5, baseItemId: 7, sizeId: 3, flavourId: 15, default: true },
+        { id: 11, price: 1.6, baseItemId: 7, sizeId: 2, flavourId: 2 },
+        { id: 12, price: 3.2, baseItemId: 7, sizeId: 4, flavourId: 2 },
+        { id: 13, price: 2.5, baseItemId: 8, sizeId: 3, flavourId: 15, default: true },
+        { id: 14, price: 1.6, baseItemId: 8, sizeId: 2, flavourId: 2 },
+        { id: 15, price: 3.2, baseItemId: 8, sizeId: 4, flavourId: 2 },
+        { id: 16, price: 2, baseItemId: 9, sizeId: 2, flavourId: 3, default: true },
+        { id: 17, price: 1.6, baseItemId: 9, sizeId: 2, flavourId: 2 },
+        { id: 18, price: 3.2, baseItemId: 9, sizeId: 4, flavourId: 2 },
+        { id: 19, price: 2, baseItemId: 10, sizeId: 2, flavourId: 3, default: true },
+        { id: 20, price: 1.6, baseItemId: 10, sizeId: 2, flavourId: 2 },
+        { id: 21, price: 3.2, baseItemId: 10, sizeId: 4, flavourId: 2 },
+        { id: 22, price: 1.2, baseItemId: 11, sizeId: 2, flavourId: 15, default: true },
+        { id: 23, price: 4, baseItemId: 11, sizeId: 4, flavourId: 15 },
+        { id: 24, price: 3, baseItemId: 12, sizeId: 3, flavourId: 15, default: true },
+        { id: 25, price: 3, baseItemId: 13, sizeId: 3, flavourId: 15, default: true },
+        { id: 26, price: 18, baseItemId: 14, sizeId: 5, flavourId: 15, default: true },
+        { id: 27, price: 3.5, baseItemId: 14, sizeId: 1, flavourId: 15 },
+        { id: 28, price: 15, baseItemId: 15, sizeId: 5, flavourId: 15, default: true },
+        { id: 29, price: 3, baseItemId: 15, sizeId: 1, flavourId: 15 },
+        { id: 30, price: 15, baseItemId: 16, sizeId: 5, flavourId: 15, default: true },
+        { id: 31, price: 3, baseItemId: 16, sizeId: 1, flavourId: 15 },
+        { id: 32, price: 16, baseItemId: 17, sizeId: 5, flavourId: 15, default: true },
+        { id: 33, price: 3.2, baseItemId: 17, sizeId: 1, flavourId: 15 },
+        { id: 34, price: 16, baseItemId: 18, sizeId: 5, flavourId: 15, default: true },
+        { id: 35, price: 3.2, baseItemId: 18, sizeId: 1, flavourId: 15 },
+        { id: 36, price: 15, baseItemId: 19, sizeId: 5, flavourId: 15, default: true },
+        { id: 37, price: 3, baseItemId: 19, sizeId: 1, flavourId: 15 },
+        { id: 38, price: 16, baseItemId: 20, sizeId: 5, flavourId: 15, default: true },
+        { id: 39, price: 3.2, baseItemId: 20, sizeId: 1, flavourId: 15 },
+        { id: 40, price: 22, baseItemId: 21, sizeId: 5, flavourId: 15, default: true },
+        { id: 41, price: 4.2, baseItemId: 21, sizeId: 1, flavourId: 15 },
+        { id: 42, price: 2.5, baseItemId: 22, sizeId: 2, flavourId: 15, default: true },
+        { id: 43, price: 2.5, baseItemId: 23, sizeId: 2, flavourId: 15, default: true },
+        { id: 44, price: 2.3, baseItemId: 24, sizeId: 2, flavourId: 9, default: true },
+        { id: 45, price: 2.3, baseItemId: 24, sizeId: 2, flavourId: 10 },
+        { id: 46, price: 3.2, baseItemId: 25, sizeId: 2, flavourId: 15, default: true },
+        { id: 47, price: 3.2, baseItemId: 26, sizeId: 2, flavourId: 15, default: true },
+        { id: 48, price: 2.8, baseItemId: 27, sizeId: 2, flavourId: 9, default: true },
+        { id: 49, price: 2.8, baseItemId: 27, sizeId: 2, flavourId: 10 },
+        { id: 50, price: 3.2, baseItemId: 28, sizeId: 10, flavourId: 11, default: true },
+        { id: 51, price: 3.2, baseItemId: 28, sizeId: 10, flavourId: 12 },
+        { id: 52, price: 18, baseItemId: 28, sizeId: 11, flavourId: 11 },
+        { id: 53, price: 18, baseItemId: 28, sizeId: 11, flavourId: 12 },
+        { id: 54, price: 4, baseItemId: 29, sizeId: 10, flavourId: 13, default: true },
+        { id: 55, price: 3.5, baseItemId: 29, sizeId: 10, flavourId: 14 },
+        { id: 56, price: 3.8, baseItemId: 30, sizeId: 10, flavourId: 15, default: true },
+        { id: 57, price: 0, baseItemId: 31, sizeId: 12, flavourId: 15, default: true },
+        { id: 58, price: 0, baseItemId: 31, sizeId: 2, flavourId: 15 },
+        { id: 59, price: 0, baseItemId: 31, sizeId: 4, flavourId: 15 },
+        { id: 60, price: 0, baseItemId: 32, sizeId: 13, flavourId: 16, default: true },
+        { id: 61, price: 0, baseItemId: 32, sizeId: 13, flavourId: 17 },
+        { id: 62, price: 0, baseItemId: 32, sizeId: 13, flavourId: 18 },
+        { id: 63, price: 0, baseItemId: 32, sizeId: 13, flavourId: 19 }
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('items', 'id'), 14)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('items', 'id'), 64)
       console.log('Added items')
       await queryInterface.bulkInsert('additions', [
         { id: 1, name: 'Senf', priceModifier: 0 },

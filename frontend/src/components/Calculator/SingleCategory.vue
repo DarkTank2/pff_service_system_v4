@@ -123,7 +123,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 
 export default {
-    name: 'SingleCategory',
+    name: 'SingleCategory_Calc',
     props: {
         category: {
             required: true,

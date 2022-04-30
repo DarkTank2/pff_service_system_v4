@@ -33,11 +33,31 @@
                 </v-system-bar>
                 <v-toolbar max-height="56px">
                     <v-spacer></v-spacer>
-                    <v-toolbar-title>{{selectedItem.name}}</v-toolbar-title>
+                    <v-toolbar-title>{{`${selectedItem.name} ( à ${currentPrice}€ )`}}</v-toolbar-title>
                     <v-spacer></v-spacer>
                 </v-toolbar>
                 <v-card-text>
                     <v-container fluid>
+                        <v-list-item class="d-flex">
+                            <v-list-item-action>
+                                <v-btn icon @click="decrementQuantity()">
+                                    <v-icon>remove</v-icon>
+                                </v-btn>
+                            </v-list-item-action>
+                            <v-list-item-icon>
+                                <v-btn text disabled rounded outlined class="bordered">
+                                    <span class="white--text">
+                                        {{ quantity }}
+                                    </span>
+                                </v-btn>
+                            </v-list-item-icon>
+                            <v-list-item-action>
+                                <v-btn icon @click="quantity += 1">
+                                    <v-icon>add</v-icon>
+                                </v-btn>
+                            </v-list-item-action>
+                        </v-list-item>
+                        <v-divider></v-divider>
                         <span class="text-body-1">Variationen:</span>
                         <v-radio-group v-model="selectedFlavour" dense>
                             <v-radio
@@ -126,7 +146,8 @@ export default {
         selectedFlavour: null,
         selectedSize: null,
         comment: null,
-        selectedAdditions: []
+        selectedAdditions: [],
+        quantity: 1
     }),
     created: function () {},
     mounted: async function () {},
@@ -153,6 +174,7 @@ export default {
             this.comment = null
             this.selectedAdditions = []
             this.dialog = false
+            this.quantity = 1
         },
         chooseColor: function (baseItem, category) {
             if (!baseItem) {
@@ -177,9 +199,13 @@ export default {
             if (!item) {
                 console.log('No item with given configuration found!')
             } else {
-                this.addItemToOrder({ itemId: item.id, quantity: 1, comment: this.comment, additions: [...this.selectedAdditions] })
+                this.addItemToOrder({ itemId: item.id, quantity: this.quantity, comment: this.comment, additions: [...this.selectedAdditions] })
                 this.closeDialog()
             }
+        },
+        decrementQuantity: function () {
+            this.quantity -= 1
+            if (this.quantity < 1) this.quantity = 1
         }
     },
     computed: {
@@ -205,7 +231,8 @@ export default {
             findMaps: 'find'
         }),
         ...mapGetters('additions', {
-            findAdditions: 'find'
+            findAdditions: 'find',
+            getAddition: 'get'
         }),
         env: function () {
             return this.listEnv[0]
@@ -261,6 +288,18 @@ export default {
         },
         additions: function () {
             return this.findAdditions(this.additionsQuery).data
+        },
+        currentPrice: function () {
+            let item = this.findItems({
+                query: {
+                    baseItemId: this.selectedItem.id,
+                    flavourId: this.selectedFlavour,
+                    sizeId: this.selectedSize
+                }
+            }).data[0]
+            let itemPrice = item ? item.price : 0
+            let additionsSum = this.selectedAdditions.map(id => this.getAddition(id)).reduce((acc, val) => val ? (val.priceModifier + acc) : acc, 0)
+            return (itemPrice + additionsSum)
         }
     },
     watch: {}
