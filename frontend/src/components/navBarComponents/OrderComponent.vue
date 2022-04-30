@@ -183,6 +183,7 @@ export default {
                     tableId: this.getTableId
                 }
             })
+            if (data.length === 0) return
             this.$emit('closeNavbar')
             this.setFetchPendingFlag().then(() => {
                 this.createOrderedItems([data]).then((res) => {
@@ -203,7 +204,6 @@ export default {
                         res[i] = {} // remove ordered item, so that the same item can not be found anymore
                     })
                     if (additions.length > 0) {
-                        console.log(additions)
                         this.createMaps([additions]).then(() => {
                             this.resetFetchPendingFlag()
                             this.clearOrder()

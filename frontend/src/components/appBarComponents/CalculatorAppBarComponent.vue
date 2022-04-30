@@ -7,8 +7,8 @@ import { mapGetters } from 'vuex'
 export default {
     name: 'CashAppBarComponent',
     computed: {
-        ...mapGetters('cash', {
-            cashingItems: 'list'
+        ...mapGetters('waiter', {
+            order: 'order'
         }),
         ...mapGetters('items', {
             getItem: 'get'
@@ -23,20 +23,15 @@ export default {
             getAddition: 'get'
         }),
         sum: function () {
-            return this.cashingItems
+            return this.order
                 .map(orderedItem => {
-                    let { toBeCashed, id } = orderedItem
-                    let fullOrderedItem = this.getOrderedItem(id)
-                    if (!fullOrderedItem) {
-                        return 0
-                    }
-                    let item = this.getItem(fullOrderedItem.itemId)
+                    let { quantity, itemId, additions: maps } = orderedItem
+                    let item = this.getItem(itemId)
                     if (!item) {
                         return 0
                     }
-                    let maps = this.findMaps({ query: { orderedItemId: id } }).data
                     let summedAdditions = maps
-                        .map(({ additionId }) => this.getAddition(additionId))
+                        .map(additionId => this.getAddition(additionId))
                         .reduce((acc, val) => {
                             if (val) {
                                 return acc + val.priceModifier
@@ -44,7 +39,7 @@ export default {
                                 return acc + 0
                             }
                         }, 0)
-                    return toBeCashed * (item.price + summedAdditions)
+                    return quantity * (item.price + summedAdditions)
                 })
                 .reduce((acc, val) => acc + val, 0)
         },

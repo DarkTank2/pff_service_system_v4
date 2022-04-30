@@ -4,22 +4,22 @@
             <v-card style="border: thin solid;" class="rounded-pill" :id="`category_${category.id}`">
                 <v-card-text class="text-center">
                     {{category.name}}
-                    <span v-if="disabled">( Deaktiviert )</span>
                 </v-card-text>
             </v-card>
         </v-col>
         <v-col v-for="baseItem in baseItems" :key="`cat_${categoryId}_col_${baseItem.id}`" cols="2" style="padding: 2px;">
-            <v-card :style="itemStyle" :color="chooseColor(baseItem, category)" @click.stop="selectBaseItem(baseItem)" :disabled="!baseItem.available || disabled">
+            <v-card :style="itemStyle" :color="category.color" @click.stop="selectBaseItem(baseItem)">
                 <v-card-text class="text-center mx-auto">
                     {{ `${baseItem.name}` }}
                     <br/>
                     <span v-if="!baseItem.available">(ausverkauft)</span>
-                    <span v-if="disabled">( -> Buffet )</span>
                 </v-card-text>
             </v-card>
         </v-col>
         <v-dialog
             v-model="dialog"
+            max-width="600px"
+            @click:outside="closeDialog"
             >
             <v-card v-if="selectedItem">
                 <v-system-bar>
@@ -30,14 +30,14 @@
                 </v-system-bar>
                 <v-toolbar max-height="56px">
                     <v-spacer></v-spacer>
-                    <v-toolbar-title>{{selectedItem.name}}</v-toolbar-title>
+                    <v-toolbar-title>{{`${selectedItem.name} ( à ${currentPrice}€ )`}}</v-toolbar-title>
                     <v-spacer></v-spacer>
                 </v-toolbar>
                 <v-card-text>
                     <v-container fluid>
                         <v-list-item class="d-flex">
                             <v-list-item-action>
-                                <v-btn icon >
+                                <v-btn icon @click="decrementQuantity()">
                                     <v-icon>remove</v-icon>
                                 </v-btn>
                             </v-list-item-action>
@@ -48,8 +48,8 @@
                                     </span>
                                 </v-btn>
                             </v-list-item-icon>
-                            <v-list-item-action style="margin-left:0px;">
-                                <v-btn icon >
+                            <v-list-item-action>
+                                <v-btn icon @click="quantity += 1">
                                     <v-icon>add</v-icon>
                                 </v-btn>
                             </v-list-item-action>
@@ -94,13 +94,6 @@
                                 <span v-if="addition.priceModifier !== 0" class="ml-2">{{ `( +${addition.priceModifier}€ )` }}</span>
                             </template>
                         </v-checkbox>
-                        <v-divider v-if="additions.length > 0" class="my-4"></v-divider>
-                        <v-textarea
-                            label="Kommentar"
-                            v-model="comment"
-                            hint="Füge diesem Item ein Kommentar hinzu."
-                            outlined
-                            />
                     </v-container>
                 </v-card-text>
                 <v-card-actions>
@@ -173,18 +166,6 @@ export default {
             this.dialog = false
             this.quantity = 1
         },
-        chooseColor: function (baseItem, category) {
-            if (!baseItem) {
-                return 'grey lighten-1'
-            }
-            if (!baseItem.available || this.disabled) {
-                return 'grey darken-2'
-            }
-            if (category.color) {
-                return category.color
-            }
-            return 'blue darken-3'
-        },
         addToOrder: function () {
             let item = this.findItems({
                 query: {
@@ -199,6 +180,10 @@ export default {
                 this.addItemToOrder({ itemId: item.id, quantity: this.quantity, comment: this.comment, additions: [...this.selectedAdditions] })
                 this.closeDialog()
             }
+        },
+        decrementQuantity: function () {
+            this.quantity -= 1
+            if (this.quantity < 1) this.quantity = 1
         }
     },
     computed: {
@@ -224,7 +209,8 @@ export default {
             findMaps: 'find'
         }),
         ...mapGetters('additions', {
-            findAdditions: 'find'
+            findAdditions: 'find',
+            getAddition: 'get'
         }),
         env: function () {
             return this.listEnv[0]
@@ -280,6 +266,18 @@ export default {
         },
         additions: function () {
             return this.findAdditions(this.additionsQuery).data
+        },
+        currentPrice: function () {
+            let item = this.findItems({
+                query: {
+                    baseItemId: this.selectedItem.id,
+                    flavourId: this.selectedFlavour,
+                    sizeId: this.selectedSize
+                }
+            }).data[0]
+            let itemPrice = item ? item.price : 0
+            let additionsSum = this.selectedAdditions.map(id => this.getAddition(id)).reduce((acc, val) => val ? (val.priceModifier + acc) : acc, 0)
+            return (itemPrice + additionsSum)
         }
     },
     watch: {}
