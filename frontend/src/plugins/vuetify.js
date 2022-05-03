@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify/lib'
 import de from 'vuetify/es5/locale/de'
 import { Touch } from 'vuetify/lib/directives'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
 Vue.use(Vuetify, {
   directives: {
@@ -15,6 +16,6 @@ export default new Vuetify({
     current: 'de'
   },
   icons: {
-    iconfont: 'mdi'
+    iconfont: 'md'
   }
 })
