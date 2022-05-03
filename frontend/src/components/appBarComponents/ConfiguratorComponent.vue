@@ -35,24 +35,24 @@ export default {
                     })
                 })
             })
-            let exp = []
-            exp.push(this.exportService('categories', 'categories'))
-            exp.push(this.exportService('baseItems', 'base_items'))
-            exp.push(this.exportService('sizes', 'sizes'))
-            exp.push(this.exportService('flavours', 'flavours'))
-            exp.push(this.exportService('items', 'items'))
-            exp.push(this.exportService('additions', 'additions'))
-            exp.push(this.exportService('baseItemsHaveAdditions', 'base_items_have_additions'))
-            exp.push(this.exportService('tables', 'tables'))
-            let dataStr = JSON.stringify(exp)
-            let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr)
+            // let exp = []
+            // exp.push(this.exportService('categories', 'categories'))
+            // exp.push(this.exportService('baseItems', 'base_items'))
+            // exp.push(this.exportService('sizes', 'sizes'))
+            // exp.push(this.exportService('flavours', 'flavours'))
+            // exp.push(this.exportService('items', 'items'))
+            // exp.push(this.exportService('additions', 'additions'))
+            // exp.push(this.exportService('baseItemsHaveAdditions', 'base_items_have_additions'))
+            // exp.push(this.exportService('tables', 'tables'))
+            // let dataStr = JSON.stringify(exp)
+            // let dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr)
 
-            let exportFileDefaultName = 'seed.json'
+            // let exportFileDefaultName = 'seed.json'
 
-            let linkElement = document.createElement('a')
-            linkElement.setAttribute('href', dataUri)
-            linkElement.setAttribute('download', exportFileDefaultName)
-            linkElement.click()
+            // let linkElement = document.createElement('a')
+            // linkElement.setAttribute('href', dataUri)
+            // linkElement.setAttribute('download', exportFileDefaultName)
+            // linkElement.click()
         },
         exportService: function (listGetter, tableName, removeProperties = []) {
             let data = []

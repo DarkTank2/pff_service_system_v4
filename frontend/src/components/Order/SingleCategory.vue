@@ -28,7 +28,7 @@
                 <v-system-bar>
                     <v-spacer></v-spacer>
                     <v-btn icon @click.stop="closeDialog">
-                        <v-icon>mdi-close</v-icon>
+                        <v-icon>clear</v-icon>
                     </v-btn>
                 </v-system-bar>
                 <v-toolbar max-height="56px">
