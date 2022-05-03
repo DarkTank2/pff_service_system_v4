@@ -10,7 +10,7 @@
         <v-col v-for="baseItem in baseItems" :key="`cat_${categoryId}_col_${baseItem.id}`" cols="2" style="padding: 2px;">
             <v-card :style="itemStyle" :color="category.color" @click.stop="selectBaseItem(baseItem)">
                 <v-card-text class="text-center mx-auto">
-                    {{ `${baseItem.name}` }}
+                    <span class="text-h4">{{ `${baseItem.name}` }}</span>
                     <br/>
                     <span v-if="!baseItem.available">(ausverkauft)</span>
                 </v-card-text>
@@ -25,7 +25,7 @@
                 <v-system-bar>
                     <v-spacer></v-spacer>
                     <v-btn icon @click.stop="closeDialog">
-                        <v-icon>mdi-close</v-icon>
+                        <v-icon>clear</v-icon>
                     </v-btn>
                 </v-system-bar>
                 <v-toolbar max-height="56px">

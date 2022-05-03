@@ -16,17 +16,17 @@
                     <v-list-item dense :key="`ordered_item_index_${index}`" :two-line="!orderedItem.comment" :three-line="!!orderedItem.comment">
                         <v-list-item-content>
                             <v-list-item-title>
-                                <span class="text-h5">{{ `${orderedItem.baseItem.name}` }}</span>
+                                <span class="text-h4">{{ `${orderedItem.baseItem.name}` }}</span>
                             </v-list-item-title>
                             <v-list-item-subtitle>
-                                <span class="text-h6">{{ `${orderedItem.flavour.name} | ${orderedItem.size.name}` }}</span>
+                                <span class="text-h4">{{ `${orderedItem.flavour.name} | ${orderedItem.size.name}` }}</span>
                             </v-list-item-subtitle>
                             <v-list-item-subtitle v-if="!!orderedItem.comment" style="border: 2px solid #2196f3; border-radius: 4px;" class="pa-2">
-                                {{ orderedItem.comment }}
+                                <span class="text-h4">{{ orderedItem.comment }}</span>
                             </v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-action>
-                            <span class="text-h5">{{ `x ${orderedItem.quantity}` }}</span>
+                            <span class="text-h4">{{ `x ${orderedItem.quantity}` }}</span>
                         </v-list-item-action>
                     </v-list-item>
                     <template v-if="orderedItem.additions.length > 0">
