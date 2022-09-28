@@ -6,11 +6,12 @@
 import { mapActions } from 'vuex'
 export default {
   name: 'Cash',
+  data: () => ({
+    timer: null
+  }),
   mounted: function () {
     this.fetchTables()
-    this.fetchOrderedItems({ query: { finished: true } }).then(data => {
-      this.fetchMaps({ query: { orderedItemId: { $in: data.map(({ id }) => id) } } })
-    })
+    this.fetchAgain()
     this.fetchSizes()
     this.fetchFlavours()
     this.fetchBaseItems()
@@ -41,8 +42,20 @@ export default {
     }),
     ...mapActions('additions', {
       fetchAdditions: 'find'
-    })
-  }
+    }),
+    fetchAgain: function () {
+      this.fetchOrderedItems({ query: { finished: true } }).then(data => {
+        this.fetchMaps({ query: { orderedItemId: { $in: data.map(({ id }) => id) } } }).then(() => {
+          this.timer = setTimeout(this.fetchAgain, 5000)
+        })
+      })
+    }
+  },
+  beforeDestroy: function () {
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+    }
 }
 </script>
 

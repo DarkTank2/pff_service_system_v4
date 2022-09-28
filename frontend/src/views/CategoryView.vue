@@ -30,19 +30,13 @@ export default {
     name: 'CategoryView',
     components: { SingleCategory },
     props: ['typeId'],
-    data: () => ({}),
+    data: () => ({ timer: null }),
     created: function () {},
     mounted: async function () {
         if (!this.env) {
             this.fetchEnv()
         }
-        this.fetchCategories()
-        this.fetchBaseItems()
-        this.fetchSizes()
-        this.fetchFlavours()
-        this.fetchItems()
-        this.fetchMaps()
-        this.fetchAdditions()
+        this.fetchAgain()
     },
     methods: {
         ...mapActions('env', {
@@ -71,6 +65,19 @@ export default {
         }),
         scrollToCategory: function (id) {
             return id
+        },
+        fetchAgain: function () {
+          let fetches = []
+          fetches.push(this.fetchCategories())
+          fetches.push(this.fetchBaseItems())
+          fetches.push(this.fetchSizes())
+          fetches.push(this.fetchFlavours())
+          fetches.push(this.fetchItems())
+          fetches.push(this.fetchMaps())
+          fetches.push(this.fetchAdditions())
+          Promise.all(fetches).then(() => {
+            this.timer = setTimeout(this.fetchAgain, 10000)
+          })
         }
     },
     computed: {
@@ -87,7 +94,12 @@ export default {
             return `height: ${this.itemHeight};`
         }
     },
-    watch: {}
+    watch: {},
+    beforeDestroy: function () {
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
+    }
 }
 </script>
 

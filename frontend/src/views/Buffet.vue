@@ -21,7 +21,8 @@ export default {
     components: { Cluster },
     data: () => ({
         orderedItemsQuery: { query: { finished: false } },
-        cardSize: null
+        cardSize: null,
+        timer: null
     }),
     mounted: function () {
         this.fetchTables()
@@ -31,7 +32,7 @@ export default {
         this.fetchFlavours()
         this.fetchMaps()
         this.fetchAdditions()
-        this.fetchOrderedItems(this.orderedItemsQuery)
+        this.fetchAgain()
     },
     methods: {
         ...mapActions('ordered-items', {
@@ -66,6 +67,11 @@ export default {
             if (newSize > this.cardSize) {
                 this.cardSize = newSize
             }
+        },
+        fetchAgain: function () {
+          this.fetchOrderedItems(this.orderedItemsQuery).then(() => {
+            this.timer = setTimeout(this.fetchAgain, 5000)
+          })
         }
     },
     computed: {
@@ -123,6 +129,11 @@ export default {
         clusteredOrders: function () {
             this.cardSize = null
         }
+    },
+    beforeDestroy: function () {
+      if (this.timer) {
+        clearTimeout(this.timer)
+      }
     }
 }
 </script>
