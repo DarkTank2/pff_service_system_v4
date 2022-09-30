@@ -61,7 +61,8 @@ const cash = {
 const utilities = {
   namespaced: true,
   state: {
-    fetchPendingFlag: false
+    fetchPendingFlag: false,
+    notification: null
   },
   ...utilityMethods
 }

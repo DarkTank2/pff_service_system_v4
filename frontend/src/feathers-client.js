@@ -10,7 +10,8 @@ import feathersVuex from 'feathers-vuex'
 // const socket = io(`localhost:9090`, { transports: ['websocket'], upgrade: false, path: '/sws' })
 // const apiUrl = process.env.API_URL
 // console.log(window.location.hostname)
-let restClient = rest(`http://localhost:9090`)
+// let restClient = rest(`http://localhost:9090`)
+let restClient = rest(`${window.location.origin}`)
 const transport = restClient.axios(axios)
 
 const feathersClient = feathers()

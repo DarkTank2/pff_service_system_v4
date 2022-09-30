@@ -55,17 +55,25 @@
     <v-main :style="mainStyle">
       <router-view/>
       <v-btn
-          v-if="meta.bottomNavbarComponent"
-          elevation="2"
-          fab
-          fixed
-          bottom
-          right
-          @click="bottomNav = true"
-          >
-          <v-icon>shopping_cart</v-icon>
-      </v-btn>
+            v-if="meta.bottomNavbarComponent"
+            elevation="2"
+            fab
+            fixed
+            bottom
+            right
+            @click="bottomNav = true"
+            >
+            <v-badge
+              bordered
+              :content="badgeContent"
+              :value="badgeContent"
+              :color="badgeColor"
+              >
+                <v-icon>shopping_cart</v-icon>
+            </v-badge>
+        </v-btn>
       <loading />
+      <notification />
     </v-main>
   </v-app>
 </template>
@@ -73,28 +81,45 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import Loading from './components/utility/loading.vue'
+import Notification from './components/utility/notification.vue'
 export default {
   name: 'App',
   components: {
-    Loading
+    Loading,
+    Notification
   },
   data: () => ({
     darkMode: true,
     bottomNav: null,
-    sideNav: null
+    sideNav: null,
+    timer: null
   }),
   created: function () {
     this.$vuetify.theme.dark = this.darkMode
-    this.fetchENV()
+    this.fetchAgain()
   },
   methods: {
     ...mapActions('env', {
       fetchENV: 'find'
-    })
+    }),
+    fetchAgain: function () {
+      this.fetchENV().then(() => {
+        this.timer = setTimeout(this.fetchAgain, 5000)
+      })
+    }
   },
   computed: {
     ...mapGetters('env', {
       getENV: 'get'
+    }),
+    ...mapGetters('waiter', {
+        rawOrder: 'order'
+    }),
+    ...mapGetters('items', {
+        getItem: 'get'
+    }),
+    ...mapGetters('base-items', {
+        getBaseItem: 'get'
     }),
     env: function () {
       return this.getENV('_env')
@@ -104,6 +129,24 @@ export default {
     },
     mainStyle: function () {
       return `padding: ${this.meta.extension ? '104' : '56'}px 0px 0px;`
+    },
+    badgeContent: function () {
+      return this.rawOrder.reduce((acc, val) => acc + val.quantity, 0)
+    },
+    allAvailable: function () {
+      return this.rawOrder.map((orderedItem) => {
+          let item = this.getItem(orderedItem.itemId)
+          let baseItem = this.getBaseItem(item.baseItemId)
+          return baseItem.available
+      }).reduce((acc, val) => acc && val, true)
+    },
+    badgeColor: function () {
+      return this.allAvailable ? 'green' : 'error'
+    }
+  },
+  beforeDestroy: function () {
+    if (this.timer) {
+      clearTimeout(this.timer)
     }
   }
 };

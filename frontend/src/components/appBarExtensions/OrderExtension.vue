@@ -29,7 +29,9 @@ export default {
     name: 'OrderExtension',
     components: {},
     props: [],
-    data: () => ({}),
+    data: () => ({
+        activeCategory: null
+    }),
     created: function () {},
     mounted: async function () {
         if (!this.env) {

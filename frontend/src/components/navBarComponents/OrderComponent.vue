@@ -53,7 +53,7 @@
                     :key="`divider_index_${orderedItem.index}`"
                     :class="orderedItems.at(i - 1).additions.length > 0 ? 'mt-4' : ''"
                     />
-                <v-list-item dense :key="`ordered_item_index_${orderedItem.index}`" :two-line="!orderedItem.comment" :three-line="!!orderedItem.comment">
+                <v-list-item dense :key="`ordered_item_index_${orderedItem.index}`" :two-line="!orderedItem.comment" :three-line="!!orderedItem.comment" class="ma-1" :class="{ bordered: !orderedItem.available }">
                     <v-list-item-content>
                         <v-list-item-title>
                             {{ `${orderedItem.baseItemName}` }}<span class="ml-2">{{ `( à ${orderedItem.item.price + orderedItem.additionsPriceSum}€ )` }}</span>
@@ -156,7 +156,8 @@ export default {
         }),
         ...mapActions('utilities', {
             setFetchPendingFlag: 'setFetchPendingFlag',
-            resetFetchPendingFlag: 'resetFetchPendingFlag'
+            resetFetchPendingFlag: 'resetFetchPendingFlag',
+            setNotification: 'setNotification'
         }),
         handleName: function (newName) {
             if (newName === null) newName = ''
@@ -205,13 +206,25 @@ export default {
                     })
                     if (additions.length > 0) {
                         this.createMaps([additions]).then(() => {
-                            this.resetFetchPendingFlag()
+                            this.resetFetchPendingFlag().then(() => {
+                                this.setNotification({ message: 'Bestellung erfolgreich!', timeout: 2000, type: 'success' })
+                            })
                             this.clearOrder()
+                        }).catch(() => {
+                            this.resetFetchPendingFlag().then(() => {
+                                this.setNotification({ message: `Fehler! Melde dich bitte bei Alex und zeige ihm deinen Warenkorb!`, timeout: -1, type: 'error' })
+                            })
                         })
                     } else {
-                        this.resetFetchPendingFlag()
+                        this.resetFetchPendingFlag().then(() => {
+                            this.setNotification({ message: 'Bestellung erfolgreich!', timeout: 2000, type: 'success' })
+                        })
                         this.clearOrder()
                     }
+                }).catch(() => {
+                    this.resetFetchPendingFlag().then(() => {
+                        this.setNotification({ message: `Fehler! Melde dich bitte bei Alex und zeige ihm deinen Warenkorb!`, timeout: -1, type: 'error' })
+                    })
                 })
             })
             return data
@@ -243,13 +256,15 @@ export default {
         orderedItems: function () {
             return this.rawOrder.map((orderedItem, index) => {
                 let item = this.getItem(orderedItem.itemId)
+                let baseItem = this.getBaseItem(item.baseItemId)
                 let additionsPriceSum = orderedItem.additions.map(additionId => this.getAddition(additionId)).reduce((acc, val) => { if (val) { return acc + val.priceModifier } else { return acc }}, 0)
                 return {
                     ...orderedItem,
                     index,
                     item,
                     additionsPriceSum,
-                    baseItemName: this.getBaseItem(item.baseItemId).name,
+                    baseItemName: baseItem.name,
+                    available: baseItem.available,
                     flavourName: this.getFlavour(item.flavourId).name,
                     sizeName: this.getSize(item.sizeId).name
                 }
@@ -265,5 +280,9 @@ export default {
     font-weight: 500;
     line-height: 1rem;
     color: rgba(255, 255, 255, 0.7);
+}
+.bordered {
+  border: 1px solid #F44336;
+  border-radius: 4px;
 }
 </style>
