@@ -82,6 +82,7 @@
           bottom
           right
           @click="cash"
+          :disabled="listCashingItems.length === 0"
           >
           <v-icon>euro_symbol</v-icon>
       </v-btn>
@@ -109,7 +110,8 @@ export default {
     }),
     ...mapActions('utilities', {
         setFetchPendingFlag: 'setFetchPendingFlag',
-        resetFetchPendingFlag: 'resetFetchPendingFlag'
+        resetFetchPendingFlag: 'resetFetchPendingFlag',
+        setNotification: 'setNotification'
     }),
     decrementId: function (oi) {
       this.decrementOrderedItem(oi)
@@ -129,11 +131,16 @@ export default {
         Promise.all(promises).then(() => {
           this.clearCash()
           this.resetFetchPendingFlag().then(() => {
+            this.setNotification({ message: 'Erfolg!', timeout: 2000, type: 'success' })
             if (this.orderedItems.length === 0) {
               this.$router.push({ name: 'TableSelection' })
             }
           })
-        })
+        }).catch(() => {
+            this.resetFetchPendingFlag().then(() => {
+              this.setNotification({ message: `Fehler! Melde dich bitte bei Alex und zeige ihm die Tischnummer!`, timeout: -1, type: 'error' })
+            })
+          })
       })
     },
     addAll: function () {

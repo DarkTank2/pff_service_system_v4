@@ -131,7 +131,7 @@ export default {
       return `padding: ${this.meta.extension ? '104' : '56'}px 0px 0px;`
     },
     badgeContent: function () {
-      return this.rawOrder.reduce((acc, val) => acc + val.quantity, 0)
+      return this.allAvailable ? this.rawOrder.reduce((acc, val) => acc + val.quantity, 0) : '!'
     },
     allAvailable: function () {
       return this.rawOrder.map((orderedItem) => {

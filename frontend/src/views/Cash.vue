@@ -45,8 +45,9 @@ export default {
     }),
     fetchAgain: function () {
       this.fetchOrderedItems({ query: { finished: true } }).then(data => {
-        this.fetchMaps({ query: { orderedItemId: { $in: data.map(({ id }) => id) } } }).then(() => {
-          this.timer = setTimeout(this.fetchAgain, 5000)
+        let notCashed = data.filter(({ cashed, quantity }) => cashed !== quantity)
+        this.fetchMaps({ query: { orderedItemId: { $in: notCashed.map(({ id }) => id) } } }).then(() => {
+          this.timer = setTimeout(this.fetchAgain, 10000)
         })
       })
     }

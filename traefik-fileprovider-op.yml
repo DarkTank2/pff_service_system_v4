@@ -1,0 +1,27 @@
+http:
+  routers:
+    BackendRouter:
+      entryPoints:
+        - web
+      rule: "PathPrefix(`/sapi/`) || PathPrefix(`/sws`)"
+      service: BackendService
+    FrontendRouter:
+      entryPoints:
+        - web
+      rule: "PathPrefix(`/`)"
+      service: FrontendService
+
+  services:
+    BackendService:
+      loadBalancer:
+        servers:
+          - url: "http://backend:3030"
+    FrontendService:
+      loadBalancer:
+        servers:
+          - url: "http://frontend:80"
+
+    # FrontendService:
+    #   loadBalancer:
+    #     servers:
+    #       - url: "http://frontend:80"

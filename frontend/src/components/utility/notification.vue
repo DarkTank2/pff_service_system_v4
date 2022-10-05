@@ -1,19 +1,12 @@
 <template>
     <v-snackbar
         :value="notification"
-        shaped
+        rounded="pill"
         timeout="-1"
         >
-        <v-alert
-            v-if="notification"
-            border="left"
-            dense
-            colored-border
-            :type="notification.type || 'warning'"
-            :icon="notification.icon"
-            >
-            {{ notification.message }}
-        </v-alert>
+        <div style="margin-left:20px;">
+            <span v-if="notification" v-text="notification.message" :class="colorClass"></span>
+        </div>
         <template v-slot:action="{ attrs }">
             <v-btn
                 color="red"
@@ -49,7 +42,21 @@ export default {
     computed: {
         ...mapState('utilities', {
             notification: 'notification'
-        })
+        }),
+        icon: function () {
+            let icons = {
+                'success': 'check',
+                'error': 'warning'
+            }
+            return this.notification.icon || icons[this.notification.type] || 'warning'
+        },
+        colorClass: function () {
+            let colors = {
+                'success': 'green--text text--lighten-1',
+                'error': 'red--text text--lighten-1'
+            }
+            return this.notification?.colorClass || colors[this.notification?.type] || 'orange--text text-lighten-1'
+        }
     },
     watch: {
         notification: {

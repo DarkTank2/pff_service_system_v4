@@ -2,6 +2,74 @@
     <div>
         <v-list>
             <v-list-item>
+                <v-list-item-content>
+                    <v-list-item-title class="text-h6">
+                        Deine Bestellung
+                    </v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+            <template v-for="(orderedItem, i) in orderedItems">
+                <v-divider
+                    v-if="orderedItem.index !== 0"
+                    :key="`divider_index_${orderedItem.index}`"
+                    :class="orderedItems.at(i - 1).additions.length > 0 ? 'mt-4' : ''"
+                    />
+                <v-list-item dense :key="`ordered_item_index_${orderedItem.index}`" :two-line="!orderedItem.comment" :three-line="!!orderedItem.comment" class="ma-1" :class="{ bordered: !orderedItem.available }">
+                    <v-list-item-content>
+                        <v-list-item-title>
+                            {{ `${orderedItem.baseItemName}` }}<span class="ml-2">{{ `( à ${orderedItem.item.price + orderedItem.additionsPriceSum}€ )` }}</span>
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                            {{ `${orderedItem.flavourName} | ${orderedItem.sizeName}` }}
+                        </v-list-item-subtitle>
+                        <v-list-item-subtitle>
+                            {{ orderedItem.comment }}
+                        </v-list-item-subtitle>
+                        <v-list-item-subtitle v-if="!orderedItem.available">
+                            Ausverkauft!
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                        <v-btn icon @click="decrementAtIndex(orderedItem.index)">
+                            <v-icon>remove</v-icon>
+                        </v-btn>
+                    </v-list-item-action>
+                    <v-list-item-icon>
+                        <v-btn text disabled rounded outlined>
+                            <span class="white--text">
+                                {{ orderedItem.quantity }}
+                            </span>
+                        </v-btn>
+                    </v-list-item-icon>
+                    <v-list-item-action style="margin-left:0px;">
+                        <v-btn icon @click="incrementAtIndex(orderedItem.index)" :disabled="!orderedItem.available">
+                            <v-icon>add</v-icon>
+                        </v-btn>
+                    </v-list-item-action>
+                </v-list-item>
+                <template v-if="orderedItem.additions.length > 0">
+                    <span
+                        v-for="(additionId, index) in orderedItem.additions"
+                        :key="`addition_index_${index}_ordered_item_index_${i}`"
+                        class="mx-10 order-component-addition"
+                        >
+                        {{ getAddition(additionId).name }}
+                        <span v-if="getAddition(additionId).priceModifier !== 0" class="ml-2">{{ `( ${getAddition(additionId).priceModifier}€ )` }}</span>
+                        <br />
+                    </span>
+                </template>
+            </template>
+            <v-list-item v-if="orderedItems.length === 0">
+                <v-list-item-content>
+                    <v-alert type="warning" icon="add_shopping_cart">
+                        Dein Warenkorb ist leider leer, wähle Items aus, damit diese bestellt werden können.
+                    </v-alert>
+                </v-list-item-content>
+            </v-list-item>
+            <v-divider></v-divider>
+            <v-divider></v-divider>
+            <v-divider></v-divider>
+            <v-list-item>
                 <v-list-item-icon>
                     <v-icon>person_pin</v-icon>
                 </v-list-item-icon>
@@ -37,71 +105,6 @@
                         />
                 </v-list-item-content>
             </v-list-item>
-            <v-divider></v-divider>
-            <v-divider></v-divider>
-            <v-divider></v-divider>
-            <v-list-item>
-                <v-list-item-content>
-                    <v-list-item-title class="text-h6">
-                        Deine Bestellung
-                    </v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-            <template v-for="(orderedItem, i) in orderedItems">
-                <v-divider
-                    v-if="orderedItem.index !== 0"
-                    :key="`divider_index_${orderedItem.index}`"
-                    :class="orderedItems.at(i - 1).additions.length > 0 ? 'mt-4' : ''"
-                    />
-                <v-list-item dense :key="`ordered_item_index_${orderedItem.index}`" :two-line="!orderedItem.comment" :three-line="!!orderedItem.comment" class="ma-1" :class="{ bordered: !orderedItem.available }">
-                    <v-list-item-content>
-                        <v-list-item-title>
-                            {{ `${orderedItem.baseItemName}` }}<span class="ml-2">{{ `( à ${orderedItem.item.price + orderedItem.additionsPriceSum}€ )` }}</span>
-                        </v-list-item-title>
-                        <v-list-item-subtitle>
-                            {{ `${orderedItem.flavourName} | ${orderedItem.sizeName}` }}
-                        </v-list-item-subtitle>
-                        <v-list-item-subtitle>
-                            {{ orderedItem.comment }}
-                        </v-list-item-subtitle>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                        <v-btn icon @click="decrementAtIndex(orderedItem.index)">
-                            <v-icon>remove</v-icon>
-                        </v-btn>
-                    </v-list-item-action>
-                    <v-list-item-icon>
-                        <v-btn text disabled rounded outlined>
-                            <span class="white--text">
-                                {{ orderedItem.quantity }}
-                            </span>
-                        </v-btn>
-                    </v-list-item-icon>
-                    <v-list-item-action style="margin-left:0px;">
-                        <v-btn icon @click="incrementAtIndex(orderedItem.index)">
-                            <v-icon>add</v-icon>
-                        </v-btn>
-                    </v-list-item-action>
-                </v-list-item>
-                <template v-if="orderedItem.additions.length > 0">
-                    <span
-                        v-for="(additionId, index) in orderedItem.additions"
-                        :key="`addition_index_${index}_ordered_item_index_${i}`"
-                        class="mx-10 order-component-addition"
-                        >
-                        {{ getAddition(additionId).name }}
-                        <span v-if="getAddition(additionId).priceModifier !== 0" class="ml-2">{{ `( ${getAddition(additionId).priceModifier}€ )` }}</span>
-                        <br />
-                    </span>
-                </template>
-            </template>
-            <v-list-item v-if="orderedItems.length === 0">
-                <v-list-item-content>
-                    <v-alert type="warning" icon="add_shopping_cart">
-                        Dein Warenkorb ist leider leer, wähle Items aus, damit diese bestellt werden können.
-                    </v-alert>
-                </v-list-item-content>
-            </v-list-item>
         </v-list>
         <v-container fluid>
             <v-row>
@@ -113,7 +116,7 @@
                         rounded
                         outlined
                         @click="sendOrder"
-                        :disabled="orderedItems.length === 0"
+                        :disabled="orderedItems.length === 0 || anyItemDisabled"
                         >
                         <v-icon class="mr-2">send</v-icon>
                         Bestellung absenden 
@@ -269,6 +272,13 @@ export default {
                     sizeName: this.getSize(item.sizeId).name
                 }
             })
+        },
+        anyItemDisabled: function () {
+            return !this.rawOrder.map((orderedItem) => {
+                let item = this.getItem(orderedItem.itemId)
+                let baseItem = this.getBaseItem(item.baseItemId)
+                return baseItem.available
+            }).reduce((acc, val) => acc && val, true)
         }
     }
 }
