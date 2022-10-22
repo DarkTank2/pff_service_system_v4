@@ -28,7 +28,8 @@
     "dev": "sequelize db:migrate & nodemon src/",
     "noSeed": "node src/",
     "start": "sequelize db:migrate & node src/",
-    "mocha": "mocha test/ --recursive --exit"
+    "mocha": "mocha test/ --recursive --exit",
+    "build": "docker build -t pff-backend:erntetanz ."
   },
   "dependencies": {
     "@feathersjs/configuration": "^4.5.1",

@@ -14,7 +14,7 @@ services:
     image: traefik:v2.2
     #command: --api.insecure=true --providers.docker
     ports:
-      - 9090:80
+      - 80:80
       - 8090:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -22,7 +22,7 @@ services:
       - ./traefik-fileprovider-op.yml:/etc/traefik/traefik-fileprovider.yml
 
   backend:
-    image: pff-backend:viennanight
+    image: pff-backend:erntetanz
     container_name: "pff_backend"
     user: "node"
     working_dir: /home/node/app
@@ -39,8 +39,3 @@ services:
     container_name: pss_frontend_nginx
     volumes:
       - ./frontend/dist:/usr/share/nginx/html
-    ports:
-      - 8070:80
-    labels:
-      - traefik.http.routers.FrontendRouter.rule=PathPrefix(`/`)
-      - traefik.http.services.Frontendervice.loadbalancer.server.port=80

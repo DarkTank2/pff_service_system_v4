@@ -69,7 +69,8 @@ export default {
             }
         },
         fetchAgain: function () {
-          this.fetchOrderedItems(this.orderedItemsQuery).then(() => {
+          this.fetchOrderedItems(this.orderedItemsQuery).then((data) => {
+            this.fetchMaps({ query: { orderedItemId: { $in: data.map(({ id }) => id) } } })
             this.timer = setTimeout(this.fetchAgain, 5000)
           })
         }

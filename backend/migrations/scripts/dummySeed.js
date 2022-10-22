@@ -19,56 +19,43 @@ module.exports = {
       })
       console.log('Added unique constraint')
       await queryInterface.bulkInsert('categories', [
-        { id: 1, name: 'Anti-Alk', color: 'blue darken-3' },
-        { id: 2, name: 'Wein-Offen', color: 'blue darken-3' },
-        { id: 3, name: 'Weiss-Flasche', color: 'blue darken-3' },
-        { id: 4, name: 'Rot-Flasche', color: 'blue darken-3' },
-        { id: 5, name: 'Biere', color: 'blue darken-3' },
-        { id: 6, name: 'Sonstiges', color: 'blue darken-3' },
-        { id: 7, name: 'Speisen', color: 'blue darken-3' },
-        { id: 8, name: 'Extras', color: 'orange darken-3' }
+        { id: 1, name: 'Getränke', color: 'orange darken-3' },
+        { id: 2, name: 'Weine', color: 'blue darken-3' },
+        { id: 3, name: 'Speisen', color: 'green darken-3' },
+        { id: 4, name: 'Sonstiges', color: 'green darken-3' }
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('categories', 'id'), 10)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('categories', 'id'), 5)
       console.log('Added categories')
       await queryInterface.bulkInsert('base_items', [
-        { id: 1, name: 'Käseweckerl', categoryId: 7 },
-        { id: 2, name: 'Crevettencocktail', categoryId: 7 },
-        { id: 3, name: 'Würstel', categoryId: 7 },
-        { id: 4, name: 'Baguette', categoryId: 7 },
-        { id: 5, name: 'Fl.-los Bällchen', categoryId: 7 },
-        { id: 6, name: 'Schinkenstangerl', categoryId: 7 },
-        { id: 7, name: 'Cola', categoryId: 1 },
-        { id: 8, name: 'Almdudler', categoryId: 1 },
-        { id: 9, name: 'Orangensaft', categoryId: 1 },
-        { id: 10, name: 'Apfelsaft', categoryId: 1 },
-        { id: 11, name: 'Mineralwasser', categoryId: 1 },
-        { id: 12, name: 'Zwettler', categoryId: 5 },
-        { id: 13, name: 'Gösser Radler', categoryId: 5 },
-        { id: 14, name: 'Wr. Gemischter Satz, DAC', categoryId: 3 },
-        { id: 15, name: 'Weinviertler DAC (GV)', categoryId: 3 },
-        { id: 16, name: 'Welschriesling', categoryId: 3 },
-        { id: 17, name: 'Gelber Muskateller', categoryId: 3 },
-        { id: 18, name: 'Rose Froschkönig', categoryId: 3 },
-        { id: 19, name: 'Zweigelt', categoryId: 4 },
-        { id: 20, name: 'St. Laurent', categoryId: 4 },
-        { id: 21, name: 'Big John', categoryId: 4 },
-        { id: 22, name: 'Landwein weiss (GV)', categoryId: 2 },
-        { id: 23, name: 'Landwein rot', categoryId: 2 },
-        { id: 24, name: 'GSpritzter', categoryId: 2 },
-        { id: 25, name: 'Alm-Weiss', categoryId: 2 },
-        { id: 26, name: 'Cola-Rot', categoryId: 2 },
-        { id: 27, name: 'Spritzwein', categoryId: 2 },
-        { id: 28, name: 'Sekt', categoryId: 6 },
-        { id: 29, name: 'Aperol Sprizz', categoryId: 6 },
-        { id: 30, name: 'Hugo', categoryId: 6 },
-        { id: 31, name: 'Wasser', categoryId: 6 },
-        { id: 32, name: 'Gläser', categoryId: 6 }
+        { id:  1, name: 'Käsekornspitz', categoryId: 3 },
+        { id:  2, name: 'Schinkenstangerl', categoryId: 3 },
+        { id:  3, name: 'Leberkäs-S.', categoryId: 3 },
+        { id:  4, name: 'Brezn', categoryId: 3 },
+
+        { id:  5, name: 'Cola', categoryId: 1 },
+        { id:  6, name: 'Almdudler', categoryId: 1 },
+        { id:  7, name: 'Orangensaft', categoryId: 1 },
+        { id:  8, name: 'Apfelsaft', categoryId: 1 },
+        { id:  9, name: 'Mineralwasser', categoryId: 1 },
+        { id: 10, name: 'Sturm', categoryId: 1 },
+        { id: 11, name: 'GSpritzter', categoryId: 1 },
+
+        { id: 12, name: 'Weinviertler DAC (GV)', categoryId: 2 },
+        { id: 13, name: 'Gelber Muskateller', categoryId: 2 },
+        { id: 14, name: 'Wr. Gemischter Satz', categoryId: 2 },
+        { id: 15, name: 'Zweigelt', categoryId: 2 },
+        { id: 16, name: 'Rhett Butler', categoryId: 2 },
+
+        { id: 17, name: 'Wasser', categoryId: 4 },
+        { id: 18, name: 'Gläser', categoryId: 4 },
+
+        { id: 19, name: 'Würstel', categoryId: 3 }
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('base_items', 'id'), 33)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('base_items', 'id'), 20)
       console.log('Added base_items')
       await queryInterface.bulkInsert('sizes', [
         { id: 1, name: '1/8l'},
-        { id: 2, name: '0.25l'},
+        { id: 2, name: '1/4l'},
         { id: 3, name: '0.33l'},
         { id: 4, name: '0.5l'},
         { id: 5, name: '0.7l (Flasche)'},
@@ -87,91 +74,72 @@ module.exports = {
         { id: 1, name: 'gespritzt leitung' },
         { id: 2, name: 'gespritzt mineral' },
         { id: 3, name: 'pur' },
-        { id: 4, name: 'Käsekrainer' },
-        { id: 5, name: 'Sacherwürstel' },
-        { id: 6, name: 'Grillwürstel' },
-        { id: 7, name: 'Aufstrich #1' },
-        { id: 8, name: 'Aufstrich #2' },
-        { id: 9, name: 'weiss' },
-        { id: 10, name: 'rot' },
-        { id: 11, name: 'normal' },
-        { id: 12, name: '+ Orangensaft' },
-        { id: 13, name: 'Prosecco' },
-        { id: 14, name: 'Wein' },
-        { id: 15, name: '-'},
-        { id: 16, name: 'Sektglas'},
-        { id: 17, name: 'Weinglas'},
-        { id: 18, name: 'Kleines Glas'},
-        { id: 19, name: 'Grosses Glas'}
+        { id: 4, name: 'Käsleberkäs'},
+        { id: 5, name: 'Normal'},
+        { id: 6, name: 'Pikant'},
+        { id: 7, name: 'weiss' },
+        { id: 8, name: 'rot' },
+        { id: 9, name: 'normal' },
+        { id: 10, name: '-'},
+        { id: 11, name: 'Sektglas'},
+        { id: 12, name: 'Weinglas'},
+        { id: 13, name: 'Kleines Glas (1/4l)'},
+        { id: 14, name: 'Grosses Glas (1/2l)'}
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('flavours', 'id'), 20)
+      await setSequenceToValue(queryInterface, getSequenceIdentifier('flavours', 'id'), 15)
       console.log('Added flavours')
       await queryInterface.bulkInsert('items', [
-        { id: 1, price: 2.8, baseItemId: 1, sizeId: 9, flavourId: 15, default: true },
-        { id: 2, price: 3.8, baseItemId: 2, sizeId: 8, flavourId: 15, default: true },
-        { id: 3, price: 3.8, baseItemId: 3, sizeId: 8, flavourId: 4, default: true },
-        { id: 4, price: 3.8, baseItemId: 3, sizeId: 8, flavourId: 5 },
-        { id: 5, price: 3.8, baseItemId: 3, sizeId: 8, flavourId: 6 },
-        { id: 6, price: 2.8, baseItemId: 4, sizeId: 8, flavourId: 7, default: true },
-        { id: 7, price: 2.8, baseItemId: 4, sizeId: 8, flavourId: 8 },
-        { id: 8, price: 3.8, baseItemId: 5, sizeId: 8, flavourId: 15, default: true },
-        { id: 9, price: 2.8, baseItemId: 6, sizeId: 9, flavourId: 15, default: true },
-        { id: 10, price: 2.5, baseItemId: 7, sizeId: 3, flavourId: 15, default: true },
-        { id: 11, price: 1.6, baseItemId: 7, sizeId: 2, flavourId: 2 },
-        { id: 12, price: 3.2, baseItemId: 7, sizeId: 4, flavourId: 2 },
-        { id: 13, price: 2.5, baseItemId: 8, sizeId: 3, flavourId: 15, default: true },
-        { id: 14, price: 1.6, baseItemId: 8, sizeId: 2, flavourId: 2 },
-        { id: 15, price: 3.2, baseItemId: 8, sizeId: 4, flavourId: 2 },
-        { id: 16, price: 2, baseItemId: 9, sizeId: 2, flavourId: 3, default: true },
-        { id: 17, price: 1.6, baseItemId: 9, sizeId: 2, flavourId: 2 },
-        { id: 18, price: 3.2, baseItemId: 9, sizeId: 4, flavourId: 2 },
-        { id: 19, price: 2, baseItemId: 10, sizeId: 2, flavourId: 3, default: true },
-        { id: 20, price: 1.6, baseItemId: 10, sizeId: 2, flavourId: 2 },
-        { id: 21, price: 3.2, baseItemId: 10, sizeId: 4, flavourId: 2 },
-        { id: 22, price: 1.2, baseItemId: 11, sizeId: 2, flavourId: 15, default: true },
-        { id: 23, price: 4, baseItemId: 11, sizeId: 4, flavourId: 15 },
-        { id: 24, price: 3, baseItemId: 12, sizeId: 3, flavourId: 15, default: true },
-        { id: 25, price: 3, baseItemId: 13, sizeId: 3, flavourId: 15, default: true },
-        { id: 26, price: 18, baseItemId: 14, sizeId: 5, flavourId: 15, default: true },
-        { id: 27, price: 3.5, baseItemId: 14, sizeId: 1, flavourId: 15 },
-        { id: 28, price: 15, baseItemId: 15, sizeId: 5, flavourId: 15, default: true },
-        { id: 29, price: 3, baseItemId: 15, sizeId: 1, flavourId: 15 },
-        { id: 30, price: 15, baseItemId: 16, sizeId: 5, flavourId: 15, default: true },
-        { id: 31, price: 3, baseItemId: 16, sizeId: 1, flavourId: 15 },
-        { id: 32, price: 16, baseItemId: 17, sizeId: 5, flavourId: 15, default: true },
-        { id: 33, price: 3.2, baseItemId: 17, sizeId: 1, flavourId: 15 },
-        { id: 34, price: 16, baseItemId: 18, sizeId: 5, flavourId: 15, default: true },
-        { id: 35, price: 3.2, baseItemId: 18, sizeId: 1, flavourId: 15 },
-        { id: 36, price: 15, baseItemId: 19, sizeId: 5, flavourId: 15, default: true },
-        { id: 37, price: 3, baseItemId: 19, sizeId: 1, flavourId: 15 },
-        { id: 38, price: 16, baseItemId: 20, sizeId: 5, flavourId: 15, default: true },
-        { id: 39, price: 3.2, baseItemId: 20, sizeId: 1, flavourId: 15 },
-        { id: 40, price: 22, baseItemId: 21, sizeId: 5, flavourId: 15, default: true },
-        { id: 41, price: 4.2, baseItemId: 21, sizeId: 1, flavourId: 15 },
-        { id: 42, price: 2.5, baseItemId: 22, sizeId: 2, flavourId: 15, default: true },
-        { id: 43, price: 2.5, baseItemId: 23, sizeId: 2, flavourId: 15, default: true },
-        { id: 44, price: 2.3, baseItemId: 24, sizeId: 2, flavourId: 9, default: true },
-        { id: 45, price: 2.3, baseItemId: 24, sizeId: 2, flavourId: 10 },
-        { id: 46, price: 3.2, baseItemId: 25, sizeId: 2, flavourId: 15, default: true },
-        { id: 47, price: 3.2, baseItemId: 26, sizeId: 2, flavourId: 15, default: true },
-        { id: 48, price: 2.8, baseItemId: 27, sizeId: 2, flavourId: 9, default: true },
-        { id: 49, price: 2.8, baseItemId: 27, sizeId: 2, flavourId: 10 },
-        { id: 50, price: 3.2, baseItemId: 28, sizeId: 10, flavourId: 11, default: true },
-        { id: 51, price: 3.2, baseItemId: 28, sizeId: 10, flavourId: 12 },
-        { id: 52, price: 18, baseItemId: 28, sizeId: 11, flavourId: 11 },
-        { id: 53, price: 18, baseItemId: 28, sizeId: 11, flavourId: 12 },
-        { id: 54, price: 4, baseItemId: 29, sizeId: 10, flavourId: 13, default: true },
-        { id: 55, price: 3.5, baseItemId: 29, sizeId: 10, flavourId: 14 },
-        { id: 56, price: 3.8, baseItemId: 30, sizeId: 10, flavourId: 15, default: true },
-        { id: 57, price: 0, baseItemId: 31, sizeId: 12, flavourId: 15, default: true },
-        { id: 58, price: 0, baseItemId: 31, sizeId: 2, flavourId: 15 },
-        { id: 59, price: 0, baseItemId: 31, sizeId: 4, flavourId: 15 },
-        { id: 60, price: 0, baseItemId: 32, sizeId: 13, flavourId: 16, default: true },
-        { id: 61, price: 0, baseItemId: 32, sizeId: 13, flavourId: 17 },
-        { id: 62, price: 0, baseItemId: 32, sizeId: 13, flavourId: 18 },
-        { id: 63, price: 0, baseItemId: 32, sizeId: 13, flavourId: 19 }
+        { price: 3, baseItemId: 1, sizeId: 8, flavourId: 10, default: true },
+        { price: 3, baseItemId: 2, sizeId: 8, flavourId: 10, default: true },
+        { price: 3.5, baseItemId: 3, sizeId: 8, flavourId: 4 },
+        { price: 3.5, baseItemId: 3, sizeId: 8, flavourId: 5, default: true },
+        { price: 3.5, baseItemId: 3, sizeId: 8, flavourId: 6 },
+        { price: 3, baseItemId: 4, sizeId: 8, flavourId: 10, default: true },
+
+        { price: 2.5, baseItemId: 5, sizeId: 3, flavourId: 10, default: true },
+        { price: 2.5, baseItemId: 6, sizeId: 3, flavourId: 10, default: true },
+
+        { price: 2, baseItemId: 7, sizeId: 2, flavourId: 3, default: true },
+        { price: 4, baseItemId: 7, sizeId: 4, flavourId: 3 },
+        { price: 2, baseItemId: 7, sizeId: 2, flavourId: 1 },
+        { price: 4, baseItemId: 7, sizeId: 4, flavourId: 1 },
+        { price: 2, baseItemId: 7, sizeId: 2, flavourId: 2 },
+        { price: 4, baseItemId: 7, sizeId: 4, flavourId: 2 },
+        { price: 2, baseItemId: 8, sizeId: 2, flavourId: 3, default: true },
+        { price: 4, baseItemId: 8, sizeId: 4, flavourId: 3 },
+        { price: 2, baseItemId: 8, sizeId: 2, flavourId: 1 },
+        { price: 4, baseItemId: 8, sizeId: 4, flavourId: 1 },
+        { price: 2, baseItemId: 8, sizeId: 2, flavourId: 2 },
+        { price: 4, baseItemId: 8, sizeId: 4, flavourId: 2 },
+
+        { price: 1.2, baseItemId: 9, sizeId: 2, flavourId: 10, default: true },
+        { price: 4, baseItemId: 9, sizeId: 6, flavourId: 10 },
+        { price: 2.5, baseItemId: 10, sizeId: 2, flavourId: 7, default: true },
+        { price: 2.5, baseItemId: 10, sizeId: 2, flavourId: 8 },
+
+        { price: 2.5, baseItemId: 11, sizeId: 2, flavourId: 10, default: true },
+        { price: 3, baseItemId: 12, sizeId: 1, flavourId: 10, default: true },
+        { price: 15, baseItemId: 12, sizeId: 5, flavourId: 10 },
+        { price: 3.6, baseItemId: 13, sizeId: 1, flavourId: 10, default: true },
+        { price: 18, baseItemId: 13, sizeId: 5, flavourId: 10 },
+        { price: 3.6, baseItemId: 14, sizeId: 1, flavourId: 10, default: true },
+        { price: 18, baseItemId: 14, sizeId: 5, flavourId: 10 },
+        { price: 3, baseItemId: 15, sizeId: 1, flavourId: 10, default: true },
+        { price: 15, baseItemId: 15, sizeId: 5, flavourId: 10 },
+        { price: 3.9, baseItemId: 16, sizeId: 1, flavourId: 10, default: true },
+        { price: 20, baseItemId: 16, sizeId: 5, flavourId: 10 },
+
+        { price: 0, baseItemId: 17, sizeId: 12, flavourId: 10, default: true },
+        { price: 0, baseItemId: 17, sizeId: 2, flavourId: 10 },
+        { price: 0, baseItemId: 17, sizeId: 4, flavourId: 10 },
+        { price: 0, baseItemId: 18, sizeId: 13, flavourId: 11, default: true },
+        { price: 0, baseItemId: 18, sizeId: 13, flavourId: 12 },
+        { price: 0, baseItemId: 18, sizeId: 13, flavourId: 13 },
+        { price: 0, baseItemId: 18, sizeId: 13, flavourId: 14 },
+
+        { price: 3.5, baseItemId: 19, sizeId: 8, flavourId: 10, default: true }
       ])
-      await setSequenceToValue(queryInterface, getSequenceIdentifier('items', 'id'), 64)
+      // await setSequenceToValue(queryInterface, getSequenceIdentifier('items', 'id'), 64)
       console.log('Added items')
       await queryInterface.bulkInsert('additions', [
         { id: 1, name: 'Senf', priceModifier: 0 },
@@ -183,11 +151,11 @@ module.exports = {
       await setSequenceToValue(queryInterface, getSequenceIdentifier('additions', 'id'), 6)
       console.log('Added additions')
       await queryInterface.bulkInsert('base_items_have_additions', [
-        { id: 1, baseItemId: 3, additionId: 1, default: true },
-        { id: 2, baseItemId: 3, additionId: 2, default: true },
-        { id: 3, baseItemId: 3, additionId: 3 },
-        { id: 4, baseItemId: 3, additionId: 4, default: true },
-        { id: 5, baseItemId: 3, additionId: 5 }
+        { id: 1, baseItemId: 19, additionId: 1, default: true },
+        { id: 2, baseItemId: 19, additionId: 2, default: true },
+        { id: 3, baseItemId: 19, additionId: 3 },
+        { id: 4, baseItemId: 19, additionId: 4, default: true },
+        { id: 5, baseItemId: 19, additionId: 5 }
       ])
       await setSequenceToValue(queryInterface, getSequenceIdentifier('base_items_have_additions', 'id'), 8)
       console.log('Linked base-items to additions')
