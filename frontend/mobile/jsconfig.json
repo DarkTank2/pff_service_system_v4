@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@store/*": ["../utilities/store/*"],
+            "@config/*": ["../utilities/config/*"],
+            "@u-components/*": ["../utilities/config/*"],
+            "@components/*": ["./components/*"],
+        }
+    },
+    "exclude": ["node_modules", "dist"]
+}
