@@ -4,8 +4,8 @@
         "paths": {
             "@store/*": ["../utilities/store/*"],
             "@config/*": ["../utilities/config/*"],
-            "@u-components/*": ["../utilities/config/*"],
-            "@components/*": ["./components/*"],
+            "@components/*": ["../utilities/config/*"],
+            "@/*": ["./components/*"],
         }
     },
     "exclude": ["node_modules", "dist"]

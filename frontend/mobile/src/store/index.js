@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { FeathersVuex } from '../feathers-client'
+import { FeathersVuex } from '@config/feathers-client'
 import baseMutations from '@store/base/mutations'
 import baseGetters from '@store/base/getters'
 import baseActions from '@store/base/actions'
@@ -18,7 +18,7 @@ Vue.use(FeathersVuex)
 
 const requireModule = require.context(
   // The path where the service modules live
-  '../../../store/services',
+  '@store/services',
   // Whether to look in subfolders
   false,
   // Only include .js files (prevents duplicate imports`)

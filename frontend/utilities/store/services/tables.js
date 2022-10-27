@@ -1,4 +1,4 @@
-import feathersClient, { makeServicePlugin, BaseModel } from '../../feathers-client'
+import feathersClient, { makeServicePlugin, BaseModel } from '@config/feathers-client'
 
 class Table extends BaseModel {
   // eslint-disable-next-line no-useless-constructor
