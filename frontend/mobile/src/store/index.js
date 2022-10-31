@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { FeathersVuex } from '@config/feathers-client'
+import { FeathersVuex } from '../feathers-client'
 import baseMutations from '@store/base/mutations'
 import baseGetters from '@store/base/getters'
 import baseActions from '@store/base/actions'

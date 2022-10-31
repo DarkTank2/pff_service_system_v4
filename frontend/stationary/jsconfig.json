@@ -1,8 +1,0 @@
-{
-    "compilerOptions": {
-        "paths": {
-            "@store/*": ["../utilities/store/*"],
-            "@config/*": ["../utilities/config/*"],
-        }
-    }
-}

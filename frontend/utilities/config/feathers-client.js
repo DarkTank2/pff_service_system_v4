@@ -1,11 +1,22 @@
 import feathers from '@feathersjs/feathers'
-import rest from '@feathersjs/rest-client'
-import axios from 'axios'
 import { iff, discard } from 'feathers-hooks-common'
 import feathersVuex from 'feathers-vuex'
+const system = process.env['SYSTEM']
 
-let restClient = rest(`${window.location.origin}`)
-const transport = restClient.axios(axios)
+console.log(`Using ${system} connectivity`)
+if (system === 'MOBILE') {
+  import rest from '@feathersjs/rest-client'
+  import axios from 'axios'
+  
+  let restClient = rest(`${window.location.origin}`)
+  var transport = restClient.axios(axios)
+} else if (system === 'STATIONARY') {
+  import io from 'socket.io-client'
+  import socketio from '@feathersjs/socketio-client'
+  
+  const socket = io(`${window.location.origin}`, { transports: ['websocket'], upgrade: false, path: '/sws' })
+  var transport = socketio(socket)
+}
 
 const feathersClient = feathers()
   .configure(transport)

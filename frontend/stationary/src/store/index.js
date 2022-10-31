@@ -1,24 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { FeathersVuex } from '../feathers-client'
-import baseMutations from './base/mutations'
-import baseGetters from './base/getters'
-import baseActions from './base/actions'
 
-import waiterGetters from './waiter/getters'
-import waiterActions from './waiter/actions'
-import waiterMutations from './waiter/mutations'
+import baseMutations from '@store/base/mutations'
+import baseGetters from '@store/base/getters'
+import baseActions from '@store/base/actions'
 
-import cashMethods from './cash'
-
-import utilityMethods from './untilities'
+import utilityMethods from '@store/untilities'
 
 Vue.use(Vuex)
 Vue.use(FeathersVuex)
 
 const requireModule = require.context(
   // The path where the service modules live
-  './services',
+  '@store/services',
   // Whether to look in subfolders
   false,
   // Only include .js files (prevents duplicate imports`)
@@ -40,24 +35,6 @@ const base = {
   actions: baseActions
 }
 
-const waiter = {
-  namespaced: true,
-  state: {
-    order: []
-  },
-  mutations: waiterMutations,
-  getters: waiterGetters,
-  actions: waiterActions
-}
-
-const cash = {
-  namespaced: true,
-  state: {
-    selectedOrderedItems: []
-  },
-  ...cashMethods
-}
-
 const utilities = {
   namespaced: true,
   state: {
@@ -73,9 +50,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     base,
-    waiter,
-    utilities,
-    cash
+    utilities
   },
   plugins: [...servicePlugins]
 })

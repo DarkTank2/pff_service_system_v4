@@ -1,11 +1,11 @@
 import feathers from '@feathersjs/feathers'
 import { iff, discard } from 'feathers-hooks-common'
 import feathersVuex from 'feathers-vuex'
-import io from 'socket.io-client'
-import socketio from '@feathersjs/socketio-client'
+import rest from '@feathersjs/rest-client'
+import axios from 'axios'
 
-const socket = io(`${window.location.origin}`, { transports: ['websocket'], upgrade: false, path: '/sws' })
-var transport = socketio(socket)
+let restClient = rest(`${window.location.origin}`)
+var transport = restClient.axios(axios)
 
 const feathersClient = feathers()
   .configure(transport)

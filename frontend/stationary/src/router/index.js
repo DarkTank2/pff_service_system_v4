@@ -1,15 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import goTo from 'vuetify/lib/services/goto'
-import OrderExtension from '../components/appBarExtensions/OrderExtension.vue'
 import CalculatorExtension from '../components/appBarExtensions/CalculatorExtension.vue'
-import OrderComponent from '../components/navBarComponents/OrderComponent.vue'
-import CashButton from '../components/sideNavbarComponents/CashButton.vue'
-import OrderButton from '../components/sideNavbarComponents/OrderButton.vue'
 import BuffetAppBarComponent from '../components/appBarComponents/BuffetComponent.vue'
 import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigButton.vue'
-import CashAppBarComponent from '../components/appBarComponents/CashComponent.vue'
-import CashTableTitleReplacement from '../components/TitleReplacements/CashTableTitleReplacement.vue'
 import ConfiguratorAppBarComponent from '../components/appBarComponents/ConfiguratorComponent.vue'
 import CalculatorAppBarComponent from '../components/appBarComponents/CalculatorAppBarComponent.vue'
 
@@ -27,51 +21,7 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    component: () => import('../views/Home.vue')
-  },
-  {
-    path: '/order',
-    name: 'Order',
-    component: () => import(/* webpackChunkName: "ordering" */ '../views/CategoryView.vue'),
-    meta: {
-      extension: OrderExtension,
-      bottomNavbarComponent: OrderComponent,
-      sideNavbarComponents: [CashButton]
-    }
-  },
-  {
-    path: '/cash',
-    name: 'Cash',
-    component: () => import(/* webpackChunkName: "cashing" */ '../views/Cash.vue'),
-    meta: {
-      sideNavbarComponents: [OrderButton]
-    },
-    children: [
-      {
-        path: '',
-        name: 'TableSelection',
-        component: () => import(/* webpackChunkName: "cashing" */ '../components/Cash/SelectTable.vue'),
-        meta: {
-          sideNavbarComponents: [OrderButton]
-        }
-      },
-      {
-        path: 'table/:tableId',
-        name: 'CashTable',
-        component: () => import(/* webpackChunkName: "cashing" */ '../components/Cash/CashTable.vue'),
-        props: route => ({ tableId: parseInt(route.params.tableId) }),
-        meta: {
-          sideNavbarComponents: [OrderButton],
-          appBarComponent: CashAppBarComponent,
-          titleReplacement: CashTableTitleReplacement
-        }
-      }
-    ]
-  },
-  {
-    path: '/buffet',
-    name: 'Buffet',
-    component: () => import(/* webpackChunkName: "buffet" */ '../views/Buffet.vue'),
+    component: () => import('../views/Home.vue'),
     meta: {
       appBarComponent: BuffetAppBarComponent,
       sideNavbarComponents: [BuffetConfigButton]

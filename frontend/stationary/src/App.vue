@@ -80,8 +80,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
-import Loading from './components/utility/loading.vue'
-import Notification from './components/utility/notification.vue'
+import Loading from '@components/loading.vue'
+import Notification from '@components/notification.vue'
 export default {
   name: 'App',
   components: {
