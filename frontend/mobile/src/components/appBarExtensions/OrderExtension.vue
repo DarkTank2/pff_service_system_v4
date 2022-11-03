@@ -1,21 +1,20 @@
 <template>
     <v-slide-group
-        v-model="activeCategory"
         show-arrows
         center-active
+        :value="activeCategoryId - 1"
         >
         <v-slide-item
             v-for="category in rawCategories"
             :key="`slide_item_category_${category.id}`"
-            v-slot="{ active, toggle }"
             >
             <v-btn
-                :input-value="active"
+                :input-value="category.id === activeCategoryId"
                 active-class="blue darken-3 white--text"
                 rounded
                 outlined
                 :disabled="category.disabled"
-                @click="scrollToCategory(category, toggle)"
+                @click="scrollToCategory(category)"
                 >
                 {{ category.name }}
             </v-btn>
@@ -46,8 +45,7 @@ export default {
         ...mapActions('categories', {
             fetchCategories: 'find'
         }),
-        scrollToCategory: function (category, toggle) {
-            toggle()
+        scrollToCategory: function (category) {
             this.$router.push({...this.$route, hash: `#category_${category.id}`})
         }
     },
@@ -57,6 +55,9 @@ export default {
         }),
         ...mapGetters('categories', {
             listCategories: 'list'
+        }),
+        ...mapGetters('base', {
+          activeCategoryId: 'firstActiveCategory'
         }),
         env: function () {
             return this.listEnvs[0]
