@@ -5,8 +5,10 @@ import mutations from './mutations'
 export default {
   namespaced: true,
   state: {
-    fetchPendingFlag: false,
-    notification: null
+    name: '',
+    title: '',
+    tableId: null,
+    activeCategories: []
   },
   actions,
   getters,
