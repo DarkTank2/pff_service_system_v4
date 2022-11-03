@@ -12,7 +12,7 @@
             </v-card>
         </v-col>
         <v-col v-for="baseItem in baseItems" :key="`cat_${categoryId}_col_${baseItem.id}`" cols="4" style="padding: 2px;">
-            <v-card style="aspect-ratio: 1; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0) 100%);" :color="chooseColor(baseItem, category)" @click.stop="selectBaseItem(baseItem)" :disabled="!baseItem.available || disabled">
+            <v-card style="aspect-ratio: 1; background: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.34) 30%, rgba(0,0,0,0) 100%);" :color="chooseColor(baseItem, category)" @click.stop="selectBaseItem(baseItem)" :disabled="!baseItem.available || disabled">
                 <v-card-text class="text-center mx-auto">
                     {{ `${baseItem.name}` }}
                     <br/>
