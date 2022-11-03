@@ -1,7 +1,6 @@
 <template>
   <v-app>
     <v-app-bar app id="_appbar">
-      <v-app-bar-nav-icon @click="sideNav = !sideNav"></v-app-bar-nav-icon>
       <template v-if="meta.titleReplacement">
         <component :is="meta.titleReplacement" />
       </template>
@@ -22,36 +21,6 @@
       >
       <component :is="meta.bottomNavbarComponent" @closeNavbar="bottomNav = false" />
     </v-navigation-drawer>
-    <v-navigation-drawer
-      v-model="sideNav"
-      app
-      temporary
-      >
-      <v-list>
-        <v-list-item>
-          <v-list-item-title>
-            <span>Service</span>
-            <span class="font-weight-light text-uppercase">Tool</span>
-          </v-list-item-title>
-        </v-list-item>
-        <v-divider></v-divider>
-        <v-list-item>
-          <v-list-item-content>
-            <v-btn :to="{ name: 'Home' }" block outlined>
-              <v-icon>home</v-icon>
-              <span class="ml-2">Home</span>
-            </v-btn>
-          </v-list-item-content>
-        </v-list-item>
-        <template v-if="meta.sideNavbarComponents">
-          <v-list-item v-for="(component, index) in meta.sideNavbarComponents" :key="`side_navbar_component_index_${index}`">
-            <v-list-item-content>
-              <component :is="component" />
-            </v-list-item-content>
-          </v-list-item>
-        </template>
-      </v-list>
-    </v-navigation-drawer>
     <v-main :style="mainStyle">
       <router-view/>
       <v-btn
@@ -62,6 +31,7 @@
             bottom
             right
             @click="bottomNav = true"
+            style="bottom: 70px !important;"
             >
             <v-badge
               bordered
@@ -71,10 +41,20 @@
               >
                 <v-icon>shopping_cart</v-icon>
             </v-badge>
-        </v-btn>
+      </v-btn>
       <loading />
       <notification />
     </v-main>
+    <v-bottom-navigation color="primary" fixed>
+      <v-btn :to="{ name: 'Order' }" >
+        <span class="ml-2">Bestellung aufnehmen</span>
+        <v-icon>brunch_dining</v-icon>
+      </v-btn>
+      <v-btn :to="{ name: 'TableSelection' }" >
+        <span class="ml-2">Kassieren</span>
+        <v-icon>euro_symbol</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
   </v-app>
 </template>
 
@@ -91,16 +71,20 @@ export default {
   data: () => ({
     darkMode: true,
     bottomNav: null,
-    sideNav: null,
     timer: null
   }),
   created: function () {
     this.$vuetify.theme.dark = this.darkMode
     this.fetchAgain()
+    // testing purposes of notifications
+    // this.setNotification({ message: 'Erfolg!', timeout: 5000, type: 'success' })
   },
   methods: {
     ...mapActions('env', {
       fetchENV: 'find'
+    }),
+    ...mapActions('utilities', {
+      setNotification: 'setNotification'
     }),
     fetchAgain: function () {
       this.fetchENV().then(() => {
