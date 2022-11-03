@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="mx-10 mt-4" id="buffet_container">
+  <v-container fluid class="px-10 mt-4" id="buffet_container">
       <v-row>
           <v-col cols="4" v-for="order in clusteredOrders" :key="`order_created_at_${order.createdAt}_by_${order.waiter}`">
               <cluster :order="order" :card-size="cardSize" @card-size="handleSizeChange" />

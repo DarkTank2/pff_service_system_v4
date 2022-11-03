@@ -1,16 +1,10 @@
 <template>
   <div>
-      <v-card>
-          <v-card-title>
-              <v-btn :to="{ name: 'Home' }" outlined>
-                  <v-icon class="mr-2">chevron_left</v-icon>
-                  zurück
-              </v-btn>
-          </v-card-title>
-          <v-container>
-              <single-category v-for="category in categories" :key="`single_category_${category.id}`" :category="category" />
-          </v-container>
-      </v-card>
+    <v-card>
+      <v-container style="margin-bottom: 56px;">
+        <single-category v-for="category in categories" :key="`single_category_${category.id}`" :category="category" />
+      </v-container>
+    </v-card>
   </div>
 </template>
 

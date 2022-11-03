@@ -1,7 +1,7 @@
 <template>
     <v-container fluid class="mt-4">
         <v-row class="mx-1">
-            <v-btn :to="{ name: 'Buffet' }" outlined>
+            <v-btn :to="{ name: 'Home' }" outlined>
                 <v-icon>chevron_left</v-icon>
                 zurück zum buffet
             </v-btn>
