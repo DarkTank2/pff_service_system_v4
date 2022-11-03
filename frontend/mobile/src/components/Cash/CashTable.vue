@@ -83,6 +83,7 @@
           right
           @click="cash"
           :disabled="listCashingItems.length === 0"
+          style="bottom: 70px !important;"
           >
           <v-icon>euro_symbol</v-icon>
       </v-btn>
