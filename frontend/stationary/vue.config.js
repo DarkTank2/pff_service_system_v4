@@ -15,5 +15,6 @@ module.exports = {
       },
       extensions: ['.js', '.vue', '.json']
     }
-  }
+  },
+  publicPath: '/stationary/'
 }

@@ -5,6 +5,11 @@ http:
         - web
       rule: "PathPrefix(`/sapi/`) || PathPrefix(`/sws`)"
       service: BackendService
+    StationaryRouter:
+      entryPoints:
+        - web
+      rule: "PathPrefix(`/stationary/`)"
+      service: StationaryService
     FrontendRouter:
       entryPoints:
         - web
@@ -20,6 +25,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://host.docker.internal:8000"
+    StationaryService:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:8001"
 
     # FrontendService:
     #   loadBalancer:
