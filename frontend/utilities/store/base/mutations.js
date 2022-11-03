@@ -15,9 +15,16 @@ const setTableId = (state, payload) => {
   state.tableId = payload
 }
 
+const setCategoryVisibilityState = (state, payload) => {
+  let tmp = [...state.activeCategories]
+  tmp[payload.id] = payload.active
+  state.activeCategories = tmp
+}
+
 export default {
   fetchName,
   setName,
   setTitle,
-  setTableId
+  setTableId,
+  setCategoryVisibilityState
 }

@@ -1,5 +1,8 @@
 <template>
-    <v-row style="padding: 20px;">
+    <v-row style="padding: 20px;" v-intersect="{
+        handler: onIntersect,
+        options: { threshold, rootMargin: '0px 0px -56px' }
+      }">
         <v-col cols="12">
             <v-card style="border: thin solid;" class="rounded-pill" :id="`category_${category.id}`">
                 <v-card-text class="text-center">
@@ -9,7 +12,7 @@
             </v-card>
         </v-col>
         <v-col v-for="baseItem in baseItems" :key="`cat_${categoryId}_col_${baseItem.id}`" cols="4" style="padding: 2px;">
-            <v-card :style="itemStyle" :color="chooseColor(baseItem, category)" @click.stop="selectBaseItem(baseItem)" :disabled="!baseItem.available || disabled">
+            <v-card style="aspect-ratio: 1; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0) 100%);" :color="chooseColor(baseItem, category)" @click.stop="selectBaseItem(baseItem)" :disabled="!baseItem.available || disabled">
                 <v-card-text class="text-center mx-auto">
                     {{ `${baseItem.name}` }}
                     <br/>
@@ -147,13 +150,20 @@ export default {
         selectedSize: null,
         comment: null,
         selectedAdditions: [],
-        quantity: 1
+        quantity: 1,
+        isIntersecting: false,
+        threshold: new Array(101).fill(0).map((_, i) => i / 100)
     }),
     created: function () {},
-    mounted: async function () {},
+    mounted: async function () {
+      this.setCategoryVisibilityState({ active: false, id: this.categoryId })
+    },
     methods: {
         ...mapMutations('waiter', {
             addItemToOrder: 'addOrderedItem'
+        }),
+        ...mapMutations('base', {
+          setCategoryVisibilityState: 'setCategoryVisibilityState'
         }),
         selectBaseItem: function (baseItem) {
             this.selectedItem = baseItem
@@ -206,6 +216,9 @@ export default {
         decrementQuantity: function () {
             this.quantity -= 1
             if (this.quantity < 1) this.quantity = 1
+        },
+        onIntersect (entries) {
+          this.setCategoryVisibilityState({ active: entries[0].intersectionRatio, id: this.categoryId })
         }
     },
     computed: {
@@ -242,12 +255,6 @@ export default {
         },
         disabled: function () {
             return this.env.disabledCategories.includes(this.categoryId)
-        },
-        itemHeight: function () {
-            return `${(window.screen.width - 8) / 3}px`
-        },
-        itemStyle: function () {
-            return `height: ${this.itemHeight};`
         },
         baseItems: function () {
             return this.findBaseItems({ query: {categoryId: this.categoryId} }).data
