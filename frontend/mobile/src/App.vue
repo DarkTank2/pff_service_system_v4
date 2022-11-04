@@ -45,7 +45,7 @@
       <loading />
       <notification />
     </v-main>
-    <v-bottom-navigation color="primary" fixed>
+    <v-bottom-navigation color="primary" fixed grow>
       <v-btn :to="{ name: 'Order' }" >
         <span class="ml-2">Bestellung aufnehmen</span>
         <v-icon>brunch_dining</v-icon>
