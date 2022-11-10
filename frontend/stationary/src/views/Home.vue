@@ -20,9 +20,7 @@ export default {
     name: 'Buffet',
     components: { Cluster },
     data: () => ({
-        orderedItemsQuery: { query: { finished: false } },
-        cardSize: null,
-        timer: null
+        cardSize: null
     }),
     mounted: function () {
         this.fetchTables()
@@ -32,7 +30,8 @@ export default {
         this.fetchFlavours()
         this.fetchMaps()
         this.fetchAdditions()
-        this.fetchAgain()
+        this.fetchOrderedItems()
+        this.initSubscriptions()
     },
     methods: {
         ...mapActions('ordered-items', {
@@ -59,6 +58,9 @@ export default {
         ...mapActions('additions', {
             fetchAdditions: 'find'
         }),
+        ...mapActions('subscriptions', {
+          initSubscriptions: 'initSubscriptions'
+        }),
         handleSizeChange: function (newSize) {
             if (this.cardSize === null) {
                 this.cardSize = newSize
@@ -67,12 +69,6 @@ export default {
             if (newSize > this.cardSize) {
                 this.cardSize = newSize
             }
-        },
-        fetchAgain: function () {
-          this.fetchOrderedItems(this.orderedItemsQuery).then((data) => {
-            this.fetchMaps({ query: { orderedItemId: { $in: data.map(({ id }) => id) } } })
-            this.timer = setTimeout(this.fetchAgain, 5000)
-          })
         }
     },
     computed: {
@@ -86,7 +82,8 @@ export default {
             getBaseItem: 'get'
         }),
         ...mapGetters('items', {
-            getItem: 'get'
+            getItem: 'get',
+            findItems: 'find'
         }),
         ...mapGetters('sizes', {
             getSize: 'get'
@@ -100,8 +97,19 @@ export default {
         ...mapGetters('additions', {
             getAddition: 'get'
         }),
+        ...mapGetters('subscriptions', {
+          subscriptions: 'subscriptions'
+        }),
         allOpenOrderedItems: function () {
             return this.findOrderedItems(this.orderedItemsQuery).data
+        },
+        orderedItemsQuery: function () {
+          let queryObject = { query: { finished: false } }
+          if (this.subscriptions && this.subscriptions.length !== 0) {
+            let allowedItems = this.findItems({ query: { baseItemId: { $in: this.subscriptions } } }).data.map(({ id }) => id)
+            queryObject.query.itemId = { $in: allowedItems }
+          }
+          return queryObject
         },
         clusteredOrders: function () {
             let currentOrder = { items: [], createdAt: null }
@@ -130,11 +138,6 @@ export default {
         clusteredOrders: function () {
             this.cardSize = null
         }
-    },
-    beforeDestroy: function () {
-      if (this.timer) {
-        clearTimeout(this.timer)
-      }
     }
 }
 </script>

@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import Loading from '../utility/loading.vue'
+import Loading from '@components/loading.vue'
 export default {
     name: 'ServiceTable',
     props: { // https://vuejs.org/v2/guide/components-props.html#Prop-Validation
