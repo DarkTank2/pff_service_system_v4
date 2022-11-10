@@ -4,11 +4,22 @@
           <v-col cols="4" v-for="order in clusteredOrders" :key="`order_created_at_${order.createdAt}_by_${order.waiter}`">
               <cluster :order="order" :card-size="cardSize" @card-size="handleSizeChange" />
           </v-col>
-          <v-alert v-if="clusteredOrders.length === 0" prominent outlined shaped type="warning">
-            <span class="text-h5">
-              Es gibt derzeit keine Bestellungen, die bearbeitet werden müssen.
-            </span>
-          </v-alert>
+          <v-col cols="12" v-if="clusteredOrders.length === 0 && showNothing === 1">
+            <v-card width="100%" flat tile class="d-flex align-center flex-column pa-14">
+              <object data="undraw_void_-3-ggu.svg" width="20%"></object>
+              <v-card-text class="text-center">
+                <span class="text-h2">Gibt grad nix zu sehen!</span>
+              </v-card-text>
+            </v-card>
+          </v-col>
+          <v-col cols="12" v-if="clusteredOrders.length === 0 && showNothing !== 1">
+            <v-card width="100%" flat tile class="d-flex align-center flex-column pa-14">
+              <object data="undraw_empty_re_opql.svg" width="20%"></object>
+              <v-card-text class="text-center">
+                <span class="text-h2">Ist grad alles leer!</span>
+              </v-card-text>
+            </v-card>
+          </v-col>
       </v-row>
   </v-container>
 </template>
@@ -20,7 +31,8 @@ export default {
     name: 'Buffet',
     components: { Cluster },
     data: () => ({
-        cardSize: null
+        cardSize: null,
+        showNothing: 0
     }),
     mounted: function () {
         this.fetchTables()
@@ -32,6 +44,7 @@ export default {
         this.fetchAdditions()
         this.fetchOrderedItems()
         this.initSubscriptions()
+        this.showNothing = Math.floor(Math.random()*2) % 2
     },
     methods: {
         ...mapActions('ordered-items', {
@@ -137,6 +150,7 @@ export default {
     watch: {
         clusteredOrders: function () {
             this.cardSize = null
+            this.showNothing = Math.floor(Math.random()*2) % 2
         }
     }
 }
