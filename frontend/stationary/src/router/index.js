@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import goTo from 'vuetify/lib/services/goto'
+import moment from 'moment'
 import CalculatorExtension from '../components/appBarExtensions/CalculatorExtension.vue'
 import BuffetAppBarComponent from '../components/appBarComponents/BuffetComponent.vue'
 import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigButton.vue'
+import BuffetSubscriptionsButton from '../components/sideNavbarComponents/BuffetSubscriptionsButton.vue'
 import ConfiguratorAppBarComponent from '../components/appBarComponents/ConfiguratorComponent.vue'
 import CalculatorAppBarComponent from '../components/appBarComponents/CalculatorAppBarComponent.vue'
 
@@ -14,7 +16,15 @@ const routes = [
     path: '/',
     name: 'base',
     redirect: () => {
-      console.log('[Router] redirecting from "/" to "/home"')
+      let lastSubscribed = window.localStorage.getItem('subscriptionDate')
+      if (!lastSubscribed) {
+        // not ever subscribed
+        return { name: 'Subscriptions' }
+      }
+      if (moment(lastSubscribed).isBefore(moment('2022-12-31T12:00:00.000Z'))) {
+        // very old subscription, possible last year, maybe update it
+        return { name: 'Subscriptions' }
+      }
       return { name: 'Home' }
     }
   },
@@ -24,7 +34,7 @@ const routes = [
     component: () => import('../views/Home.vue'),
     meta: {
       appBarComponent: BuffetAppBarComponent,
-      sideNavbarComponents: [BuffetConfigButton]
+      sideNavbarComponents: [BuffetConfigButton, BuffetSubscriptionsButton]
     }
   },
   {
@@ -34,6 +44,11 @@ const routes = [
     meta: {
       appBarComponent: BuffetAppBarComponent
     }
+  },
+  {
+    path: '/subscriptions',
+    name: 'Subscriptions',
+    component: () => import(/* webpackChunkName: "buffet" */ '../views/Subscriptions.vue'),
   },
   {
     path: '/calculator',

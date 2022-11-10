@@ -5,6 +5,8 @@ import { FeathersVuex } from '../feathers-client'
 import base from '@store/base'
 import utilities from '@store/untilities'
 
+import subscriptions from './subscriptions'
+
 Vue.use(Vuex)
 Vue.use(FeathersVuex)
 
@@ -26,7 +28,8 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     base,
-    utilities
+    utilities,
+    subscriptions
   },
   plugins: [...servicePlugins]
 })
