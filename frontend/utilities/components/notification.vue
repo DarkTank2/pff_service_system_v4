@@ -8,7 +8,7 @@
             <span v-if="notification" v-text="notification.message" :class="colorClass"></span>
         </div>
         <template v-slot:action="{ attrs }">
-          <v-progress-circular :value="progress" color="#2196f3" size="40" width="3" class="no-transition">
+          <v-progress-circular :value="progress" color="primary" size="40" width="3" class="no-transition">
             <v-btn
                 color="red"
                 icon
@@ -51,7 +51,6 @@ export default {
         },
         makeSingleDecrement: function () {
           this.progress -= this.progressDecrement
-          console.log(this.progress)
           if (this.progress <= 0) {
             this.progressTimer = null
             return

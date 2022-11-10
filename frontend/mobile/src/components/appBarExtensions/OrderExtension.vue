@@ -10,7 +10,7 @@
             >
             <v-btn
                 :input-value="category.id === activeCategoryId"
-                active-class="blue darken-3 white--text"
+                active-class="active white--text"
                 rounded
                 outlined
                 :disabled="category.disabled"
@@ -76,5 +76,7 @@ export default {
 </script>
 
 <style>
-
+.active {
+  background-color: #928cff;
+}
 </style>

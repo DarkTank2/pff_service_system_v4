@@ -57,7 +57,7 @@ export default {
 
 <style scoped>
 .bordered {
-  border: 2px solid #2196f3 !important;
+  border: 2px solid #928cff !important;
   border-radius: 8px;
 }
 </style>

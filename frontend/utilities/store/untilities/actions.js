@@ -12,7 +12,6 @@ const resetFetchPendingFlag = ({ commit }) => {
     })
 }
 const setNotification = ({ commit }, payload) => {
-    console.log(payload)
     return new Promise((resolve, reject) => {
         if (!payload) {
             reject(new Error('Cannot set nothing as notification!'))

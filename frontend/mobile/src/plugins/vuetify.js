@@ -17,5 +17,12 @@ export default new Vuetify({
   },
   icons: {
     iconfont: 'md'
+  },
+  theme: {
+    themes: {
+      dark: {
+        primary: '#928cff'
+      }
+    }
   }
 })

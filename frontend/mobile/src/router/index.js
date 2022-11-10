@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import goTo from 'vuetify/lib/services/goto'
+// import moment from 'moment'
 import OrderExtension from '../components/appBarExtensions/OrderExtension.vue'
 import OrderComponent from '../components/navBarComponents/OrderComponent.vue'
 import CashButton from '../components/sideNavbarComponents/CashButton.vue'
@@ -15,8 +16,13 @@ const routes = [
     path: '/',
     name: 'base',
     redirect: () => {
-      console.log('[Router] redirecting from "/" to "/home"')
-      return { name: 'Home' }
+      let onboardedAt = window.localStorage.getItem('onboardingCompletedAt')
+      if (onboardedAt) {
+        console.log('[Router] Redirecting to "/home" since device is already onboarded!')
+        return { name: 'Home' }
+      }
+      console.log('[Router] Redirecting to onboarding-page since site is accessed for the first time!')
+      return { name: 'Onboarding' }
     }
   },
   {
@@ -62,6 +68,11 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/hello',
+    name: 'Onboarding',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Onboarding.vue')
   },
   {
     path: '/about',

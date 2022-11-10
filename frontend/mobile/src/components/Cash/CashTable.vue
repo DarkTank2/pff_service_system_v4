@@ -1,15 +1,15 @@
 <template>
   <v-card>
       <v-card-title class="d-flex">
-          <v-btn outlined class="mx-2 pl-2 pr-4" :to="{ name: 'TableSelection' }">
+          <v-btn elevation="2" rounded outlined class="mx-2 pl-2 pr-4" :to="{ name: 'TableSelection' }" exact>
             <v-icon>chevron_left</v-icon>
             zurück
           </v-btn>
-          <v-btn outlined class="flex-grow-1 mx-2 v-btn--active" v-if="listCashingItems.length === 0" @click="addAll()">
+          <v-btn elevation="2" rounded outlined class="flex-grow-1 mx-2" color="primary" v-if="listCashingItems.length === 0" @click="addAll()">
             <v-icon>library_add_check</v-icon>
             alles
           </v-btn>
-          <v-btn outlined class="flex-grow-1 mx-2 v-btn--active" v-else @click="clearCash">
+          <v-btn elevation="2" rounded outlined class="flex-grow-1 mx-2" color="primary" v-else @click="clearCash">
             <v-icon>clear</v-icon>
             nichts
           </v-btn>
@@ -222,7 +222,7 @@ export default {
 }
 
 .bordered {
-  border-color: #2196f3 !important;
+  border-color: #928cff !important;
   border-width: 2px;
 }
 </style>

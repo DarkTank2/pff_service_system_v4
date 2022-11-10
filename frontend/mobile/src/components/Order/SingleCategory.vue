@@ -30,7 +30,7 @@
             <v-card v-if="selectedItem">
                 <v-system-bar>
                     <v-spacer></v-spacer>
-                    <v-btn icon @click.stop="closeDialog">
+                    <v-btn icon @click.stop="closeDialog" color="primary">
                         <v-icon>clear</v-icon>
                     </v-btn>
                 </v-system-bar>
@@ -118,6 +118,7 @@
                                     elevation="2"
                                     fab
                                     rounded
+                                    outlined
                                     @click="addToOrder"
                                     >
                                     Zur Bestellung hinzufügen 

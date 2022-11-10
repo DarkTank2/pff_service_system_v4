@@ -1,6 +1,6 @@
 <template>
   <v-container fluid>
-    <v-list>
+    <v-list class="mb-14">
       <v-list-item
         v-for="table in tables"
         :key="`select_table__table_id_${table.id}`"

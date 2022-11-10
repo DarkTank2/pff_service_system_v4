@@ -4,7 +4,11 @@ import feathersVuex from 'feathers-vuex'
 import io from 'socket.io-client'
 import socketio from '@feathersjs/socketio-client'
 
-const socket = io(`${window.location.origin}`, { transports: ['websocket'], upgrade: false, path: '/sws' })
+const socket = io(`${window.location.origin}`, {
+  transports: ['websocket'],
+  upgrade: false,
+  path: '/sws'
+})
 var transport = socketio(socket)
 
 const feathersClient = feathers()

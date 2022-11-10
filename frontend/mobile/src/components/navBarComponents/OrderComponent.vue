@@ -118,8 +118,8 @@
                         @click="sendOrder"
                         :disabled="orderedItems.length === 0 || anyItemDisabled"
                         >
-                        <v-icon class="mr-2">send</v-icon>
                         Bestellung absenden 
+                        <v-icon class="mr-2">send</v-icon>
                     </v-btn>
                 </v-col>
             </v-row>

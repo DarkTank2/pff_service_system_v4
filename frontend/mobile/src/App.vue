@@ -45,7 +45,7 @@
       <loading />
       <notification />
     </v-main>
-    <v-bottom-navigation color="primary" fixed grow>
+    <v-bottom-navigation color="primary" fixed grow v-if="$route.name !== 'Onboarding'">
       <v-btn :to="{ name: 'Order' }" >
         <span class="ml-2">Bestellung aufnehmen</span>
         <v-icon>brunch_dining</v-icon>
@@ -135,3 +135,14 @@ export default {
   }
 };
 </script>
+
+<style>
+/* @font-face {
+  font-family: "Ailerons";
+  src: local("Ailerons"),
+   url(./fonts/Ailerons.otf) format("truetype");
+}
+* {
+     font-family: "Ailerons", Helvetica, Arial;
+} */
+</style>
