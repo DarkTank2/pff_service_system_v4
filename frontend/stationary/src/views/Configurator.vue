@@ -53,9 +53,9 @@
           <service-table
             :items="categories"
             :dependencies="{}"
-            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'},{value:'color',text:'Color'}]"
+            :headers="[{value:'id',text:'ID'},{value:'name',text:'Name'},{value:'color',text:'Color'},{value:'inactive',text:'Inactive'}]"
             serviceConstructor="Category"
-            :config="{id:{changeable:false},name:{changeable:true},color:{changeable:true}}"
+            :config="{id:{changeable:false},name:{changeable:true},color:{changeable:true},inactive:{changeable:true,type:'boolean'}}"
             />
         </v-expansion-panel-content>
       </v-expansion-panel>

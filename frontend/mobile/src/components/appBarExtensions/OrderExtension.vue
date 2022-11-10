@@ -5,7 +5,7 @@
         :value="activeCategoryId - 1"
         >
         <v-slide-item
-            v-for="category in rawCategories"
+            v-for="category in categories"
             :key="`slide_item_category_${category.id}`"
             >
             <v-btn
@@ -54,7 +54,7 @@ export default {
             listEnvs: 'list'
         }),
         ...mapGetters('categories', {
-            listCategories: 'list'
+            findCategories: 'find'
         }),
         ...mapGetters('base', {
           activeCategoryId: 'firstActiveCategory'
@@ -62,13 +62,8 @@ export default {
         env: function () {
             return this.listEnvs[0]
         },
-        rawCategories: function () {
-            return this.listCategories.map(category => {
-                return {
-                    ...category,
-                    disabled: this.env.disabledCategories.includes(category.id)
-                }
-            })
+        categories: function () {
+          return this.findCategories({ query: { inactive: { $ne: true } } }).data
         }
     },
     watch: {}

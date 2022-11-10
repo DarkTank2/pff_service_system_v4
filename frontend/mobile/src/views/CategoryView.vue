@@ -70,13 +70,16 @@ export default {
             listEnvs: 'list'
         }),
         ...mapGetters('categories', {
-            categories: 'list'
+            findCategories: 'find'
         }),
         itemHeight: function () {
             return `${(window.screen.width - 8) / 3}px`
         },
         itemStyle: function () {
             return `height: ${this.itemHeight};`
+        },
+        categories: function () {
+          return this.findCategories({ query: { inactive: { $ne: true } } }).data
         }
     },
     watch: {},

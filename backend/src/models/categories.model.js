@@ -15,6 +15,9 @@ module.exports = app => {
         },
         color: {
             type: DataTypes.STRING
+        },
+        inactive: {
+          type: DataTypes.BOOLEAN
         }
     }, {
         timestamps: false
