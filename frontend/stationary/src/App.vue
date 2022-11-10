@@ -6,6 +6,9 @@
         <component :is="meta.titleReplacement" />
       </template>
       <v-toolbar-title v-else>{{ env ? env.occasion : 'Loading...' }}</v-toolbar-title>
+      <v-spacer v-if="meta.appBarComponent"></v-spacer>
+      <component v-if="meta.appBarComponent" :is="meta.appBarComponent" />
+      <v-spacer v-if="meta.appBarComponent"></v-spacer>
     </v-app-bar>
     <v-navigation-drawer
       v-model="sideNav"
