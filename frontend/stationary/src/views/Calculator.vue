@@ -252,6 +252,9 @@ export default {
         ...mapGetters('keybindings', {
           keybindings: 'keybindings'
         }),
+        ...mapGetters('config', {
+            displayedItems: 'displayedItems'
+        }),
         orderedItems: function () {
             return this.order.map((orderedItem, index) => {
                 let item = this.getItem(orderedItem.itemId)
@@ -290,6 +293,10 @@ export default {
         },
         roundedSum: function () {
             return Math.round(this.sum * 100) / 100
+        },
+        shownCategories: function () {
+
+            return []
         }
     },
     watch: {},
