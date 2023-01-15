@@ -114,6 +114,7 @@ export default {
         this.fetchItems()
         this.fetchMaps()
         this.fetchAdditions()
+        document.addEventListener('keyup', this.keyupCallback)
     },
     methods: {
         ...mapActions('env', {
@@ -149,7 +150,8 @@ export default {
         ...mapMutations('waiter', {
             incrementAtIndex: 'incrementAtIndex', 
             decrementAtIndex: 'decrementAtIndex',
-            clearOrder: 'clearOrder'
+            clearOrder: 'clearOrder',
+            addItemToOrder: 'addOrderedItem'
         }),
         ...mapActions('utilities', {
             setFetchPendingFlag: 'setFetchPendingFlag',
@@ -207,6 +209,19 @@ export default {
         },
         closeDialog: function () {
             this.dialog = false
+        },
+        keyupCallback: function (event) {
+          let { key } = event
+          if (key === 'Enter') {
+            this.cash()
+            return
+          }
+          let binding = this.keybindings.find(binding => binding.key === key)
+          if (binding) {
+            this.addItemToOrder({ itemId: binding.itemId, quantity: 1, comment: '', additions: [] })
+          } else {
+            console.log(`No binding found for key "${key}"`)
+          }
         }
     },
     computed: {
@@ -233,6 +248,9 @@ export default {
         }),
         ...mapGetters('additions', {
             getAddition: 'get'
+        }),
+        ...mapGetters('keybindings', {
+          keybindings: 'keybindings'
         }),
         orderedItems: function () {
             return this.order.map((orderedItem, index) => {
@@ -274,7 +292,11 @@ export default {
             return Math.round(this.sum * 100) / 100
         }
     },
-    watch: {}
+    watch: {},
+    beforeDestroy: function () {
+      console.log('Destroying')
+      document.removeEventListener('keyup', this.keyupCallback)
+    }
 }
 </script>
 
