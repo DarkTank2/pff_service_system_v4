@@ -2,10 +2,10 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import { FeathersVuex } from '../feathers-client'
 
-import waiterMethods from './waiter'
 
 import cashMethods from './cash'
 
+import waiter from '@store/waiter'
 import base from '@store/base'
 import utilities from '@store/untilities'
 
@@ -23,14 +23,6 @@ const requireModule = require.context(
 const servicePlugins = requireModule
   .keys()
   .map(modulePath => requireModule(modulePath).default)
-
-const waiter = {
-  namespaced: true,
-  state: {
-    order: []
-  },
-  ...waiterMethods
-}
 
 const cash = {
   namespaced: true,
