@@ -23,14 +23,6 @@
           </v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
-        <v-list-item>
-          <v-list-item-content>
-            <v-btn :to="{ name: 'Home' }" block outlined>
-              <v-icon>home</v-icon>
-              <span class="ml-2">Home</span>
-            </v-btn>
-          </v-list-item-content>
-        </v-list-item>
         <template v-if="meta.sideNavbarComponents">
           <v-list-item v-for="(component, index) in meta.sideNavbarComponents" :key="`side_navbar_component_index_${index}`">
             <v-list-item-content>
@@ -65,10 +57,26 @@ export default {
   created: function () {
     this.$vuetify.theme.dark = this.darkMode
     this.fetchENV()
+    this.initSubscriptions()
+    this.initKeybindings()
+    this.initName()
+    this.initQuickMode()
+    this.initDisplayedItems()
   },
   methods: {
     ...mapActions('env', {
       fetchENV: 'find'
+    }),
+    ...mapActions('subscriptions', {
+      initSubscriptions: 'initSubscriptions'
+    }),
+    ...mapActions('keybindings', {
+      initKeybindings: 'initKeybindings'
+    }),
+    ...mapActions('config', {
+      initName: 'initName',
+      initQuickMode: 'initQuickMode',
+      initDisplayedItems: 'initDisplayedItems'
     })
   },
   computed: {

@@ -34,7 +34,6 @@ export default {
   mounted: function () {
     this.fetchBaseItems()
     this.fetchCategories()
-    this.initSubscriptions()
   },
   methods: {
     ...mapActions('base-items', {
@@ -42,9 +41,6 @@ export default {
     }),
     ...mapActions('categories', {
       fetchCategories: 'find'
-    }),
-    ...mapActions('subscriptions', {
-      initSubscriptions: 'initSubscriptions'
     }),
     ...mapMutations('subscriptions', {
       updateSubscription: 'updateSubscription',

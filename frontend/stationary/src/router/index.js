@@ -8,6 +8,10 @@ import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigB
 import BuffetSubscriptionsButton from '../components/sideNavbarComponents/BuffetSubscriptionsButton.vue'
 import ConfiguratorAppBarComponent from '../components/appBarComponents/ConfiguratorComponent.vue'
 import CalculatorAppBarComponent from '../components/appBarComponents/CalculatorAppBarComponent.vue'
+import CalcKeybindingsConfigButton from '../components/sideNavbarComponents/CalcKeybindingsConfigButton.vue'
+import CalcButton from '../components/sideNavbarComponents/CalcButton.vue'
+import HomeButton from '../components/sideNavbarComponents/HomeButton.vue'
+import CalcConfigButton from '../components/sideNavbarComponents/CalcConfigButton.vue'
 
 Vue.use(VueRouter)
 
@@ -42,13 +46,17 @@ const routes = [
     name: 'BuffetConfig',
     component: () => import(/* webpackChunkName: "buffet" */ '../views/BuffetConfig.vue'),
     meta: {
-      appBarComponent: BuffetAppBarComponent
+      appBarComponent: BuffetAppBarComponent,
+      sideNavbarComponents: [HomeButton]
     }
   },
   {
     path: '/subscriptions',
     name: 'Subscriptions',
     component: () => import(/* webpackChunkName: "buffet" */ '../views/Subscriptions.vue'),
+    meta: {
+      sideNavbarComponents: [HomeButton]
+    }
   },
   {
     path: '/calculator',
@@ -56,7 +64,24 @@ const routes = [
     component: () => import(/* webpackChunkName: "calculator" */ '../views/Calculator.vue'),
     meta: {
       appBarComponent: CalculatorAppBarComponent,
-      extension: CalculatorExtension
+      extension: CalculatorExtension,
+      sideNavbarComponents: [CalcKeybindingsConfigButton, CalcConfigButton]
+    }
+  },
+  {
+    path: '/calculatorConfig',
+    name: 'CalculatorConfig',
+    component: () => import(/* webpackChunkName: "calculator" */ '../views/CalcConfig.vue'),
+    meta: {
+      sideNavbarComponents: [CalcButton]
+    }
+  },
+  {
+    path: '/keybindings',
+    name: 'Keybindings',
+    component: () => import(/* webpackChunkName: "calculator" */ '../views/Keybindings.vue'),
+    meta: {
+      sideNavbarComponents: [CalcButton]
     }
   },
   {
@@ -72,7 +97,8 @@ const routes = [
     name: 'Configurator',
     component: () => import(/* webpackChunkName: "master" */ '../views/Configurator.vue'),
     meta: {
-      appBarComponent: ConfiguratorAppBarComponent
+      appBarComponent: ConfiguratorAppBarComponent,
+      sideNavbarComponents: [HomeButton, CalcButton]
     }
   },
   {
