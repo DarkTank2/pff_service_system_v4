@@ -4,8 +4,11 @@ import { FeathersVuex } from '../feathers-client'
 
 import base from '@store/base'
 import utilities from '@store/untilities'
+import waiter from '@store/waiter'
 
 import subscriptions from './subscriptions'
+import keybindings from './keybindings'
+import config from './config'
 
 Vue.use(Vuex)
 Vue.use(FeathersVuex)
@@ -29,7 +32,10 @@ export default new Vuex.Store({
   modules: {
     base,
     utilities,
-    subscriptions
+    waiter,
+    subscriptions,
+    keybindings,
+    config
   },
   plugins: [...servicePlugins]
 })
