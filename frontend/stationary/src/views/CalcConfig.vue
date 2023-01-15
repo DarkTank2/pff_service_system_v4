@@ -6,7 +6,7 @@
       </v-col>
       <v-col cols="4"></v-col>
       <v-col cols="4">
-        <v-switch v-model="quickModeRef" label="QuickMode"></v-switch>
+        <QuickModeSwitch />
       </v-col>
     </v-row>
     <v-row v-for="category in itemStructure" :key="`row_category_${category.id}`">
@@ -29,14 +29,15 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
+import QuickModeSwitch from '../components/Calculator/QuickModeSwitch.vue'
 export default {
   name: 'CalculatorConfig',
   props: [],
-  components: {},
+  components: {
+    QuickModeSwitch
+  },
   data () {
-    return {
-      quickModeRef: null
-    }
+    return {}
   },
   created: function () {},
   mounted: function () {
@@ -52,24 +53,10 @@ export default {
     }),
     ...mapMutations('config', {
       updateDisplayedItems: 'updateDisplayedItems',
-      updateName: 'updateName',
-      updateQuickMode: 'updateQuickMode'
+      updateName: 'updateName'
     })
   },
-  watch: {
-    quickMode: {
-      immediate: true,
-      handler: function (newValue) {
-        this.quickModeRef = newValue.quickMode
-      }
-    },
-    quickModeRef: function (newValue) {
-      if (newValue === null) {
-        return
-      }
-      this.updateQuickMode({ quickMode: newValue })
-    }
-  },
+  watch: {},
   computed: {
     ...mapGetters('base-items', {
       findBaseItems: 'find'
@@ -79,8 +66,7 @@ export default {
     }),
     ...mapGetters('config', {
       displayedItems: 'displayedItems',
-      name: 'name',
-      quickMode: 'quickMode'
+      name: 'name'
     }),
     itemStructure: function () {
       if (!this.listCategories) {

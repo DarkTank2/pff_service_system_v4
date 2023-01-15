@@ -9,6 +9,10 @@
       <v-spacer v-if="meta.appBarComponent"></v-spacer>
       <component v-if="meta.appBarComponent" :is="meta.appBarComponent" />
       <v-spacer v-if="meta.appBarComponent"></v-spacer>
+      <component v-if="meta.quickConfigElement" :is="meta.quickConfigElement" />
+      <template #extension v-if="meta.extension">
+        <component :is="meta.extension" />
+      </template>
     </v-app-bar>
     <v-navigation-drawer
       v-model="sideNav"
