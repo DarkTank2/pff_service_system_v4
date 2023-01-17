@@ -7,7 +7,7 @@ import cashMethods from './cash'
 
 import waiter from '@store/waiter'
 import base from '@store/base'
-import utilities from '@store/untilities'
+import utilities from '@store/utilities'
 
 Vue.use(Vuex)
 Vue.use(FeathersVuex)

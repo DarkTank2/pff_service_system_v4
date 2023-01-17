@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import { FeathersVuex } from '../feathers-client'
 
 import base from '@store/base'
-import utilities from '@store/untilities'
+import utilities from '@store/utilities'
 import waiter from '@store/waiter'
 
 import subscriptions from './subscriptions'
