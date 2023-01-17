@@ -2,7 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import goTo from 'vuetify/lib/services/goto'
 import moment from 'moment'
-import CalculatorExtension from '../components/appBarExtensions/CalculatorExtension.vue'
+import CalculatorButtonCollection from '../components/appBarExtensions/CalculatorButtonCollection.vue'
+// import CalculatorExtension from '../components/appBarExtensions/CalculatorExtension.vue'
 import BuffetAppBarComponent from '../components/appBarComponents/BuffetComponent.vue'
 import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigButton.vue'
 import BuffetSubscriptionsButton from '../components/sideNavbarComponents/BuffetSubscriptionsButton.vue'
@@ -65,7 +66,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "calculator" */ '../views/Calculator.vue'),
     meta: {
       appBarComponent: CalculatorAppBarComponent,
-      extension: CalculatorExtension,
+      extension: CalculatorButtonCollection,
       sideNavbarComponents: [CalcKeybindingsConfigButton, CalcConfigButton],
       quickConfigElement: QuickModeSwitch
     }
