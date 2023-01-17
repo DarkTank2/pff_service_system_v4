@@ -7,15 +7,30 @@
                 </v-card-text>
             </v-card>
         </v-col>
-        <v-col v-for="baseItem in baseItems" :key="`cat_${categoryId}_col_${baseItem.id}`" cols="2" style="padding: 2px;">
-            <v-card :style="itemStyle" :color="category.color" @click.stop="selectBaseItem(baseItem)">
+        <template v-if="!quickMode.quickMode">
+          <v-col v-for="baseItem in baseItems" :key="`cat_${categoryId}_col_${baseItem.id}`" cols="2" style="padding: 2px;">
+              <v-card style="aspect-ratio: 1;" :color="category.color" @click.stop="selectBaseItem(baseItem)">
+                  <v-card-text class="text-center mx-auto">
+                      <span class="text-h4">{{ `${baseItem.name}` }}</span>
+                      <br/>
+                      <span v-if="!baseItem.available">(ausverkauft)</span>
+                  </v-card-text>
+              </v-card>
+          </v-col>
+        </template>
+        <template v-else>
+          <v-col v-for="item in allItems" :key="`cat_${categoryId}_item_col_${item.id}`" cols="2" style="padding: 2px;">
+            <v-card style="aspect-ratio: 1;" :color="category.color" @click.stop="addItem(item)">
                 <v-card-text class="text-center mx-auto">
-                    <span class="text-h4">{{ `${baseItem.name}` }}</span>
+                    <span class="text-h4">{{ `${item.sizeName} ${item.baseItemName}` }}</span>
                     <br/>
-                    <span v-if="!baseItem.available">(ausverkauft)</span>
+                    <span class="text-h4">{{ `${item.flavourName}` }}</span>
+                    <br/>
+                    <span class="text-h4">{{ `${item.price}€` }}</span>
                 </v-card-text>
             </v-card>
-        </v-col>
+          </v-col>
+        </template>
         <v-dialog
             v-model="dialog"
             max-width="600px"
@@ -184,6 +199,10 @@ export default {
         decrementQuantity: function () {
             this.quantity -= 1
             if (this.quantity < 1) this.quantity = 1
+        },
+        addItem: function (item) {
+          // this will only happen in quickmode
+          this.addItemToOrder({ itemId: item.id, quantity: 1, comment: '', additions: [] })
         }
     },
     computed: {
@@ -212,6 +231,10 @@ export default {
             findAdditions: 'find',
             getAddition: 'get'
         }),
+        ...mapGetters('config', {
+          quickMode: 'quickMode',
+          displayedItems: 'displayedItems'
+        }),
         env: function () {
             return this.listEnv[0]
         },
@@ -220,12 +243,6 @@ export default {
         },
         disabled: function () {
             return this.env.disabledCategories.includes(this.categoryId)
-        },
-        itemHeight: function () {
-            return `${(window.screen.width - 8) / 6}px`
-        },
-        itemStyle: function () {
-            return `height: ${this.itemHeight};`
         },
         baseItems: function () {
             return this.findBaseItems({ query: {categoryId: this.categoryId} }).data
@@ -278,6 +295,19 @@ export default {
             let itemPrice = item ? item.price : 0
             let additionsSum = this.selectedAdditions.map(id => this.getAddition(id)).reduce((acc, val) => val ? (val.priceModifier + acc) : acc, 0)
             return (itemPrice + additionsSum)
+        },
+        allItems: function () {
+          let allBaseItems = this.findBaseItems({ query: { categoryId: this.categoryId } }).data
+          let filteredBaseItems = allBaseItems.filter(({ id }) => this.displayedItems.includes(id))
+          let items = this.findItems({ query: { baseItemId: { $in: filteredBaseItems.map(({ id }) => id) } } }).data
+          return items.map(item => {
+            return {
+              ...item,
+              baseItemName: this.getBaseItem(item.baseItemId).name,
+              sizeName: this.getSizes(item.sizeId).name,
+              flavourName: this.getFlavour(item.flavourId).name
+            }
+          })
         }
     },
     watch: {}
