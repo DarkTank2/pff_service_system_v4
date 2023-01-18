@@ -5,6 +5,11 @@ http:
         - web
       rule: "PathPrefix(`/sapi/`) || PathPrefix(`/sws`)"
       service: BackendService
+    StationaryRouter:
+      entryPoints:
+        - web
+      rule: "PathPrefix(`/stationary/`)"
+      service: StationaryService
     FrontendRouter:
       entryPoints:
         - web
@@ -19,9 +24,9 @@ http:
     FrontendService:
       loadBalancer:
         servers:
-          - url: "http://frontend:80"
+          - url: "http://mobile:80"
+    StationaryService:
+      loadBalancer:
+        servers:
+          - url: "http://stationary:80"
 
-    # FrontendService:
-    #   loadBalancer:
-    #     servers:
-    #       - url: "http://frontend:80"

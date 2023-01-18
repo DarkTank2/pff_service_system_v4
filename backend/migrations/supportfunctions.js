@@ -57,6 +57,7 @@ async function syncDB() {
   console.log('syncDB()');
   const app = require('../src/app');
   app.setup();
+  console.log('App set up!')
   return app.get('sequelizeSync');
 }
 

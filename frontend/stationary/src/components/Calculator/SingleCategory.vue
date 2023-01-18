@@ -8,7 +8,7 @@
             </v-card>
         </v-col>
         <template v-if="!quickMode.quickMode">
-          <v-col v-for="baseItem in baseItems" :key="`cat_${categoryId}_col_${baseItem.id}`" cols="2" style="padding: 2px;">
+          <v-col v-for="baseItem in baseItems" :key="`cat_${categoryId}_col_${baseItem.id}`" cols="4" lg="2" style="padding: 2px;">
               <v-card style="aspect-ratio: 1;" :color="category.color" @click.stop="selectBaseItem(baseItem)">
                   <v-card-text class="text-center mx-auto">
                       <span class="text-h4">{{ `${baseItem.name}` }}</span>
@@ -19,7 +19,7 @@
           </v-col>
         </template>
         <template v-else>
-          <v-col v-for="item in allItems" :key="`cat_${categoryId}_item_col_${item.id}`" cols="2" style="padding: 2px;">
+          <v-col v-for="item in allItems" :key="`cat_${categoryId}_item_col_${item.id}`" cols="4" lg="2" style="padding: 2px;">
             <v-card style="aspect-ratio: 1;" :color="category.color" @click.stop="addItem(item)">
                 <v-card-text class="text-center mx-auto">
                     <span class="text-h4">{{ `${item.sizeName} ${item.baseItemName}` }}</span>
@@ -162,8 +162,10 @@ export default {
         }),
         selectBaseItem: function (baseItem) {
             this.selectedItem = baseItem
-            let items = this.findItems({ query: { baseItemId: baseItem.id, default: true } }).data
-            let defaultItem = items[0]
+            let allItems = this.findItems({ query: { baseItemId: baseItem.id } }).data
+            let defaultItems = allItems.filter(({ default: def }) => def)
+            
+            let defaultItem = defaultItems[0] || allItems[0]
             this.selectedFlavour = defaultItem.flavourId
             this.selectedSize = defaultItem.sizeId
 
@@ -245,7 +247,7 @@ export default {
             return this.env.disabledCategories.includes(this.categoryId)
         },
         baseItems: function () {
-            return this.findBaseItems({ query: {categoryId: this.categoryId} }).data
+            return this.findBaseItems({ query: { categoryId: this.categoryId, id: { $in: this.displayedItems } } }).data
         },
         items: function () {
             return this.findItems({ query: { baseItemId: this.selectedItem?.id } }).data
@@ -263,14 +265,20 @@ export default {
             return this.findSizes({ query: { id: { $in: this.sizeIds } } }).data
         },
         disabledFlavours: function () {
-            let possibleItems = this.findItems({ query: { sizeId: this.selectedSize } }).data
-            let possibleFlavourIds = possibleItems.map(({ flavourId }) => flavourId)
-            return this.flavourIds.filter(id => !possibleFlavourIds.includes(id))
+          if (!this.selectedSize) {
+            return []
+          }
+          let possibleItems = this.findItems({ query: { sizeId: this.selectedSize } }).data
+          let possibleFlavourIds = possibleItems.map(({ flavourId }) => flavourId)
+          return this.flavourIds.filter(id => !possibleFlavourIds.includes(id))
         },
         disabledSizes: function () {
-            let possibleItems = this.findItems({ query: { flavourId: this.selectedFlavour } }).data
-            let possibleSizeIds = possibleItems.map(({ sizeId }) => sizeId)
-            return this.sizeIds.filter(id => !possibleSizeIds.includes(id))
+          if (!this.selectedFlavour) {
+            return []
+          }
+          let possibleItems = this.findItems({ query: { flavourId: this.selectedFlavour } }).data
+          let possibleSizeIds = possibleItems.map(({ sizeId }) => sizeId)
+          return this.sizeIds.filter(id => !possibleSizeIds.includes(id))
         },
         mapQuery: function () {
             return { query: { baseItemId: this.selectedItem?.id } }

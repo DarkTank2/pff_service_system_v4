@@ -17,4 +17,5 @@ module.exports = {
     }
   },
   publicPath: '/stationary/'
+  // publicPath: '/stationary_legacy/'
 }

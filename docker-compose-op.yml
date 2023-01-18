@@ -9,6 +9,9 @@ services:
       POSTGRES_DB: "main"
     ports:
       - 5432:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
 
   scout-proxy:
     image: traefik:v2.2
@@ -22,20 +25,26 @@ services:
       - ./traefik-fileprovider-op.yml:/etc/traefik/traefik-fileprovider.yml
 
   backend:
-    image: pff-backend:erntetanz
+    image: pff_backend:elixir-of-life
     container_name: "pff_backend"
     user: "node"
     working_dir: /home/node/app
     environment:
-      - DBCREDENTIALS=postgres://scoutadmin:DB4ScoutServiceProgram@ssp_db:5432/main
+      DBCREDENTIALS: "postgres://scoutadmin:DB4ScoutServiceProgram@ssp_db:5432/main"
+      NODE_ENV: "production"
+      PORT: 3030
     ports:
        - 3030:3030
     command: "npm run start"
     depends_on:
       - postgres
-
-  frontend:
-    image: nginx:latest
-    container_name: pss_frontend_nginx
     volumes:
-      - ./frontend/dist:/usr/share/nginx/html
+      - ./seeds:/home/node/app/migrations/files
+
+  mobile:
+    image: pff_mobile:elixir-of-life
+    container_name: pss_frontend_mobile_nginx
+
+  stationary:
+    image: pff_stationary:elixir-of-life
+    container_name: pss_frontend_stationary_nginx

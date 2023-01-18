@@ -1,0 +1,237 @@
+<template>
+  <v-container>
+    <v-row>
+      <v-col cols="12">
+        <v-expansion-panels :value="0">
+          <v-expansion-panel>
+            <v-expansion-panel-header>
+              Filters
+            </v-expansion-panel-header>
+            <v-expansion-panel-content>
+              <v-row>
+                <v-col cols="4">
+                  <v-select label="Stationsname" v-model="selectedStation" :items="stations" outlined></v-select>
+                </v-col>
+                <v-col cols="4">
+                  <v-select label="Kategorien" v-model="selectedCategories" :items="categories" outlined
+                    item-text="name" item-value="id" multiple>
+                    <template v-slot:selection="{ item, index }">
+                      <v-chip v-if="index < 1">
+                        <span>{{ item.name }}</span>
+                      </v-chip>
+                      <span v-if="index === 1" class="grey--text text-caption">
+                        (+{{ selectedCategories.length - 1 }} andere)
+                      </span>
+                    </template></v-select>
+                </v-col>
+                <v-col cols="4">
+                  <v-select label="Items" multiple v-model="selectedItems" :items="modifiedItems" item-text="name"
+                    item-value="id" outlined>
+                    <template v-slot:selection="{ item, index }">
+                      <v-chip v-if="index < 1">
+                        <span>{{ item.name }}</span>
+                      </v-chip>
+                      <span v-if="index === 1" class="grey--text text-caption">
+                        (+{{ selectedItems.length - 1 }} andere)
+                      </span>
+                    </template>
+                  </v-select>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="3"></v-col>
+                <v-col cols="3"></v-col>
+                <v-col cols="3"></v-col>
+                <v-col cols="3"></v-col>
+              </v-row>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+      </v-col>
+      <v-col cols="12">
+        <LineChartGenerator :chart-options="chartOptions" :chart-data="clusteredOrderedItems" dataset-id-key="label" :width="500"
+          :plugins="[]" :css-classes="''" :styles="{}" :chart-id="'LineChart'" :height="400" />
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+<script>
+import { mapActions, mapGetters } from 'vuex'
+import moment from 'moment'
+import { Line as LineChartGenerator } from 'vue-chartjs/legacy'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  LinearScale,
+  CategoryScale,
+  PointElement
+} from 'chart.js'
+
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  LinearScale,
+  CategoryScale,
+  PointElement
+)
+
+export default {
+  name: 'Statistics',
+  props: [],
+  components: {
+    LineChartGenerator
+  },
+  data() {
+    return {
+      selectedStation: null,
+      selectedCategories: [],
+      selectedItems: [],
+      timeFrameStart: null,
+      timeFrameEnd: null,
+      colors: [
+        '#4dc9f6',
+        '#f67019',
+        '#f53794',
+        '#537bc4',
+        '#acc236',
+        '#166a8f',
+        '#00a950',
+        '#58595b',
+        '#8549ba'
+      ],
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    }
+  },
+  created: function () { },
+  mounted: function () {
+    Promise.all([this.fetchBaseItems(),
+    this.fetchSizes(),
+    this.fetchFlavours()]).then(() => {
+      this.fetchItems()
+    })
+    this.fetchOrderedItems()
+    this.fetchCategories()
+  },
+  methods: {
+    ...mapActions('base-items', {
+      fetchBaseItems: 'find'
+    }),
+    ...mapActions('items', {
+      fetchItems: 'find'
+    }),
+    ...mapActions('ordered-items', {
+      fetchOrderedItems: 'find'
+    }),
+    ...mapActions('categories', {
+      fetchCategories: 'find'
+    }),
+    ...mapActions('sizes', {
+      fetchSizes: 'find'
+    }),
+    ...mapActions('flavours', {
+      fetchFlavours: 'find'
+    }),
+    addItemsByCategory: function (categoryId) {
+      let baseItems = this.findBaseItems({ query: { categoryId } }).data
+      let items = this.findItems({ query: { baseItemId: { $in: baseItems.map(({ id }) => id) } } }).data
+      this.selectedItems = [...new Set([...this.selectedItems, ...items.map(({ id }) => id)])]
+    },
+    removeItemsByCategory: function (categoryId) {
+      let baseItems = this.findBaseItems({ query: { categoryId } }).data
+      let items = this.findItems({ query: { baseItemId: { $in: baseItems.map(({ id }) => id) } } }).data
+      this.selectedItems = [...this.selectedItems.filter(itemId => !items.map(({ id }) => id).includes(itemId))]
+    }
+  },
+  watch: {
+    selectedCategories: {
+      deep: true,
+      handler: function (newVal = [], oldVal = []) {
+        let addedCategories = newVal.filter(id => !oldVal.includes(id))
+        let removedCategories = oldVal.filter(id => !newVal.includes(id))
+        addedCategories.forEach(categoryId => this.addItemsByCategory(categoryId))
+        removedCategories.forEach(categoryId => this.removeItemsByCategory(categoryId))
+      }
+    }
+  },
+  computed: {
+    ...mapGetters('base-items', {
+      baseItems: 'list',
+      getBaseItem: 'get',
+      findBaseItems: 'find'
+    }),
+    ...mapGetters('items', {
+      allItems: 'list',
+      findItems: 'find',
+      getItem: 'get'
+    }),
+    ...mapGetters('ordered-items', {
+      findOrderedItems: 'find'
+    }),
+    ...mapGetters('categories', {
+      categories: 'list'
+    }),
+    ...mapGetters('sizes', {
+      getSize: 'get'
+    }),
+    ...mapGetters('flavours', {
+      getFlavour: 'get'
+    }),
+    orderedItems: function () {
+      return this.findOrderedItems({ query: { finished: true } }).data
+    },
+    stations: function () {
+      return [...new Set(this.orderedItems.map(({ waiter }) => waiter))]
+    },
+    modifiedItems: function () {
+      return this.allItems.map(({ sizeId, flavourId, baseItemId, id }) => {
+        return {
+          id,
+          name: `${this.getSize(sizeId).name} ${this.getBaseItem(baseItemId).name}, ${this.getFlavour(flavourId).name}`
+        }
+      })
+    },
+    clusteredOrderedItems: function () {
+      let now = moment()
+      now.subtract(24, 'hours')
+      let timeFrames = Array(24).fill(0).map(() => {
+        let start = now.format()
+        let end = now.add(1, 'hour').format()
+        return { start, end }
+      })
+      let labels = timeFrames.map(({ start, end }) => {
+        return `${moment(start).format('HH:mm')} - ${moment(end).format('HH:mm')}`
+      })
+      let datasets = []
+      this.selectedItems.forEach((itemId, index) => {
+        let item = this.getItem(itemId)
+        let label = `${this.getSize(item.sizeId).name} ${this.getBaseItem(item.baseItemId).name}, ${this.getFlavour(item.flavourId).name}`
+        let backgroundColor = this.colors[index % this.colors.length]
+        let borderColor = this.colors[index % this.colors.length]
+        let data = timeFrames.map(({ start, end }) => {
+          return this.orderedItems
+            .filter(({ waiter }) => waiter === this.selectedStation)
+            .filter(({ itemId: oiId }) => oiId === itemId)
+            .filter(({ createdAt }) => {
+              let created = moment.utc(createdAt)
+              return created.isBetween(moment(start), moment(end), null, '(]')
+            })
+            .map(({ quantity }) => quantity)
+            .reduce((acc, val) => acc + val, 0)
+        })
+        let pointRadius = 5
+        let pointHoverRadius = 17
+        datasets.push({ label, backgroundColor, borderColor, data, pointRadius, pointHoverRadius })
+      })
+      return { labels, datasets }
+    }
+  }
+}
+</script>

@@ -168,8 +168,10 @@ export default {
         }),
         selectBaseItem: function (baseItem) {
             this.selectedItem = baseItem
-            let items = this.findItems({ query: { baseItemId: baseItem.id, default: true } }).data
-            let defaultItem = items[0]
+            let allItems = this.findItems({ query: { baseItemId: baseItem.id } }).data
+            let defaultItems = allItems.filter(({ default: def }) => def)
+            
+            let defaultItem = defaultItems[0] || allItems[0]
             this.selectedFlavour = defaultItem.flavourId
             this.selectedSize = defaultItem.sizeId
 

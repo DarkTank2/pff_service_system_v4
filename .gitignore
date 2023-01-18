@@ -2,3 +2,6 @@ _frontend
 *\node_modules
 *\pictures
 thoughts.txt
+seeds
+pgdata
+export
