@@ -1,9 +1,14 @@
 <template>
   <div>
     <v-card>
-      <v-container>
+      <v-container v-if="displayedItems.length !== 0">
         <single-category v-for="category in shownCategories" :key="`calculator_single_category_${category.id}`"
           :category="category" />
+      </v-container>
+      <v-container v-else>
+        <v-alert type="warning" outlined dense class="mt-4">
+          Derzeit sind keine Items konfiguriert. Gehe in die Einstellugen und wähle Items aus!
+        </v-alert>
       </v-container>
     </v-card>
   </div>
