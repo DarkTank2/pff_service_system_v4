@@ -1,7 +1,7 @@
 <template>
     <v-btn :to="{ name: 'BuffetConfig' }" block outlined>
         <v-icon>settings</v-icon>
-        <span class="ml-2">Config</span>
+        <span class="ml-2">Einstellungen</span>
     </v-btn>
 </template>
 
