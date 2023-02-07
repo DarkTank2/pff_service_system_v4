@@ -9,6 +9,8 @@ services:
       POSTGRES_DB: "main"
     ports:
       - 5432:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
 
   scout-proxy:
     image: traefik:v2.2

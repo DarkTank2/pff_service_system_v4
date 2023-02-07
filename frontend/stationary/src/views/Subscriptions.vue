@@ -8,8 +8,8 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="1" v-for="baseItem in category.baseItems" :key="`col_base_item_${baseItem.id}`">
-        <v-card style="aspect-ratio: 1;" :class="{ 'bordered': subscriptions.includes(baseItem.id) }" @click="updateSubscription(baseItem.id)">
+      <v-col cols="3" lg="1" v-for="baseItem in category.baseItems" :key="`col_base_item_${baseItem.id}`">
+        <v-card class="item" :class="{ 'bordered': subscriptions.includes(baseItem.id) }" @click="updateSubscription(baseItem.id)">
           <v-card-text class="text-center">
             <span>{{ baseItem.name }}</span>
           </v-card-text>
@@ -76,4 +76,5 @@ export default {
   border: thin solid;
   border-color: #928cff;
 }
+
 </style>

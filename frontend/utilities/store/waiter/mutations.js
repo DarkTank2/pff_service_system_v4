@@ -1,5 +1,16 @@
 const addOrderedItem = (state, payload) => {
-  state.order.push(payload)
+  let item = state.order.find(orderedItem => {
+    let sameComment = orderedItem.comment === payload.comment
+    let sameItemId = orderedItem.itemId === payload.itemId
+    let sameAdditions = orderedItem.additions.length === payload.additions.length
+    // TODO: compare content of additions, as of right now, there is no item with additions to buy
+    return sameComment && sameItemId && sameAdditions
+  })
+  if (item) {
+    item.quantity += payload.quantity
+  } else {
+    state.order.push(payload)
+  }
 }
 
 const incrementAtIndex = (state, index) => {
