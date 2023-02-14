@@ -4,7 +4,9 @@
       <v-col cols="4">
         <v-text-field label="Der Name der Station" :value="name" @input="updateName"></v-text-field>
       </v-col>
-      <v-col cols="4"></v-col>
+      <v-col cols="4">
+        <v-switch label="Dense Mode" v-model="denseMode"></v-switch>
+      </v-col>
       <v-col cols="4">
         <QuickModeSwitch />
       </v-col>
@@ -53,7 +55,8 @@ export default {
     }),
     ...mapMutations('config', {
       updateDisplayedItems: 'updateDisplayedItems',
-      updateName: 'updateName'
+      updateName: 'updateName',
+      updateDenseMode: 'updateDenseMode'
     })
   },
   watch: {},
@@ -66,7 +69,8 @@ export default {
     }),
     ...mapGetters('config', {
       displayedItems: 'displayedItems',
-      name: 'name'
+      name: 'name',
+      storedDenseMode: 'denseMode'
     }),
     itemStructure: function () {
       if (!this.listCategories) {
@@ -77,6 +81,14 @@ export default {
         structure.push({ ...category, baseItems: this.findBaseItems({ query: { categoryId: category.id } }).data })
       })
       return structure
+    },
+    denseMode: {
+      get: function () {
+        return this.storedDenseMode.value
+      },
+      set: function (newValue) {
+        this.updateDenseMode({ value: newValue })
+      }
     }
   }
 }
