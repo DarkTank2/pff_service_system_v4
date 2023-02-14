@@ -14,6 +14,19 @@ const updateQuickMode = (state, payload) => {
   state.quickMode = { ...payload }
   setLocalStorage(JSON.stringify(state.quickMode), 'quickMode')
 }
+const updateConfigMode = (state, payload) => {
+  if (!payload) {
+    return
+  }
+  state.configMode = { ...payload }
+}
+const updateDenseMode = (state, payload) => {
+  if (!payload) {
+    return
+  }
+  state.denseMode = { ...payload }
+  setLocalStorage(JSON.stringify(state.denseMode), 'denseMode')
+}
 
 const updateDisplayedItems = (state, payload = []) => {
   if (!payload) {
@@ -42,6 +55,39 @@ const removeDisplayedItem = (state, payload = []) => {
   setLocalStorage(JSON.stringify(state.displayedItems), 'displayedItems')
 }
 
+const updateDisplayFormat = (state, payload) => {
+  if (!payload) {
+    return
+  }
+  if (typeof payload !== 'string') {
+    return
+  }
+  state.displayFormat = payload
+  setLocalStorage(state.displayFormat, 'displayFormat')
+}
+
+const updateLayout = (state, payload) => {
+  if (state.layout === null) {
+    state.layout = []
+  }
+  if (!payload) {
+    return
+  }
+  if (!Array.isArray(payload)) {
+    return
+  }
+  payload.forEach(gridItem => {
+    let storedGridItemIndex = state.layout.findIndex(({ i }) => i === gridItem.i)
+    if (storedGridItemIndex === -1) {
+      state.layout = [...state.layout, gridItem]
+    } else {
+      state.layout = [...state.layout]
+      state.layout[storedGridItemIndex] = gridItem
+    }
+  })
+  setLocalStorage(JSON.stringify(state.layout), 'layout')
+}
+
 function setLocalStorage (data, value) {
   window.localStorage.setItem(value, data)
   window.localStorage.setItem(`${value}Date`, moment().format())
@@ -50,6 +96,10 @@ function setLocalStorage (data, value) {
 export default {
   updateName,
   updateQuickMode,
+  updateConfigMode,
+  updateDenseMode,
   updateDisplayedItems,
-  removeDisplayedItem
+  removeDisplayedItem,
+  updateDisplayFormat,
+  updateLayout
 }
