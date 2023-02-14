@@ -1,6 +1,6 @@
 <template>
   <v-row>
-    <v-col cols="12">
+    <v-col cols="12" v-if="!denseMode.value">
       <v-card style="border: thin solid;" class="rounded-pill" :id="`category_${category.id}`">
         <v-card-text class="text-center">
           {{ category.name }}
@@ -284,7 +284,8 @@ export default {
       displayedItems: 'displayedItems',
       formatItem: 'formatItem',
       storedLayout: 'layout',
-      configMode: 'configMode'
+      configMode: 'configMode',
+      denseMode: 'denseMode'
     }),
     env: function () {
       return this.listEnv[0]
