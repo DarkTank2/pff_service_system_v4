@@ -9,7 +9,7 @@
       <v-spacer v-if="meta.appBarComponent"></v-spacer>
       <component v-if="meta.appBarComponent" :is="meta.appBarComponent" />
       <v-spacer v-if="meta.appBarComponent"></v-spacer>
-      <component v-if="meta.quickConfigElement" :is="meta.quickConfigElement" />
+      <component v-for="element, i in quickConfigElements" :key="`quickConfigElement_${i}`" :is="element" />
       <template #extension v-if="meta.extension">
         <component :is="meta.extension" />
       </template>
@@ -63,9 +63,7 @@ export default {
     this.fetchENV()
     this.initSubscriptions()
     this.initKeybindings()
-    this.initName()
-    this.initQuickMode()
-    this.initDisplayedItems()
+    this.initConfig()
   },
   methods: {
     ...mapActions('env', {
@@ -78,9 +76,7 @@ export default {
       initKeybindings: 'initKeybindings'
     }),
     ...mapActions('config', {
-      initName: 'initName',
-      initQuickMode: 'initQuickMode',
-      initDisplayedItems: 'initDisplayedItems'
+      initConfig: 'init'
     })
   },
   computed: {
@@ -92,6 +88,9 @@ export default {
     },
     meta: function () {
       return this.$route.meta
+    },
+    quickConfigElements: function () {
+      return this.meta.quickConfigElements || []
     },
     mainStyle: function () {
       return `padding: ${this.meta.extension ? '104' : '56'}px 0px 0px;`

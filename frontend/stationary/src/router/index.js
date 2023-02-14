@@ -14,6 +14,7 @@ import CalcButton from '../components/sideNavbarComponents/CalcButton.vue'
 import HomeButton from '../components/sideNavbarComponents/HomeButton.vue'
 import CalcConfigButton from '../components/sideNavbarComponents/CalcConfigButton.vue'
 import QuickModeSwitch from '../components/Calculator/QuickModeSwitch.vue'
+import ConfigModeSwitch from '../components/Calculator/ConfigModeSwitch.vue'
 
 Vue.use(VueRouter)
 
@@ -68,7 +69,7 @@ const routes = [
       appBarComponent: CalculatorAppBarComponent,
       extension: CalculatorButtonCollection,
       sideNavbarComponents: [CalcKeybindingsConfigButton, CalcConfigButton],
-      quickConfigElement: QuickModeSwitch
+      quickConfigElements: [ConfigModeSwitch, QuickModeSwitch]
     }
   },
   {
