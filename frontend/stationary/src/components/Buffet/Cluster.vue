@@ -19,10 +19,10 @@
                                 <span class="text-h4">{{ `${orderedItem.baseItem.name}` }}</span>
                             </v-list-item-title>
                             <v-list-item-subtitle>
-                                <span class="text-h4">{{ `${orderedItem.flavour.name} | ${orderedItem.size.name}` }}</span>
+                                <span class="text-h5">{{ `${orderedItem.flavour.name} | ${orderedItem.size.name}` }}</span>
                             </v-list-item-subtitle>
                             <v-list-item-subtitle v-if="!!orderedItem.comment" style="border: 2px solid #2196f3; border-radius: 4px;" class="pa-2">
-                                <span class="text-h4">{{ orderedItem.comment }}</span>
+                                <span class="text-h5">{{ orderedItem.comment }}</span>
                             </v-list-item-subtitle>
                         </v-list-item-content>
                         <v-list-item-action>

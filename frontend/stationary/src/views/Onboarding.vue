@@ -29,8 +29,7 @@
             >
             <span class="mt-auto font-weight-black">Deine Rolle</span>
             <span>Welche Art von Station stellst du dar?</span>
-            <span>Beim Buffet werden Speisen und Getränke hergerichtet und zusammengestellt.</span>
-            <span>Speisen, Getränke und das Buffet sind nur stellvertretend für generelle Items und einer <span class="font-weight-bold">Basisstation</span>, die Bestellungen bearbeitet!</span>
+            <span>Bei einer Basisstation werden z.B Speisen und Getränke hergerichtet und zusammengestellt.</span>
             <span>Bei der <span class="font-weight-bold">Verrechnung</span> werden Bestellungen aufgenommen und verrechnet.</span>
             <div class="mb-auto">
               <v-row>

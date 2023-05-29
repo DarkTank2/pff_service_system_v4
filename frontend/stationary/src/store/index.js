@@ -5,10 +5,10 @@ import { FeathersVuex } from '../feathers-client'
 import base from '@store/base'
 import utilities from '@store/utilities'
 import waiter from '@store/waiter'
+import config from '@store/config'
 
 import subscriptions from './subscriptions'
 import keybindings from './keybindings'
-import config from './config'
 
 Vue.use(Vuex)
 Vue.use(FeathersVuex)

@@ -1,69 +1,91 @@
 <template>
-    <v-slide-group
-        show-arrows
-        center-active
-        :value="activeCategoryId - 1"
-        >
-        <v-slide-item
-            v-for="category in categories"
-            :key="`slide_item_category_${category.id}`"
-            >
-            <v-btn
-                :input-value="category.id === activeCategoryId"
-                active-class="active white--text"
-                rounded
-                outlined
-                :disabled="category.disabled"
-                @click="scrollToCategory(category)"
-                >
-                {{ category.name }}
-            </v-btn>
-        </v-slide-item>
-    </v-slide-group>
+    <span class="text-h5 bordered px-2 ml-auto mr-auto">{{ `Summe: ${beautifiedSum}€` }}</span>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
     name: 'OrderExtension',
     components: {},
     props: [],
-    data: () => ({
-        activeCategory: null
-    }),
+    data: () => ({}),
     created: function () {},
-    mounted: async function () {
-        if (!this.env) {
-            this.fetchEnv()
-        }
-        this.fetchCategories(this.categoryQuery)
-    },
-    methods: {
-        ...mapActions('env', {
-            fetchEnv: 'find'
-        }),
-        ...mapActions('categories', {
-            fetchCategories: 'find'
-        }),
-        scrollToCategory: function (category) {
-            this.$router.push({...this.$route, hash: `#category_${category.id}`})
-        }
-    },
+    mounted: async function () {},
+    methods: {},
     computed: {
-        ...mapGetters('env', {
-            listEnvs: 'list'
+        ...mapGetters('waiter', {
+            rawOrder: 'order'
         }),
-        ...mapGetters('categories', {
-            findCategories: 'find'
+        ...mapGetters('items', {
+            getItem: 'get'
         }),
-        ...mapGetters('base', {
-          activeCategoryId: 'firstActiveCategory'
+        ...mapGetters('base-items', {
+            getBaseItem: 'get'
         }),
-        env: function () {
-            return this.listEnvs[0]
+        ...mapGetters('additions', {
+            getAddition: 'get'
+        }),
+        ...mapGetters('flavours', {
+            getFlavour: 'get'
+        }),
+        ...mapGetters('sizes', {
+            getSize: 'get'
+        }),
+        orderedItems: function () {
+            return this.rawOrder.map((orderedItem, index) => {
+                let item = this.getItem(orderedItem.itemId)
+                let baseItem = this.getBaseItem(item.baseItemId)
+                let additionsPriceSum = orderedItem.additions.map(additionId => this.getAddition(additionId)).reduce((acc, val) => { if (val) { return acc + val.priceModifier } else { return acc }}, 0)
+                return {
+                    ...orderedItem,
+                    index,
+                    item,
+                    additionsPriceSum,
+                    baseItemName: baseItem.name,
+                    available: baseItem.available,
+                    flavourName: this.getFlavour(item.flavourId).name,
+                    sizeName: this.getSize(item.sizeId).name
+                }
+            })
         },
-        categories: function () {
-          return this.findCategories({ query: { inactive: { $ne: true } } }).data
+        sum: function () {
+            return this.orderedItems
+                .map(orderedItem => {
+                    let { quantity, itemId, additions: maps } = orderedItem
+                    let item = this.getItem(itemId)
+                    if (!item) {
+                        return 0
+                    }
+                    let summedAdditions = maps
+                        .map(additionId => this.getAddition(additionId))
+                        .reduce((acc, val) => {
+                            if (val) {
+                                return acc + val.priceModifier
+                            } else {
+                                return acc + 0
+                            }
+                        }, 0)
+                    return quantity * (item.price + summedAdditions)
+                })
+                .reduce((acc, val) => acc + val, 0)
+        },
+        roundedSum: function () {
+            return Math.round(this.sum * 100) / 100
+        },
+        paddedSum: function () {
+          return `${this.roundedSum}`.split('.').map((val, i) => {
+            if (i === 1) {
+              val = val.padEnd(2, '0')
+            }
+            return val
+          }).join(',')
+        },
+        beautifiedSum: function () {
+          if (this.paddedSum.includes(',')) {
+            return this.paddedSum
+          } else {
+            return `${this.paddedSum},--`
+          }
         }
     },
     watch: {}
@@ -71,7 +93,8 @@ export default {
 </script>
 
 <style>
-.active {
-  background-color: #928cff;
+.bordered {
+  border: 2px solid #2196f3 !important;
+  border-radius: 8px;
 }
 </style>

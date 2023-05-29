@@ -1,19 +1,16 @@
 <template>
-  <v-container class="pt-6">
+  <v-container class="pt-6 mb-16">
     <v-row>
       <v-col cols="12">
-        <v-btn color="primary" :to="{ name: 'Calculator' }" class="mt-auto mb-auto"><v-icon>calculate</v-icon>Zurück zur Oberfläche</v-btn>
+        <v-text-field label="Der Name des Gerätes" :value="name" @input="updateName"></v-text-field>
       </v-col>
-      <v-col cols="3">
-        <v-text-field label="Der Name der Station" :value="name" @input="updateName"></v-text-field>
+      <v-col cols="6">
+        <v-switch hide-details label="Dense Mode" v-model="denseMode" class="mt-0 pt-0"></v-switch>
       </v-col>
-      <v-col cols="3">
-        <v-switch label="Dense Mode" v-model="denseMode"></v-switch>
-      </v-col>
-      <v-col cols="3">
+      <!-- <v-col cols="6">
         <QuickModeSwitch />
-      </v-col>
-      <v-col cols="3">
+      </v-col> -->
+      <v-col cols="6">
         <ImmediateOrderSwitch />
       </v-col>
     </v-row>
@@ -25,7 +22,7 @@
           </v-card-text>
         </v-card>
       </v-col>
-      <v-col cols="3" lg="2" xl="1" v-for="baseItem in category.baseItems" :key="`col_base_item_${baseItem.id}`">
+      <v-col cols="6" lg="1" v-for="baseItem in category.baseItems" :key="`col_base_item_${baseItem.id}`">
         <v-card class="item" :class="{ 'bordered': displayedItems.includes(baseItem.id) }" @click="updateDisplayedItems(baseItem.id)">
           <v-card-text class="text-center">
             <span>{{ baseItem.name }}</span>
@@ -37,13 +34,13 @@
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import QuickModeSwitch from '../components/Calculator/QuickModeSwitch.vue'
-import ImmediateOrderSwitch from '../components/Calculator/ImmediateOrderSwitch.vue'
+// import QuickModeSwitch from '../components/Config/QuickModeSwitch.vue'
+import ImmediateOrderSwitch from '../components/Config/ImmediateOrderSwitch.vue'
 export default {
-  name: 'CalculatorConfig',
+  name: 'Config',
   props: [],
   components: {
-    QuickModeSwitch,
+    // QuickModeSwitch,
     ImmediateOrderSwitch
   },
   data () {

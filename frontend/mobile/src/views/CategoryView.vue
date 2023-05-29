@@ -1,8 +1,8 @@
 <template>
   <div>
     <v-card>
-      <v-container style="margin-bottom: 56px;">
-        <single-category v-for="category in categories" :key="`single_category_${category.id}`" :category="category" />
+      <v-container style="margin-bottom: 56px; padding-bottom: 70px;">
+        <single-category v-for="category in shownCategories" :key="`single_category_${category.id}`" :category="category" />
       </v-container>
     </v-card>
   </div>
@@ -72,6 +72,12 @@ export default {
         ...mapGetters('categories', {
             findCategories: 'find'
         }),
+        ...mapGetters('base-items', {
+          findBaseItems: 'find'
+        }),
+        ...mapGetters('config', {
+          displayedItems: 'displayedItems'
+        }),
         itemHeight: function () {
             return `${(window.screen.width - 8) / 3}px`
         },
@@ -80,6 +86,12 @@ export default {
         },
         categories: function () {
           return this.findCategories({ query: { inactive: { $ne: true } } }).data
+        },
+        shownCategories: function () {
+          let displayedBaseItems = this.findBaseItems({ query: { id: { $in: this.displayedItems } } }).data
+          let displayedCategories = this.findCategories({ query: { id: { $in: displayedBaseItems.map(({ categoryId }) => categoryId) } } }).data
+          let displayedCategoriesIds = [...new Set(displayedCategories.map(({ id }) => id))]
+          return this.findCategories({ query: { id: { $in: displayedCategoriesIds } } }).data
         }
     },
     watch: {},

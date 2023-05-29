@@ -8,6 +8,7 @@ import cashMethods from './cash'
 import waiter from '@store/waiter'
 import base from '@store/base'
 import utilities from '@store/utilities'
+import config from '@store/config'
 
 Vue.use(Vuex)
 Vue.use(FeathersVuex)
@@ -40,7 +41,8 @@ export default new Vuex.Store({
     base,
     waiter,
     utilities,
-    cash
+    cash,
+    config
   },
   plugins: [...servicePlugins]
 })

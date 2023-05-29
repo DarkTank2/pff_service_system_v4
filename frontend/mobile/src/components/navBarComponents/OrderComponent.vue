@@ -1,11 +1,14 @@
 <template>
     <div>
-        <v-list>
+        <v-list v-if="!orderId">
             <v-list-item>
                 <v-list-item-content>
                     <v-list-item-title class="text-h6">
                         Deine Bestellung
                     </v-list-item-title>
+                    <v-list-item-subtitle>
+                      Summe: {{ beautifiedSum }}€
+                    </v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
             <template v-for="(orderedItem, i) in orderedItems">
@@ -77,39 +80,35 @@
                     <v-text-field
                         dense
                         outlined
-                        label="Dein Name"
-                        hint="Gib hier bitte deinen Namen ein."
-                        v-model="nameModel"
-                        clearable
-                        @change="handleName"
-                        :error="getName === '' || getName === null"
-                        />
-                </v-list-item-content>
-            </v-list-item>
-            <v-list-item>
-                <v-list-item-icon>
-                    <v-icon>table_restaurant</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content>
-                    <v-select
-                        dense
-                        outlined
-                        :items="tables"
-                        @change="setTable"
-                        item-text="name"
-                        item-value="id"
-                        label="Tisch-Nummer:"
-                        hint="Wähle bitte einen Tisch aus."
-                        :error="!getTableId"
-                        :value="getTableId"
+                        label="Der Name des Gerätes"
+                        :value="name"
+                        @change="updateName"
+                        :error="name === '' || name === null"
+                        hide-details
                         />
                 </v-list-item-content>
             </v-list-item>
         </v-list>
-        <v-container fluid>
+        <v-list v-else>
+          <v-list-item>
+            <v-list-item-content>
+                <v-list-item-title class="text-h6">
+                    Deine Bestell-Nummer:
+                </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-content>
+                <v-list-item-title class="d-flex justify-center">
+                    <span class="text-h1">{{ orderId }}</span>
+                </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+        <v-container fluid class="pt-0">
             <v-row>
                 <v-col cols="12">
-                    <v-btn
+                    <v-btn v-if="!orderId"
                         block
                         elevation="2"
                         fab
@@ -121,6 +120,16 @@
                         Bestellung absenden 
                         <v-icon class="mr-2">send</v-icon>
                     </v-btn>
+                    <v-btn v-else
+                    block
+                    elevation="2"
+                    fab
+                    rounded
+                    outlined
+                    @click="closeNavbar"
+                    >
+                      Zurück
+                    </v-btn>
                 </v-col>
             </v-row>
         </v-container>
@@ -131,18 +140,14 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 export default {
     name: 'OrderNavBarComponent',
+    props: ['state'],
     components: {},
     data: () => ({
-        nameModel: ''
+        orderId: null
     }),
     created: function () {},
-    mounted: function () {
-        this.fetchName()
-        this.fetchTables()
-        this.nameModel = this.getName
-    },
+    mounted: function () {},
     methods: {
-        ...mapMutations('base', ['setName', 'fetchName', 'setTableId']),
         ...mapMutations('waiter', {
             incrementAtIndex: 'incrementAtIndex', 
             decrementAtIndex: 'decrementAtIndex',
@@ -162,35 +167,31 @@ export default {
             resetFetchPendingFlag: 'resetFetchPendingFlag',
             setNotification: 'setNotification'
         }),
-        handleName: function (newName) {
-            if (newName === null) newName = ''
-            if (newName.length > 20) newName = newName.slice(0, 20)
-            this.setName(newName)
-            this.nameModel = this.getName
-        },
-        setTable: function (tableId) {
-            this.setTableId(tableId)
-        },
+        ...mapMutations('config', {
+          updateName: 'updateName'
+        }),
         sendOrder: function () {
-            if (this.getName === null || this.getName === '') {
+            if (this.name === null || this.name === '') {
                 console.log('Invalid name')
-                return
-            }
-            if (this.getTableId === null) {
-                console.log('No table selected')
                 return
             }
             let data = this.rawOrder.map((orderedItem) => {
                 return {
                     ...orderedItem,
-                    waiter: this.getName,
-                    tableId: this.getTableId
+                    waiter: this.name,
+                    tableId: 1,
+                    finished: this.immediateOrderMode.value || undefined
                 }
             })
             if (data.length === 0) return
-            this.$emit('closeNavbar')
+            // this.$emit('closeNavbar')
             this.setFetchPendingFlag().then(() => {
                 this.createOrderedItems([data]).then((res) => {
+                  if (!this.immediateOrderMode.value) {
+                    this.orderId = Math.min(...res.map(({ id }) => id))
+                  } else {
+                    this.$emit('closeNavbar')
+                  }
                     let additions = []
                     data.forEach((item) => {
                         let i = res.findIndex(orderedItem => {
@@ -231,10 +232,13 @@ export default {
                 })
             })
             return data
+        },
+        closeNavbar: function () {
+          this.orderId = null,
+          this.$emit('closeNavbar')
         }
     },
     computed: {
-        ...mapGetters('base', ['getName', 'getTableId']),
         ...mapGetters('tables', {
             tables: 'list'
         }),
@@ -255,6 +259,10 @@ export default {
         }),
         ...mapGetters('additions', {
             getAddition: 'get'
+        }),
+        ...mapGetters('config', {
+          name: 'name',
+          immediateOrderMode: 'immediateOrderMode'
         }),
         orderedItems: function () {
             return this.rawOrder.map((orderedItem, index) => {
@@ -279,7 +287,56 @@ export default {
                 let baseItem = this.getBaseItem(item.baseItemId)
                 return baseItem.available
             }).reduce((acc, val) => acc && val, true)
+        },
+        sum: function () {
+            return this.orderedItems
+                .map(orderedItem => {
+                    let { quantity, itemId, additions: maps } = orderedItem
+                    let item = this.getItem(itemId)
+                    if (!item) {
+                        return 0
+                    }
+                    let summedAdditions = maps
+                        .map(additionId => this.getAddition(additionId))
+                        .reduce((acc, val) => {
+                            if (val) {
+                                return acc + val.priceModifier
+                            } else {
+                                return acc + 0
+                            }
+                        }, 0)
+                    return quantity * (item.price + summedAdditions)
+                })
+                .reduce((acc, val) => acc + val, 0)
+        },
+        roundedSum: function () {
+            return Math.round(this.sum * 100) / 100
+        },
+        paddedSum: function () {
+          return `${this.roundedSum}`.split('.').map((val, i) => {
+            if (i === 1) {
+              val = val.padEnd(2, '0')
+            }
+            return val
+          }).join(',')
+        },
+        beautifiedSum: function () {
+          if (this.paddedSum.includes(',')) {
+            return this.paddedSum
+          } else {
+            return `${this.paddedSum},--`
+          }
         }
+    },
+    watch: {
+      state: {
+        immediately: true,
+        handler: function (newValue) {
+          if (!newValue) {
+            this.orderId = null
+          }
+        }
+      }
     }
 }
 </script>

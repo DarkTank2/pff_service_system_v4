@@ -19,7 +19,7 @@
       bottom
       v-if="meta.bottomNavbarComponent"
       >
-      <component :is="meta.bottomNavbarComponent" @closeNavbar="bottomNav = false" />
+      <component :is="meta.bottomNavbarComponent" @closeNavbar="bottomNav = false" :state="bottomNav" />
     </v-navigation-drawer>
     <v-main :style="mainStyle">
       <router-view/>
@@ -50,9 +50,9 @@
         <span class="ml-2">Bestellung aufnehmen</span>
         <v-icon>brunch_dining</v-icon>
       </v-btn>
-      <v-btn :to="{ name: 'TableSelection' }" >
-        <span class="ml-2">Kassieren</span>
-        <v-icon>euro_symbol</v-icon>
+      <v-btn :to="{ name: 'Config' }" >
+        <span class="ml-2">Configuration</span>
+        <v-icon>settings</v-icon>
       </v-btn>
     </v-bottom-navigation>
   </v-app>
@@ -76,6 +76,7 @@ export default {
   created: function () {
     this.$vuetify.theme.dark = this.darkMode
     this.fetchAgain()
+    this.init()
     // testing purposes of notifications
     // this.setNotification({ message: 'Erfolg!', timeout: 5000, type: 'success' })
   },
@@ -85,6 +86,9 @@ export default {
     }),
     ...mapActions('utilities', {
       setNotification: 'setNotification'
+    }),
+    ...mapActions('config', {
+      init: 'init'
     }),
     fetchAgain: function () {
       this.fetchENV().then(() => {

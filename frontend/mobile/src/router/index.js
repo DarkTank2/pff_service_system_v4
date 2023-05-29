@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import moment from 'moment'
 import goTo from 'vuetify/lib/services/goto'
 // import moment from 'moment'
 import OrderExtension from '../components/appBarExtensions/OrderExtension.vue'
 import OrderComponent from '../components/navBarComponents/OrderComponent.vue'
-import CashButton from '../components/sideNavbarComponents/CashButton.vue'
-import OrderButton from '../components/sideNavbarComponents/OrderButton.vue'
-import CashAppBarComponent from '../components/appBarComponents/CashComponent.vue'
-import CashTableTitleReplacement from '../components/TitleReplacements/CashTableTitleReplacement.vue'
+// import CashButton from '../components/sideNavbarComponents/CashButton.vue'
+// import OrderButton from '../components/sideNavbarComponents/OrderButton.vue'
+// import CashAppBarComponent from '../components/appBarComponents/CashComponent.vue'
+// import CashTableTitleReplacement from '../components/TitleReplacements/CashTableTitleReplacement.vue'
 
 Vue.use(VueRouter)
 
@@ -17,18 +18,14 @@ const routes = [
     name: 'base',
     redirect: () => {
       let onboardedAt = window.localStorage.getItem('onboardingCompletedAt')
-      if (onboardedAt) {
-        console.log('[Router] Redirecting to "/home" since device is already onboarded!')
-        return { name: 'Home' }
+      if (!onboardedAt) {
+        return { name: 'Onboarding' }
       }
-      console.log('[Router] Redirecting to onboarding-page since site is accessed for the first time!')
-      return { name: 'Onboarding' }
+      if (moment(onboardedAt).isBefore(moment('2023-06-03T12:00:00.000Z'))) {
+        return { name: 'Onboarding' }
+      }
+      return { name: 'Order' }
     }
-  },
-  {
-    path: '/home',
-    name: 'Home',
-    component: () => import('../views/Home.vue')
   },
   {
     path: '/order',
@@ -36,38 +33,18 @@ const routes = [
     component: () => import(/* webpackChunkName: "ordering" */ '../views/CategoryView.vue'),
     meta: {
       extension: OrderExtension,
-      bottomNavbarComponent: OrderComponent,
-      sideNavbarComponents: [CashButton]
+      bottomNavbarComponent: OrderComponent
     }
   },
   {
-    path: '/cash',
-    name: 'Cash',
-    component: () => import(/* webpackChunkName: "cashing" */ '../views/Cash.vue'),
+    path: '/config',
+    name: 'Config',
+    component: () => import(/* webpackChunkName: "ordering" */ '../views/Config.vue'),
     meta: {
-      sideNavbarComponents: [OrderButton]
-    },
-    children: [
-      {
-        path: '',
-        name: 'TableSelection',
-        component: () => import(/* webpackChunkName: "cashing" */ '../components/Cash/SelectTable.vue'),
-        meta: {
-          sideNavbarComponents: [OrderButton]
-        }
-      },
-      {
-        path: 'table/:tableId',
-        name: 'CashTable',
-        component: () => import(/* webpackChunkName: "cashing" */ '../components/Cash/CashTable.vue'),
-        props: route => ({ tableId: parseInt(route.params.tableId) }),
-        meta: {
-          sideNavbarComponents: [OrderButton],
-          appBarComponent: CashAppBarComponent,
-          titleReplacement: CashTableTitleReplacement
-        }
-      }
-    ]
+      // extension: OrderExtension,
+      // bottomNavbarComponent: OrderComponent,
+      // sideNavbarComponents: [CashButton]
+    }
   },
   {
     path: '/hello',

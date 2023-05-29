@@ -1,9 +1,6 @@
 <template>
-    <v-row style="padding: 20px;" v-intersect="{
-        handler: onIntersect,
-        options: { threshold, rootMargin: '0px 0px -56px' }
-      }">
-        <v-col cols="12">
+    <v-row style="padding: 20px;">
+        <v-col cols="12" v-if="!denseMode.value">
             <v-card style="border: thin solid;" class="rounded-pill" :id="`category_${category.id}`">
                 <v-card-text class="text-center">
                     {{category.name}}
@@ -156,15 +153,10 @@ export default {
         threshold: new Array(101).fill(0).map((_, i) => i / 100)
     }),
     created: function () {},
-    mounted: async function () {
-      this.setCategoryVisibilityState({ active: false, id: this.categoryId })
-    },
+    mounted: async function () {},
     methods: {
         ...mapMutations('waiter', {
             addItemToOrder: 'addOrderedItem'
-        }),
-        ...mapMutations('base', {
-          setCategoryVisibilityState: 'setCategoryVisibilityState'
         }),
         selectBaseItem: function (baseItem) {
             this.selectedItem = baseItem
@@ -219,9 +211,6 @@ export default {
         decrementQuantity: function () {
             this.quantity -= 1
             if (this.quantity < 1) this.quantity = 1
-        },
-        onIntersect (entries) {
-          this.setCategoryVisibilityState({ active: entries[0].intersectionRatio, id: this.categoryId })
         }
     },
     computed: {
@@ -250,6 +239,10 @@ export default {
             findAdditions: 'find',
             getAddition: 'get'
         }),
+        ...mapGetters('config', {
+          displayedItems: 'displayedItems',
+          denseMode: 'denseMode'
+        }),
         env: function () {
             return this.listEnv[0]
         },
@@ -260,7 +253,7 @@ export default {
             return this.env.disabledCategories.includes(this.categoryId)
         },
         baseItems: function () {
-            return this.findBaseItems({ query: {categoryId: this.categoryId} }).data
+            return this.findBaseItems({ query: { categoryId: this.categoryId, id: { $in: this.displayedItems } } }).data
         },
         items: function () {
             return this.findItems({ query: { baseItemId: this.selectedItem?.id } }).data
