@@ -2,23 +2,26 @@
   <div class="d-flex justify-space-around" style="width: 100%;">
     <v-btn outlined @click="openDialog()">
       <v-icon>shopping_cart</v-icon>
-      <span class="ml-2">Bestellung ansehen</span>
+      <span class="ml-2">Warenkorb</span>
     </v-btn>
     <v-btn outlined @click="cash">
       <v-icon>euro_symbol</v-icon>
-      <span class="ml-2">Bestellung kassieren</span>
+      <span class="ml-2">Kassieren</span>
     </v-btn>
     <v-btn outlined @click="clearOrder">
       <v-icon>clear</v-icon>
-      <span class="ml-2">Zurücksetzen</span>
+      <span class="ml-2">Bestellung zurücksetzen</span>
     </v-btn>
     <v-dialog v-model="dialog" max-width="600px" @click:outside="closeDialog">
       <v-card>
-        <v-card-title class="d-flex justify-space-around">
-          <span>Deine Bestellung</span>
-          <span>{{ `Summe: ${roundedSum}€` }}</span>
+        <v-card-title v-if="!orderId" class="d-flex justify-space-around">
+          <span class="text-h4">Deine Bestellung</span>
+          <span class="text-h4">{{ `Summe: ${beautifiedSum}€` }}</span>
         </v-card-title>
-        <v-card-text>
+        <v-card-title v-else>
+          <span class="text-h3">Deine Bestell-Nummer:</span>
+        </v-card-title>
+        <v-card-text v-if="!orderId">
           <v-list>
             <template v-for="(orderedItem, i) in orderedItems">
               <v-divider v-if="orderedItem.index !== 0" :key="`divider_index_${orderedItem.index}`"
@@ -70,10 +73,18 @@
             </v-list-item>
           </v-list>
         </v-card-text>
-        <v-card-actions>
+        <v-card-text v-else style="height: 200px" class="d-flex flex-row justify-center">
+          <span style="font-size: 10em; align-self: center;">{{ orderId }}</span>
+        </v-card-text>
+        <v-card-actions v-if="!orderId">
           <v-btn outlined @click="cash">
             <v-icon class="mr-2">send</v-icon>
             Bestellung absenden
+          </v-btn>
+        </v-card-actions>
+        <v-card-actions v-else>
+          <v-btn outlined @click="closeDialog">
+            Fertig
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -88,7 +99,8 @@ export default {
   components: {},
   data() {
     return {
-      dialog: false
+      dialog: false,
+      orderId: null
     }
   },
   created: function () { },
@@ -131,14 +143,20 @@ export default {
           this.finalizeOrder().then(res => {
             console.log(res)
             this.resetFetchPendingFlag()
-            this.closeDialog()
+            this.showOrderId(Math.min(...res.map(({ id }) => id)))
           })
         }
       })
     },
     closeDialog: function () {
       this.dialog = false
+      this.orderId = null
     },
+    showOrderId: function (id) {
+      // only for this jubilaeum show the order-id as it will be the identifyer for customers and the base-station
+      this.orderId = id
+      this.dialog = true
+    }
   },
   watch: {},
   computed: {
@@ -202,6 +220,21 @@ export default {
     roundedSum: function () {
       return Math.round(this.sum * 100) / 100
     },
+    paddedSum: function () {
+      return `${this.roundedSum}`.split('.').map((val, i) => {
+        if (i === 1) {
+          val = val.padEnd(2, '0')
+        }
+        return val
+      }).join(',')
+    },
+    beautifiedSum: function () {
+      if (this.paddedSum.includes(',')) {
+        return this.paddedSum
+      } else {
+        return `${this.paddedSum},--`
+      }
+    }
   }
 }
 </script>

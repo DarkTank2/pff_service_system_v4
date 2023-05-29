@@ -1,5 +1,5 @@
 <template>
-  <v-switch v-model="quickModeRef" label="QuickMode" class="mx-4"></v-switch>
+  <v-switch v-model="quickModeRef" label="Schneller Modus" class="mx-4"></v-switch>
 </template>
 
 <script>

@@ -26,12 +26,20 @@ const routes = [
     path: '/',
     name: 'base',
     redirect: () => {
+      let lastOnboarded = window.localStorage.getItem('stationaryOnboardingCompletedAt')
+      if (!lastOnboarded) {
+        // never onbaorded
+        return { name: 'Onboarding' }
+      }
+      if (moment(lastSubscribed).isBefore(moment('2023-06-03T12:00:00.000Z'))) {
+        return { name: 'Onboarding' }
+      }
       let lastSubscribed = window.localStorage.getItem('subscriptionDate')
       if (!lastSubscribed) {
         // not ever subscribed
         return { name: 'Subscriptions' }
       }
-      if (moment(lastSubscribed).isBefore(moment('2022-12-31T12:00:00.000Z'))) {
+      if (moment(lastSubscribed).isBefore(moment('2023-06-03T12:00:00.000Z'))) {
         // very old subscription, possible last year, maybe update it
         return { name: 'Subscriptions' }
       }

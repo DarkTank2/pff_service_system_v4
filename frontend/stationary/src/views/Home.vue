@@ -144,7 +144,12 @@ export default {
                     currentOrder.items.push({ ...orderedItem, orderedItem, item, size, flavour, baseItem, additions })
                 }
             })
-            return clusters
+            return clusters.map(cluster => {
+              return {
+                ...cluster,
+                orderId: Math.min(...cluster.items.map(({ id }) => id))
+              }
+            })
         }
     },
     watch: {

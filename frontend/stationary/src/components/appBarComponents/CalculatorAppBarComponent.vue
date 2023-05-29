@@ -1,5 +1,5 @@
 <template>
-    <span class="text-h6 bordered px-2">{{ `&sum; ${roundedSum}€` }}</span>
+    <span class="text-h4 bordered px-2">{{ `Summe: ${beautifiedSum}€` }}</span>
 </template>
 
 <script>
@@ -45,6 +45,21 @@ export default {
         },
         roundedSum: function () {
             return Math.round(this.sum * 100) / 100
+        },
+        paddedSum: function () {
+          return `${this.roundedSum}`.split('.').map((val, i) => {
+            if (i === 1) {
+              val = val.padEnd(2, '0')
+            }
+            return val
+          }).join(',')
+        },
+        beautifiedSum: function () {
+          if (this.paddedSum.includes(',')) {
+            return this.paddedSum
+          } else {
+            return `${this.paddedSum},--`
+          }
         }
     }
 }

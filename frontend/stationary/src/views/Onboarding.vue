@@ -30,8 +30,8 @@
             <span class="mt-auto font-weight-black">Deine Rolle</span>
             <span>Welche Art von Station stellst du dar?</span>
             <span>Beim Buffet werden Speisen und Getränke hergerichtet und zusammengestellt.</span>
-            <span>Speisen, Getränke und das Buffet sind nur stellvertretend für generelle Items und einer Basisstation, die Betsellungen bearbeitet!</span>
-            <span>Bei der Verrechnung werden Bestellungen aufgenommen und verrechnet.</span>
+            <span>Speisen, Getränke und das Buffet sind nur stellvertretend für generelle Items und einer <span class="font-weight-bold">Basisstation</span>, die Bestellungen bearbeitet!</span>
+            <span>Bei der <span class="font-weight-bold">Verrechnung</span> werden Bestellungen aufgenommen und verrechnet.</span>
             <div class="mb-auto">
               <v-row>
                 <v-col cols="6"><v-btn block color="primary" @click="setBuffet"><v-icon>apps</v-icon>Basisstation</v-btn></v-col>
@@ -53,7 +53,7 @@
             <span>Als nächstes muss ich wissen, ob deine Bestellungen direkt abgeschlossen werden, oder nicht.</span>
             <span>Beantworte dazu einfach folgende Frage:</span>
             <span>Wenn jemand eine Bestellung bei dir aufgibt, können die bestellten Sachen auch sofort mitgenommen werden, oder müssen sie erst zubereitet werden?</span>
-            <span>Sofort fertig wäre zum Beispiel ein Bestelltes Gruppen-T-Shirt, zubereitet werden muss zum Beispiel ein Apfelsaft-Gespritzt.</span>
+            <span>Sofort fertig wäre zum Beispiel ein bestelltes Gruppen-T-Shirt, zubereitet werden muss zum Beispiel ein Apfelsaft-Gespritzt.</span>
             <div class="mb-auto">
               <v-row>
                 <v-col cols="6"><v-btn block color="primary" @click="setImmediatelyFinished">Sofort fertig (z.b. Merch)</v-btn></v-col>
@@ -154,13 +154,13 @@ export default {
       let lastSubscribed = window.localStorage.getItem('subscriptionDate') // for buffet
       let lastConfigured = window.localStorage.getItem('displayedItemsDate') // for calculator
       if (this.target === 'Home') {
-        if (!lastSubscribed || moment(lastSubscribed).isBefore(moment('2023-06-02T12:00:00.000Z'))) {
+        if (!lastSubscribed || moment(lastSubscribed).isBefore(moment('2023-06-03T12:00:00.000Z'))) {
           redirectTarget = 'Subscriptions'
         } else {
           redirectTarget = 'Home'
         }
       } else if (this.target === 'Calculator') {
-        if (!lastConfigured || moment(lastConfigured).isBefore(moment('2023-06-02T12:00:00.000Z'))) {
+        if (!lastConfigured || moment(lastConfigured).isBefore(moment('2023-06-03T12:00:00.000Z'))) {
           redirectTarget = 'CalculatorConfig'
         } else {
           redirectTarget = 'Calculator'

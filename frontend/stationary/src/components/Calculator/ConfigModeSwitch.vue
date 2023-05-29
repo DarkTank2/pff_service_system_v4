@@ -1,5 +1,5 @@
 <template>
-  <v-switch v-model="configModeRef" label="ConfigMode" class="mx-4"></v-switch>
+  <v-switch v-model="configModeRef" label="Konfigurations Modus" class="mx-4"></v-switch>
 </template>
 
 <script>

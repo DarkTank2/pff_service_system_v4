@@ -202,7 +202,7 @@ export default {
         let temporaryI = `${this.quickMode.quickMode ? 'itemId' : 'baseItemId'}_${id}`
         let storedGridItem = this.storedLayout.find(({ i }) => i === temporaryI)
         if (!storedGridItem) {
-          notInitializedGridItems.push({ entity, x: null, y: null, h: 2, w: 2, i: temporaryI })
+          notInitializedGridItems.push({ entity, x: null, y: null, h: 4, w: 2, i: temporaryI })
         } else {
           temporaryLayout.push({ ...storedGridItem, entity })
         }

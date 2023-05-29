@@ -1,8 +1,8 @@
 <template>
     <v-card @click="selectOrder" class="d-flex flex-column" :class="{ 'card-finished': cardFinished, 'card-chosen': chosen, 'card-free': !chosen }" :id="cardId" :min-height="cardSize">
-        <v-card-title :class="chosen === true ? 'red--text text-h4' : 'green--text text-h4'">
-            <span>{{ order.table ? order.table.name : order.tableId }}</span>
-            <span class="mx-4">{{ ' | ' }}</span>
+        <v-card-title :class="chosen === true ? 'red--text text-h3' : 'green--text text-h3'">
+            <span v-if="order.orderId">{{ order.orderId }}</span>
+            <span v-if="order.orderId" class="mx-4">{{ ' | ' }}</span>
             <span class="font-weight-light">{{ order.waiter }}</span>
         </v-card-title>
         <v-card-text class="flex-grow-1">
@@ -117,7 +117,7 @@ i.v-icon {
 }
 div.v-card {
     transform: scale(1);
-    transition: transform 500ms;
+    transition: transform 250ms;
 }
 .card-finished {
     transform: scale(0) !important;
