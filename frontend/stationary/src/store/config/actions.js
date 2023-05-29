@@ -1,6 +1,7 @@
 const init = (attr) => {
   initName(attr)
   initQuickMode(attr)
+  initImmediateOrderMode(attr)
   initDenseMode(attr)
   initDisplayedItems(attr)
   initDisplayFormat(attr)
@@ -18,6 +19,12 @@ const initQuickMode = ({ commit }) => {
   let savedQuickMode = window.localStorage.getItem('quickMode')
   if (savedQuickMode) {
     commit('updateQuickMode', JSON.parse(savedQuickMode))
+  }
+}
+const initImmediateOrderMode = ({ commit }) => {
+  let savedImmediateOrderMode = window.localStorage.getItem('immediateOrderMode')
+  if (savedImmediateOrderMode) {
+    commit('updateImmediateOrderMode', JSON.parse(savedImmediateOrderMode))
   }
 }
 const initDenseMode = ({ commit }) => {
@@ -51,6 +58,7 @@ export default {
   init,
   initName,
   initQuickMode,
+  initImmediateOrderMode,
   initDenseMode,
   initDisplayedItems,
   initDisplayFormat,

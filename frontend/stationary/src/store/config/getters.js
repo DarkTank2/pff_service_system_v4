@@ -5,6 +5,9 @@ const name = state => {
 const quickMode = state => {
   return state.quickMode
 }
+const immediateOrderMode = state => {
+  return state.immediateOrderMode
+}
 const configMode = state => {
   return state.configMode
 }
@@ -34,6 +37,7 @@ const formatItem = state => {
 export default {
   name,
   quickMode,
+  immediateOrderMode,
   configMode,
   denseMode,
   displayedItems,

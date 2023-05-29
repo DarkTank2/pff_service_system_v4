@@ -1,13 +1,30 @@
-const finalizeOrder = ({ dispatch, commit, getters }) => {
+const finalizeOrder = ({ dispatch, commit, getters, rootGetters }) => {
   return new Promise((resolve, reject) => {
-    let promises = []
-    getters.order.forEach(OI => {
-      promises.push(dispatch('ordered-items/create', OI, { root: true }))
+    let data = getters.order.map(OI => {
+      let { waiter, tableId } = OI
+      if (!waiter) {
+        waiter = rootGetters['config/name']
+      }
+      if (!waiter) {
+        throw new Error('No name provided!')
+      }
+      if (!tableId) {
+        tableId = 1
+      }
+      return { ...OI, waiter, tableId }
     })
-    Promise.all(promises).then(result => {
-      commit('clearOrder')
-      resolve(result)
-    }).catch(err => reject(err))
+    dispatch('utilities/setFetchPendingFlag', null, { root: true }).then(() => {
+      dispatch('ordered-items/create', [data], { root: true }).then(result => {
+        dispatch('utilities/resetFetchPendingFlag', null, { root: true })
+        commit('clearOrder')
+        dispatch('utilities/setNotification', { message: 'Abgesendet', timeout: 3000, type: 'success' }, { root: true })
+        resolve(result)
+      }).catch(err => {
+        dispatch('utilities/resetFetchPendingFlag', null, { root: true })
+        dispatch('utilities/setNotification', { message: `Fehler beim absenden der Items: ${err.message}`, timeout: -1, type: 'error' }, { root: true })
+        reject(err)
+      })
+    })
   })
 }
 
@@ -48,7 +65,7 @@ const quickCash = ({ dispatch, commit, getters, rootGetters }) => {
             dispatch('utilities/resetFetchPendingFlag', null, { root: true })
             commit('clearOrder')
             dispatch('utilities/setNotification', { message: 'Abgesendet', timeout: 3000, type: 'success' }, { root: true })
-            resolve()
+            resolve(res)
           }).catch(err => {
             dispatch('utilities/resetFetchPendingFlag', null, { root: true })
             dispatch('utilities/setNotification', { message: `Fehler beim absenden der Erweiterungen: ${err.message}`, timeout: -1, type: 'error' }, { root: true })
@@ -58,7 +75,7 @@ const quickCash = ({ dispatch, commit, getters, rootGetters }) => {
           dispatch('utilities/resetFetchPendingFlag', null, { root: true })
           commit('clearOrder')
           dispatch('utilities/setNotification', { message: 'Abgesendet', timeout: 3000, type: 'success' }, { root: true })
-          resolve()
+          resolve(res)
         }
       }).catch(err => {
         dispatch('utilities/resetFetchPendingFlag', null, { root: true })

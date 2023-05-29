@@ -14,6 +14,13 @@ const updateQuickMode = (state, payload) => {
   state.quickMode = { ...payload }
   setLocalStorage(JSON.stringify(state.quickMode), 'quickMode')
 }
+const updateImmediateOrderMode = (state, payload) => {
+  if (!payload) {
+    return
+  }
+  state.immediateOrderMode = { ...payload }
+  setLocalStorage(JSON.stringify(state.immediateOrderMode), 'immediateOrderMode')
+}
 const updateConfigMode = (state, payload) => {
   if (!payload) {
     return
@@ -96,6 +103,7 @@ function setLocalStorage (data, value) {
 export default {
   updateName,
   updateQuickMode,
+  updateImmediateOrderMode,
   updateConfigMode,
   updateDenseMode,
   updateDisplayedItems,

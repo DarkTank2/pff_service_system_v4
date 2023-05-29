@@ -106,7 +106,8 @@ export default {
       clearOrder: 'clearOrder'
     }),
     ...mapActions('waiter', {
-      quickCash: 'quickCash'
+      quickCash: 'quickCash',
+      finalizeOrder: 'finalizeOrder'
     }),
     ...mapActions('utilities', {
       setFetchPendingFlag: 'setFetchPendingFlag',
@@ -119,8 +120,20 @@ export default {
       this.dialog = true
     },
     cash: function () {
-      this.quickCash().then(() => {
-        this.closeDialog()
+      this.setFetchPendingFlag().then(() => {
+        if (this.immediateOrderMode.value) {
+          this.quickCash().then((res) => {
+            console.log(res)
+            this.resetFetchPendingFlag()
+            this.closeDialog()
+          })
+        } else {
+          this.finalizeOrder().then(res => {
+            console.log(res)
+            this.resetFetchPendingFlag()
+            this.closeDialog()
+          })
+        }
       })
     },
     closeDialog: function () {
@@ -146,6 +159,9 @@ export default {
     }),
     ...mapGetters('additions', {
       getAddition: 'get'
+    }),
+    ...mapGetters('config', {
+      immediateOrderMode: 'immediateOrderMode'
     }),
     orderedItems: function () {
       return this.order.map((orderedItem, index) => {

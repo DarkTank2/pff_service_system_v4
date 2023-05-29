@@ -4,15 +4,18 @@ import goTo from 'vuetify/lib/services/goto'
 import moment from 'moment'
 import CalculatorButtonCollection from '../components/appBarExtensions/CalculatorButtonCollection.vue'
 // import CalculatorExtension from '../components/appBarExtensions/CalculatorExtension.vue'
+
 import BuffetAppBarComponent from '../components/appBarComponents/BuffetComponent.vue'
-import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigButton.vue'
-import BuffetSubscriptionsButton from '../components/sideNavbarComponents/BuffetSubscriptionsButton.vue'
 import ConfiguratorAppBarComponent from '../components/appBarComponents/ConfiguratorComponent.vue'
 import CalculatorAppBarComponent from '../components/appBarComponents/CalculatorAppBarComponent.vue'
+
+import HomeButton from '../components/sideNavbarComponents/HomeButton.vue'
+import BuffetConfigButton from '../components/sideNavbarComponents/BuffetConfigButton.vue'
+import BuffetSubscriptionsButton from '../components/sideNavbarComponents/BuffetSubscriptionsButton.vue'
 import CalcKeybindingsConfigButton from '../components/sideNavbarComponents/CalcKeybindingsConfigButton.vue'
 import CalcButton from '../components/sideNavbarComponents/CalcButton.vue'
-import HomeButton from '../components/sideNavbarComponents/HomeButton.vue'
 import CalcConfigButton from '../components/sideNavbarComponents/CalcConfigButton.vue'
+
 import QuickModeSwitch from '../components/Calculator/QuickModeSwitch.vue'
 import ConfigModeSwitch from '../components/Calculator/ConfigModeSwitch.vue'
 
@@ -34,6 +37,11 @@ const routes = [
       }
       return { name: 'Home' }
     }
+  },
+  {
+    path: '/onboarding',
+    name: 'Onboarding',
+    component: () => import('../views/Onboarding.vue')
   },
   {
     path: '/home',
@@ -71,6 +79,11 @@ const routes = [
       sideNavbarComponents: [CalcKeybindingsConfigButton, CalcConfigButton],
       quickConfigElements: [ConfigModeSwitch, QuickModeSwitch]
     }
+  },
+  {
+    path: '/history',
+    name: 'History',
+    component: () => import(/* webpackChunkName: "calculator" */ '../views/HistoryView.vue')
   },
   {
     path: '/calculatorConfig',
@@ -111,12 +124,32 @@ const routes = [
     component: () => import(/* webpackChunkName: "master" */ '../views/Statistics.vue')
   },
   {
+    path: '/dataManager',
+    name: 'DataManager',
+    component: () => import(/* webpackChunkName: "master" */ '../views/DataManager.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '/error',
+    name: 'Error',
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '*',
+    name: 'Default',
+    redirect: (to) => {
+      if (to.fullPath.includes('-')) {
+        return to.fullPath.split('/').map(part => camelCasingPart(part)).join('/')
+      }
+      return { name: 'Error' }
+    }
   }
 ]
 
@@ -136,3 +169,18 @@ const router = new VueRouter({
 })
 
 export default router
+
+function camelCasingPart (part = '') {
+  return part.split('-').map((element, i) => {
+    if (i === 0) {
+      return element
+    } else {
+      return element.split('').map((char, index) => {
+        if (index === 0) {
+          return char.toUpperCase()
+        }
+        return char
+      }).join('')
+    }
+  }).join('')
+}

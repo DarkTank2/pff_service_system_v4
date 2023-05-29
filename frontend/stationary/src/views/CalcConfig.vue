@@ -1,14 +1,20 @@
 <template>
   <v-container class="pt-6">
     <v-row>
-      <v-col cols="4">
+      <v-col cols="2">
+        <v-btn color="primary" :to="{ name: 'Calculator' }" class="mt-auto mb-auto"><v-icon>calculate</v-icon>Zurück zur Oberfläche</v-btn>
+      </v-col>
+      <v-col cols="2">
         <v-text-field label="Der Name der Station" :value="name" @input="updateName"></v-text-field>
       </v-col>
-      <v-col cols="4">
+      <v-col cols="2">
         <v-switch label="Dense Mode" v-model="denseMode"></v-switch>
       </v-col>
-      <v-col cols="4">
+      <v-col cols="2">
         <QuickModeSwitch />
+      </v-col>
+      <v-col cols="2">
+        <ImmediateOrderSwitch />
       </v-col>
     </v-row>
     <v-row v-for="category in itemStructure" :key="`row_category_${category.id}`">
@@ -32,11 +38,13 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
 import QuickModeSwitch from '../components/Calculator/QuickModeSwitch.vue'
+import ImmediateOrderSwitch from '../components/Calculator/ImmediateOrderSwitch.vue'
 export default {
   name: 'CalculatorConfig',
   props: [],
   components: {
-    QuickModeSwitch
+    QuickModeSwitch,
+    ImmediateOrderSwitch
   },
   data () {
     return {}

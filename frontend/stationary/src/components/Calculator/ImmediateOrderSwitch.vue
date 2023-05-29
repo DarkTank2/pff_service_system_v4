@@ -1,40 +1,40 @@
 <template>
-  <v-switch v-model="quickModeRef" label="QuickMode" class="mx-4"></v-switch>
+  <v-switch v-model="modeRef" label="Bestellung sofort abschließen" class="mx-4"></v-switch>
 </template>
 
 <script>
 import { mapGetters, mapMutations } from 'vuex'
 export default {
-  name: 'QuickModeSwitch',
+  name: 'ImmediateOrderSwitch',
   props: [],
   components: {},
   data () {
     return {
-      quickModeRef: null
+      modeRef: null
     }
   },
   methods: {
     ...mapMutations('config', {
-      updateQuickMode: 'updateQuickMode'
+      updateImmediateOrderMode: 'updateImmediateOrderMode'
     })
   },
   watch: {
-    quickMode: {
+    immediateOrderMode: {
       immediate: true,
       handler: function (newValue) {
-        this.quickModeRef = newValue.quickMode
+        this.modeRef = newValue?.value
       }
     },
-    quickModeRef: function (newValue) {
+    modeRef: function (newValue) {
       if (newValue === null) {
         return
       }
-      this.updateQuickMode({ quickMode: newValue })
+      this.updateImmediateOrderMode({ value: newValue })
     }
   },
   computed: {
     ...mapGetters('config', {
-      quickMode: 'quickMode'
+      immediateOrderMode: 'immediateOrderMode'
     })
   }
 }
