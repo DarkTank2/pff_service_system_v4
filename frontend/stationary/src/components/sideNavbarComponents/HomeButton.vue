@@ -1,8 +1,10 @@
 <template>
-  <v-btn :to="{ name: 'Home' }" block outlined>
-    <v-icon>home</v-icon>
-    <span class="ml-2">Home</span>
-  </v-btn>
+  <v-list-item :to="{ name: 'Home' }">
+    <v-list-item-icon>
+      <v-icon v-text="'home'"></v-icon>
+    </v-list-item-icon>
+    <v-list-item-title v-text="'Home'"></v-list-item-title>
+  </v-list-item>
 </template>
 
 <script>

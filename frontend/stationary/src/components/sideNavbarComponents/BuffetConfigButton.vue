@@ -1,8 +1,10 @@
 <template>
-    <v-btn :to="{ name: 'BuffetConfig' }" block outlined>
-        <v-icon>settings</v-icon>
-        <span class="ml-2">Einstellungen</span>
-    </v-btn>
+  <v-list-item :to="{ name: 'BuffetConfig' }">
+    <v-list-item-icon>
+      <v-icon v-text="'settings'"></v-icon>
+    </v-list-item-icon>
+    <v-list-item-title v-text="'Einstellungen'"></v-list-item-title>
+  </v-list-item>
 </template>
 
 <script>

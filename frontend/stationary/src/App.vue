@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app id="root">
     <v-app-bar app id="_appbar">
       <v-app-bar-nav-icon @click="sideNav = !sideNav"></v-app-bar-nav-icon>
       <template v-if="meta.titleReplacement">
@@ -27,13 +27,31 @@
           </v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
-        <template v-if="meta.sideNavbarComponents">
-          <v-list-item v-for="(component, index) in meta.sideNavbarComponents" :key="`side_navbar_component_index_${index}`">
+        <v-list-group
+          :value="baseActive"
+          prepend-icon="apps">
+          <template v-slot:activator>
             <v-list-item-content>
-              <component :is="component" />
+              <v-list-item-title>Buffet</v-list-item-title>
             </v-list-item-content>
-          </v-list-item>
-        </template>
+          </template>
+          <HomeButton class="ml-4" />
+          <BuffetConfigButton class="ml-4" />
+          <BuffetSubscriptionsButton class="ml-4" />
+        </v-list-group>
+        <v-list-group
+          :value="calculatorActive"
+          prepend-icon="calculate">
+          <template v-slot:activator>
+            <v-list-item-content>
+              <v-list-item-title>Calculator</v-list-item-title>
+            </v-list-item-content>
+          </template>
+          <CalcButton class="ml-4" />
+          <HistoryNavigator class="ml-4" />
+          <CalcConfigButton class="ml-4" />
+          <CalcKeybindingsConfigButton class="ml-4" />
+        </v-list-group>
       </v-list>
     </v-navigation-drawer>
     <v-main :style="mainStyle">
@@ -48,15 +66,33 @@
 import { mapActions, mapGetters } from 'vuex';
 import Loading from '@components/loading.vue'
 import Notification from '@components/notification.vue'
+
+import HomeButton from '@/sideNavbarComponents/HomeButton.vue'
+import BuffetConfigButton from '@/sideNavbarComponents/BuffetConfigButton.vue'
+import BuffetSubscriptionsButton from '@/sideNavbarComponents/BuffetSubscriptionsButton.vue'
+import CalcKeybindingsConfigButton from '@/sideNavbarComponents/CalcKeybindingsConfigButton.vue'
+import CalcButton from '@/sideNavbarComponents/CalcButton.vue'
+import CalcConfigButton from '@/sideNavbarComponents/CalcConfigButton.vue'
+
+import HistoryNavigator from '@components/HistoryNavigator.vue'
 export default {
   name: 'App',
   components: {
     Loading,
-    Notification
+    Notification,
+    HomeButton,
+    BuffetConfigButton,
+    BuffetSubscriptionsButton,
+    CalcKeybindingsConfigButton,
+    CalcButton,
+    CalcConfigButton,
+    HistoryNavigator
   },
   data: () => ({
     darkMode: true,
-    sideNav: null
+    sideNav: null,
+    calculatorActive: false,
+    baseActive: false
   }),
   created: function () {
     this.$vuetify.theme.dark = this.darkMode
@@ -91,6 +127,9 @@ export default {
     },
     quickConfigElements: function () {
       return this.meta.quickConfigElements || []
+    },
+    sideNavbarComponents: function () {
+      return this.meta.sideNavbarComponents || []
     },
     mainStyle: function () {
       return `padding: ${this.meta.extension ? '104' : '56'}px 0px 0px;`

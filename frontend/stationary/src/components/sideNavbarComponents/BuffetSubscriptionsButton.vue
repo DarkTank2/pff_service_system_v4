@@ -1,8 +1,10 @@
 <template>
-    <v-btn :to="{ name: 'Subscriptions' }" block outlined>
-        <v-icon>subscriptions</v-icon>
-        <span class="ml-2">Abonnements</span>
-    </v-btn>
+  <v-list-item :to="{ name: 'Subscriptions' }">
+    <v-list-item-icon>
+      <v-icon v-text="'subscriptions'"></v-icon>
+    </v-list-item-icon>
+    <v-list-item-title v-text="'Abonnements'"></v-list-item-title>
+  </v-list-item>
 </template>
 
 <script>

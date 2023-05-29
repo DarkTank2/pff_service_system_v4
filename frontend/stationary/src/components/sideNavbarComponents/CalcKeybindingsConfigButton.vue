@@ -1,8 +1,10 @@
 <template>
-  <v-btn :to="{ name: 'Keybindings' }" block outlined>
-      <v-icon>keyboard</v-icon>
-      <span class="ml-2">Keybindings</span>
-  </v-btn>
+  <v-list-item :to="{ name: 'Keybindings' }">
+    <v-list-item-icon>
+      <v-icon v-text="'keyboard'"></v-icon>
+    </v-list-item-icon>
+    <v-list-item-title v-text="'Keybindings'"></v-list-item-title>
+  </v-list-item>
 </template>
 
 <script>
